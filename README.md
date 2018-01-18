@@ -18,15 +18,15 @@ To update the package just run the `install_github("WSpiller/RadialMR")` command
 We have written the `RadialMR` R package to produce radial plots and to perform radial
 regression for inverse variance weighted and MR-Egger regression models. The package contains a total of four functions:
 
-1. The 'format_radial' function is used to convert a data frame containing summary data into a set format for radial analysis.
+1. The `format_radial` function is used to convert a data frame containing summary data into a set format for radial analyses.
 
-2. The 'ivw_radial' function fits a radial inverse variance weighted (IVW) model using either first order, second order, or modified
+2. The `ivw_radial` function fits a radial inverse variance weighted (IVW) model using either first order, second order, or modified
 second order weights. It provides an effect estimate and allows for outliers to be identified using Cochran's Q-statistic.
 
-3. The 'egger_radial' function fits a radial MR-Egger model using either first order, second order, or modified
+3. The `egger_radial` function fits a radial MR-Egger model using either first order, second order, or modified
 second order weights. It provides an effect estimate and allows for outliers to be identified using Rucker's Q-statistic.
 
-4. The 'plot_radial' function produces a radial plot corresponding to the output of the 'ivw_radial' and 'egger_radial' functions. The
+4. The `plot_radial` function produces a radial plot corresponding to the output of the `ivw_radial` and `egger_radial` functions. The
 function provides a range of scaling and aesthetic options showing either an IVW estimate, MR-Egger estimate, or both estimates simultaneously. 
 
 Radial plots are produced by many existing R packages such as `metafor`, `numOSL`, and `Luminescence`. Care will need to be taken, however, to input data from an
