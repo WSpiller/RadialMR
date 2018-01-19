@@ -1021,7 +1021,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             theme(panel.border = element_blank(),panel.grid.major = element_blank(),
                   panel.grid.minor = element_blank(),axis.line = element_line(colour = "black"))+ylab(expression(hat(beta)[j]~sqrt(W[j])))+xlab(expression(sqrt(W[j])))+
             geom_segment(aes(x = 0, xend = cos(atan(r_object$coef[2,1]))*R.Egger, y = r_object$coef[1,1], yend = (sin(atan(r_object$coef[2,1]))*R.Egger)+r_object$coef[1,1],colour="MR-Egger"))+
-            scale_x_continuous(limits = c(0,cos(atan(r_object$coef[2,1]))*(R.Egger+(Label.Scaling_Egg*3))),expand=c(0,0))+scale_y_continuous(limits = c(Y_MINEGGER,Y_MAXEGGER))+scale_colour_manual(breaks=c("Variant","Outlier","MR-Egger"),values=c("#D55E00","#E69F00","white"))+
+            scale_x_continuous(limits = c(0,cos(atan(r_object$coef[2,1]))*(R.Egger+(Label.Scaling_Egg*3))),expand=c(0,0))+scale_y_continuous(limits = c(Y_MINEGGER,Y_MAXEGGER))+scale_colour_manual(breaks=c("Outlier","MR-Egger"),values=c("#D55E00","#E69F00","white"))+
             theme(legend.title=element_blank())
           
           #Draw lines indicating individual Q contributions and give text displaying each value
