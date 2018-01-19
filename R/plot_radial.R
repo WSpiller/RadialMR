@@ -45,6 +45,8 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
     
     if(class(r_object)=="IVW"){
       
+      r_object<-c(A,C)
+      
       #Define radius for scale and IVW circles
       maximal<-atan(max(abs(r_object$data[,3]))/max(r_object$data[,2]))
       R.All<-max(abs(r_object$data[,3]))/sin(maximal)
@@ -68,8 +70,8 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
       cyIVW<-circledat_IVWEST$y
       
       #Define minimum and maximum values of y axis for scaling
-      Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)
-      Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)
+      Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)-sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)
+      Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)+sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)
       
       Y_Range<-Scalemax-Scalemin
       
@@ -109,6 +111,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
                 Y_Scale<-Y_Range/6
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
+                Y_Scale<-mround(Y_Scale)
                 B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
                 B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
                 B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
@@ -163,22 +166,22 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               cyIVW<-circledat_IVWEST$y
               
               #Define minimum and maximum values of y axis for scaling
-              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)
-              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)
+              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)-sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)
+              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)+sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)
               
               Y_Range<-Scalemax-Scalemin
               
               
               
               #Generate plot showing only outliers using the full scale
-              B<-ggplot(r_object$data,aes(x=Wj,y=BetaWj))+labs(title="IVW Radial") + geom_point(aes(colour = Outliers))+geom_path(aes(x=cxAll,y=cyAll))+geom_path(aes(x=cxIVW,y=cyIVW,colour="IVW"))+
-                
+              B<-ggplot(r_object$data,aes(x=Wj,y=BetaWj)
+              )+labs(title="IVW Radial") + geom_point(aes(colour = Outliers))+geom_path(aes(x=cxAll,y=cyAll))+geom_path(aes(x=cxIVW,y=cyIVW,colour="IVW"))+
                 geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), label=round(r_object$coef[1],digits=3),size=4)+
-                geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[2],digits=3),size=3)+
-                geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[1],digits=3),size=3)+
+                geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),label=round(r_object$confint[1],digits=3),size=3)+
+                geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),label=round(r_object$confint[2],digits=3),size=3)+
                 theme_bw()+theme(panel.border = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),axis.line = element_line(colour = "black"))+ylab(expression(hat(beta)[j]~sqrt(W[j])))+xlab(expression(sqrt(W[j])))+
                 geom_segment(aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)),expand=c(0,0))+scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 coord_fixed()+theme(legend.title=element_blank())+scale_colour_manual(breaks=c("Outlier","IVW"),values=c("#56B4E9","#E69F00","white"))
               
               #Function for rounding to nearest 0.05 increment
@@ -190,13 +193,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
                 Y_Scale<-Y_Range/6
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+                Y_Scale<-mround(Y_Scale)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
                 
               }
               
@@ -205,11 +209,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-Y_Range/4
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
                 Y_Scale<-mround(Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
                 
               }
               
@@ -255,13 +259,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
                 Y_Scale<-Y_Range/6
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+                Y_Scale<-mround(Y_Scale)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
                 
               }
               
@@ -270,11 +275,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-Y_Range/4
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
                 Y_Scale<-mround(Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
                 
               }
               for(i in 1:length(r_object$data[,3])){
@@ -309,35 +314,34 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               cyIVW<-circledat_IVWEST$y
               
               #Define minimum and maximum values of y axis for scaling
-              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)
-              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)
+              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)-sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)
+              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)+sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)
               
               Y_Range<-Scalemax-Scalemin
               
               #Generate plot showing only outliers using the full scale
-              B<-ggplot(r_object$data,aes(x=Wj,y=BetaWj))+labs(title="IVW Radial") + geom_point(aes(colour = Outliers))+geom_path(aes(x=cxAll,y=cyAll))+geom_path(aes(x=cxIVW,y=cyIVW,colour="IVW"))+
-                
+              B<-ggplot(r_object$data,aes(x=Wj,y=BetaWj)
+              )+labs(title="IVW Radial") + geom_point(aes(colour = Outliers))+geom_path(aes(x=cxAll,y=cyAll))+geom_path(aes(x=cxIVW,y=cyIVW,colour="IVW"))+
                 geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), label=round(r_object$coef[1],digits=3),size=4)+
-                geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[2],digits=3),size=3)+
-                geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[1],digits=3),size=3)+
+                geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),label=round(r_object$confint[1],digits=3),size=3)+
+                geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),label=round(r_object$confint[2],digits=3),size=3)+
                 theme_bw()+theme(panel.border = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),axis.line = element_line(colour = "black"))+ylab(expression(hat(beta)[j]~sqrt(W[j])))+xlab(expression(sqrt(W[j])))+
                 geom_segment(aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)),expand=c(0,0))+scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 theme(legend.title=element_blank())+scale_colour_manual(breaks=c("Outlier","IVW"),values=c("#56B4E9","#E69F00","white"))
-              
-              
               
               
               if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
                 Y_Scale<-Y_Range/6
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+                Y_Scale<-mround(Y_Scale)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
                 
               }
               
@@ -346,11 +350,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-Y_Range/4
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
                 Y_Scale<-mround(Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
                 
               }
               #Draw individual ratio estimate lines for each outlier and Q distance indicator lines
@@ -418,22 +422,20 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               cyIVW<-circledat_IVWEST$y
               
               #Define minimum and maximum values of y axis for scaling
-              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)
-              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)
+              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)-sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)
+              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)+sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)
               
               Y_Range<-Scalemax-Scalemin
               
-              
-              
               #Generate plot showing only outliers using the full scale
-              B<-ggplot(r_object$data,aes(x=Wj,y=BetaWj))+labs(title="IVW Radial") + geom_point(aes(colour = Outliers))+geom_path(aes(x=cxIVW,y=cyIVW,colour="IVW"))+
-                
+              B<-ggplot(r_object$data,aes(x=Wj,y=BetaWj)
+              )+labs(title="IVW Radial") + geom_point(aes(colour = Outliers))+geom_path(aes(x=cxIVW,y=cyIVW,colour="IVW"))+
                 geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), label=round(r_object$coef[1],digits=3),size=4)+
-                geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[2],digits=3),size=3)+
-                geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[1],digits=3),size=3)+
+                geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),label=round(r_object$confint[1],digits=3),size=3)+
+                geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),label=round(r_object$confint[2],digits=3),size=3)+
                 theme_bw()+theme(panel.border = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),axis.line = element_line(colour = "black"))+ylab(expression(hat(beta)[j]~sqrt(W[j])))+xlab(expression(sqrt(W[j])))+
                 geom_segment(aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)),expand=c(0,0))+scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 coord_fixed()+theme(legend.title=element_blank())+scale_colour_manual(breaks=c("Outlier","IVW"),values=c("#56B4E9","#E69F00","white"))
               
               #Draw lines indicating individual Q contributions and give text displaying each value
@@ -516,22 +518,22 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               cyIVW<-circledat_IVWEST$y
               
               #Define minimum and maximum values of y axis for scaling
-              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)
-              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)
+              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)-sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)
+              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)+sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)
               
               Y_Range<-Scalemax-Scalemin
               
               
               
               #Generate plot showing only outliers using the full scale
-              B<-ggplot(r_object$data,aes(x=Wj,y=BetaWj))+labs(title="IVW Radial") + geom_point(aes(colour = Outliers))+geom_path(aes(x=cxIVW,y=cyIVW,colour="IVW"))+
-                
+              B<-ggplot(r_object$data,aes(x=Wj,y=BetaWj)
+              )+labs(title="IVW Radial") + geom_point(aes(colour = Outliers))+geom_path(aes(x=cxIVW,y=cyIVW,colour="IVW"))+
                 geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), label=round(r_object$coef[1],digits=3),size=4)+
-                geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[2],digits=3),size=3)+
-                geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[1],digits=3),size=3)+
+                geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),label=round(r_object$confint[1],digits=3),size=3)+
+                geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),label=round(r_object$confint[2],digits=3),size=3)+
                 theme_bw()+theme(panel.border = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),axis.line = element_line(colour = "black"))+ylab(expression(hat(beta)[j]~sqrt(W[j])))+xlab(expression(sqrt(W[j])))+
                 geom_segment(aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)),expand=c(0,0))+scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 theme(legend.title=element_blank())+scale_colour_manual(breaks=c("Outlier","IVW"),values=c("#56B4E9","#E69F00","white"))
               
               #Draw lines indicating individual Q contributions and give text displaying each value
@@ -589,13 +591,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
                 Y_Scale<-Y_Range/6
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+                Y_Scale<-mround(Y_Scale)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
                 
               }
               
@@ -604,11 +607,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-Y_Range/4
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
                 Y_Scale<-mround(Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
                 
               }
               for(i in 1:length(r_object$data[,3])){
@@ -637,8 +640,8 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               cyIVW<-circledat_IVWEST$y
               
               #Define minimum and maximum values of y axis for scaling
-              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)
-              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)
+              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)-sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)
+              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)+sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)
               
               Y_Range<-Scalemax-Scalemin
               
@@ -656,13 +659,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
                 Y_Scale<-Y_Range/6
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+                Y_Scale<-mround(Y_Scale)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
                 
               }
               
@@ -671,11 +675,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-Y_Range/4
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
                 Y_Scale<-mround(Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
                 
               }
               
@@ -713,13 +717,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
                 Y_Scale<-Y_Range/6
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+                Y_Scale<-mround(Y_Scale)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
                 
               }
               
@@ -728,11 +733,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-Y_Range/4
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
                 Y_Scale<-mround(Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
                 
               }
               for(i in 1:length(r_object$data[,3])){
@@ -761,8 +766,8 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               cyIVW<-circledat_IVWEST$y
               
               #Define minimum and maximum values of y axis for scaling
-              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)
-              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)
+              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)-sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)
+              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)+sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)
               
               Y_Range<-Scalemax-Scalemin
               
@@ -780,13 +785,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
                 Y_Scale<-Y_Range/6
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+                Y_Scale<-mround(Y_Scale)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
                 
               }
               
@@ -795,11 +801,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-Y_Range/4
                 Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
                 Y_Scale<-mround(Y_Scale)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+                B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
                 
               }
               
@@ -860,8 +866,8 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               cyIVW<-circledat_IVWEST$y
               
               #Define minimum and maximum values of y axis for scaling
-              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)
-              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)
+              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)-sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)
+              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)+sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)
               
               Y_Range<-Scalemax-Scalemin
               
@@ -918,8 +924,8 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               cyIVW<-circledat_IVWEST$y
               
               #Define minimum and maximum values of y axis for scaling
-              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)
-              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)
+              Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)-sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)
+              Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)+sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)
               
               Y_Range<-Scalemax-Scalemin
               
@@ -1202,13 +1208,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
               Y_Scale<-Y_Range/6
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+              Y_Scale<-mround(Y_Scale)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
               
             }
             
@@ -1217,11 +1224,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-Y_Range/4
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
               Y_Scale<-mround(Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
               
             }
             for(i in 1:length(r_object$data[,3])){
@@ -1293,13 +1300,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
               Y_Scale<-Y_Range/6
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+              Y_Scale<-mround(Y_Scale)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
               
             }
             
@@ -1308,11 +1316,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-Y_Range/4
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
               Y_Scale<-mround(Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
               
             }
             
@@ -1361,13 +1369,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
               Y_Scale<-Y_Range/6
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+              Y_Scale<-mround(Y_Scale)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
               
             }
             
@@ -1376,11 +1385,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-Y_Range/4
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
               Y_Scale<-mround(Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
               
             }
             for(i in 1:length(r_object$data[,3])){
@@ -1452,13 +1461,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
               Y_Scale<-Y_Range/6
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+              Y_Scale<-mround(Y_Scale)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
               
             }
             
@@ -1467,11 +1477,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-Y_Range/4
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
               Y_Scale<-mround(Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
               
             }
             
@@ -1675,13 +1685,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
               Y_Scale<-Y_Range/6
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+              Y_Scale<-mround(Y_Scale)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
               
             }
             
@@ -1690,11 +1701,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-Y_Range/4
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
               Y_Scale<-mround(Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
               
             }
             for(i in 1:length(r_object$data[,3])){
@@ -1732,13 +1743,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
               Y_Scale<-Y_Range/6
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+              Y_Scale<-mround(Y_Scale)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
               
             }
             
@@ -1747,11 +1759,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-Y_Range/4
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
               Y_Scale<-mround(Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
               
             }
             
@@ -1799,13 +1811,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
               Y_Scale<-Y_Range/6
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+              Y_Scale<-mround(Y_Scale)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
               
             }
             
@@ -1814,11 +1827,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-Y_Range/4
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
               Y_Scale<-mround(Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
               
             }
             for(i in 1:length(r_object$data[,3])){
@@ -1856,13 +1869,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
               Y_Scale<-Y_Range/6
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=round(Y_Scale[6]),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=round(Y_Scale[7]),size=2.5)
+              Y_Scale<-mround(Y_Scale)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[6]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[6]))*(R.All+Label.Scaling)), label=Y_Scale[6],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[7]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[7]))*(R.All+Label.Scaling)), label=Y_Scale[7],size=2.5)
               
             }
             
@@ -1871,11 +1885,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-Y_Range/4
               Y_Scale<-seq(from=Scalemin,to=Scalemax,by=Y_Scale)
               Y_Scale<-mround(Y_Scale)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=round(Y_Scale[1],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=round(Y_Scale[2],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=round(Y_Scale[3],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=round(Y_Scale[4],digits=2),size=2.5)
-              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=round(Y_Scale[5],digits=2),size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[1]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[1]))*(R.All+Label.Scaling)), label=Y_Scale[1],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[2]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[2]))*(R.All+Label.Scaling)), label=Y_Scale[2],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[3]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[3]))*(R.All+Label.Scaling)), label=Y_Scale[3],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[4]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[4]))*(R.All+Label.Scaling)), label=Y_Scale[4],size=2.5)
+              B<-B + geom_text(x=(cos(atan(Y_Scale[5]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[5]))*(R.All+Label.Scaling)), label=Y_Scale[5],size=2.5)
               
             }
             
