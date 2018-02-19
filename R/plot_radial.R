@@ -45,8 +45,6 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
     
     if(class(r_object)=="IVW"){
       
-      r_object<-c(A,C)
-      
       #Define radius for scale and IVW circles
       maximal<-atan(max(abs(r_object$data[,3]))/max(r_object$data[,2]))
       R.All<-max(abs(r_object$data[,3]))/sin(maximal)
