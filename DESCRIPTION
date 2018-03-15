@@ -1,6 +1,6 @@
 Package: RadialMR
 Title: Radial MR
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(person("Wes", "Spiller", email = "wes.spiller@bristol.ac.uk", role = c("aut", "cre")),
              person("Jack", "Bowden", email = "jack.bowden@bristol.ac.uk", role = c("aut")))
 Description: A package for implementing radial inverse variance weighted and MR-Egger methods.

@@ -27,7 +27,11 @@ second order weights. It provides an effect estimate and allows for outliers to 
 second order weights. It provides an effect estimate and allows for outliers to be identified using Rucker's Q-statistic.
 
 4. The `plot_radial` function produces a radial plot corresponding to the output of the `ivw_radial` and `egger_radial` functions. The
-function provides a range of scaling and aesthetic options showing either an IVW estimate, MR-Egger estimate, or both estimates simultaneously. 
+function provides a range of scaling and aesthetic options showing either an IVW estimate, MR-Egger estimate, or both estimates simultaneously.
+
+5. The `funnel_radial` function produces generalized radial IVW and MR-Egger funnel plots either individually or simultaneously corresponding to the output of the `ivw_radial` and `egger_radial` functions. The function also allows for lines indicating
+the magnitude for the MR Egger transformation for each variant, though it should be noted that this distance is a function of the weight attributed to the variant,
+and is therefore not indicative of outliers. 
 
 Radial plots are produced by many existing R packages such as `metafor`, `numOSL`, and `Luminescence`. Care will need to be taken, however, to input data from an
 MR-analysis appropriately into these generic platforms. For this reason we will also continue to develop our own `RadialMR` package to produce radial plots and conduct

@@ -2,5 +2,6 @@
 
 export(egger_radial)
 export(format_radial)
+export(funnel_radial)
 export(ivw_radial)
 export(plot_radial)
