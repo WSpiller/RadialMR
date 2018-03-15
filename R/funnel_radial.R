@@ -63,8 +63,6 @@ funnel_radial<-function(r_object,show_transform){
   
   if(length(r_object)==12){
     
-    r_object<-c(r_ob1,r_ob2)
-    
     names(r_object)<-c("IVW.coef","IVW.qstatistic","IVW.df","IVW.outliers","data","IVW.confint",
                        "egger.coef","egger.qstatistic","egger.df","egger.outliers","egger.data","egger.confint")
     
