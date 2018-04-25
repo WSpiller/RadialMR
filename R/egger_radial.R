@@ -235,7 +235,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
     
     cat("\n")
     
-    cat("Q-Statistic for heterogeneity:",Total_Q, "on", length(r_input[,2])-1, "DF",",", "p-value:" , Total_Q_chi)
+    cat("Q-Statistic for heterogeneity:",Total_Q, "on", length(r_input[,2])-2, "DF",",", "p-value:" , Total_Q_chi)
     
     cat("\n")
     
