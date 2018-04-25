@@ -43,6 +43,11 @@ egger_radial<-function(r_input,alpha,weights,summary){
   #Define ratio estimates
   Ratios<-r_input[,3]/r_input[,2]
   
+  if(missing(alpha)) {
+    alpha<-0.05
+    warning("Significance threshold for outlier detection not specified: Adopting a 95% threshold")
+  }
+  
   if(missing(weights)) {
     weights<-3
     warning("Weights not specified: Adopting modified second-order weights")
@@ -110,7 +115,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
   Total_Q<-sum(Qj)
   
   #Perform chi square test for overall Q statistic
-  Total_Q_chi<-pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
+  Total_Q_chi<-pchisq(Total_Q,length(r_input[,2])-2,lower.tail = FALSE)
   
   
   

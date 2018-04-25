@@ -18,6 +18,18 @@
 
 plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
   
+  if(missing(radial_scale)) {
+    radial_scale<-T
+  }
+  
+  if(missing(show_outliers)) {
+    show_outliers<-F
+  }
+  
+  if(missing(scale_match)) {
+    scale_match<-T
+  }
+  
   #Load ggplot2 library
   library(ggplot2)
   

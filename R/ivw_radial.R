@@ -30,6 +30,11 @@ ivw_radial<-function(r_input,alpha,weights,summary){
   
   cat()
   
+  if(missing(alpha)) {
+    alpha<-0.05
+    warning("Significance threshold for outlier detection not specified: Adopting a 95% threshold")
+  }
+  
   if(missing(weights)) {
     weights<-3
     warning("Weights not specified: Adopting modified second-order weights")
