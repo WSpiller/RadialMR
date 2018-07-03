@@ -36,4 +36,3 @@ format_radial<-function(BXG,BYG,seBXG,seBYG,RSID){
   
   return(F.Data)
 }
-

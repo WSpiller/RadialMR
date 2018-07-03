@@ -22,10 +22,10 @@ funnel_radial<-function(r_object,show_transform){
   #Load ggplot2 library
   library(ggplot2)
   
-  if(length(r_object)==6){
+  if(length(r_object)>=6 && length(r_object)<=13){
     
     if(class(r_object)=="IVW"){
-     
+      
       #Produce plot showing full scale and all variants
       B<-ggplot(r_object$data,aes(x=r_object$data$BetaWj/r_object$data$Wj,y=Wj))+labs(title="Radial Funnel Plot")+ geom_point(aes(colour="Variant"))+
         theme_bw()+theme(panel.border = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),
@@ -35,10 +35,10 @@ funnel_radial<-function(r_object,show_transform){
         scale_y_continuous(limits = c(-0.2,max(r_object$data$Wj)))+
         scale_color_manual(name="",breaks=c("Variant","IVW Estimate"),values=c("Variant"="black","IVW Estimate"="#56B4E9"))+
         geom_text(x=r_object$coef[1], y=-0.2,
-                label=paste(round(r_object$coef[1],digits=3),paste("(",round(r_object$confint[1],digits=2),",",round(r_object$confint[2],digits=2),")"),collapse=""),size=3)
+                  label=paste(round(r_object$coef[1],digits=3),paste("(",round(r_object$confint[1],digits=2),",",round(r_object$confint[2],digits=2),")"),collapse=""),size=3)
       
- #     geom_text(x=r_object$coef[1], y=-0.2,
-  #              label=round(r_object$coef[1],digits=3),size=3)
+      #     geom_text(x=r_object$coef[1], y=-0.2,
+      #              label=round(r_object$coef[1],digits=3),size=3)
     }
     
     if(class(r_object)=="egger"){
@@ -61,10 +61,10 @@ funnel_radial<-function(r_object,show_transform){
     
   }
   
-  if(length(r_object)==12){
+  if(length(r_object)==19){
     
-    names(r_object)<-c("IVW.coef","IVW.qstatistic","IVW.df","IVW.outliers","data","IVW.confint",
-                       "egger.coef","egger.qstatistic","egger.df","egger.outliers","egger.data","egger.confint")
+    names(r_object)<-c("IVW.coef","IVW.qstatistic","IVW.df","IVW.outliers","data","IVW.confint","it.coef","Fex.coef",
+                       "Rex.coef","It.confint","Fex.confint","Rex.confint","meanF","egger.coef","egger.qstatistic","egger.df","egger.outliers","egger.data","egger.confint")
     
     transeg<-(r_object$data$BetaWj/r_object$data$Wj)-(r_object$egger.coef[1,1]/r_object$data$Wj)
     
@@ -93,28 +93,27 @@ funnel_radial<-function(r_object,show_transform){
       
       for(i in 1:length(transeg)){
         
-       B <- B + geom_segment(x = temp$betavec[i], xend = temp$betavec[i+length(transeg)], y = temp$Wj[i], yend = temp$Wj[i],linetype="dotted")
+        B <- B + geom_segment(x = temp$betavec[i], xend = temp$betavec[i+length(transeg)], y = temp$Wj[i], yend = temp$Wj[i],linetype="dotted")
         
-     }
+      }
       
     }
     
   }
-    
-
+  
+  
   return(B)
   
 }
-  
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+

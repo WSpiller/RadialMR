@@ -258,5 +258,5 @@ egger_radial<-function(r_input,alpha,weights,summary){
     return(Out_list) 
   }
   OUT<-multi_return()
-
+  
 }
