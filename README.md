@@ -21,9 +21,9 @@ regression for inverse variance weighted and MR-Egger regression models. The pac
 1. The `format_radial` function is used to convert a data frame containing summary data into a set format for radial analyses.
 
 2. The `ivw_radial` function fits a radial inverse variance weighted (IVW) model using either first order, second order, or modified
-second order weights. It provides an effect estimate and allows for outliers to be identified using Cochran's Q-statistic. This function now also includes iterative and exact IVW estimation, as described in:
-
-[Improving the accuracy of two-sample summary data Mendelian randomization: moving beyond the NOME assumption. bioRxiv. doi: https://doi.org/10.1101/159442 (https://www.biorxiv.org/content/early/2018/07/02/159442)]
+second order weights. It provides an effect estimate and allows for outliers to be identified using Cochran's Q-statistic. This function 
+now also includes iterative and exact IVW estimation, as described in: Improving the accuracy of two-sample summary data Mendelian randomization: 
+moving beyond the NOME assumption(https://www.biorxiv.org/content/early/2018/07/02/159442).
 
 3. The `egger_radial` function fits a radial MR-Egger model using either first order, second order, or modified
 second order weights. It provides an effect estimate and allows for outliers to be identified using Rucker's Q-statistic.
