@@ -40,7 +40,7 @@ Fits a radial inverse variance weighted (IVW) model using first order, second or
 }
 \examples{
 
-ivw_radial(r_input,0.05,1)
+ivw_radial(r_input,0.05,1,0.0001,T)
 
 }
 \references{

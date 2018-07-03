@@ -28,7 +28,7 @@
 #'@export
 #'@examples
 #'
-#' ivw_radial(r_input,0.05,1)
+#' ivw_radial(r_input,0.05,1,0.0001,T)
 #' 
 
 
@@ -38,7 +38,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
   Ratios<-r_input[,3]/r_input[,2]
   
   F<- r_input[,2]^2/r_input[,4]^2
-  mF<- mean(F)
+  mf<- mean(F)
   
   cat()
   
