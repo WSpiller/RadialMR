@@ -4,7 +4,7 @@
 \alias{ivw_radial}
 \title{ivw_radial}
 \usage{
-ivw_radial(r_input, alpha, weights, tol, summary)
+ivw_radial(r_input, alpha, weights, tol)
 }
 \arguments{
 \item{r_input}{A formatted data frame using the \code{format_radial} function.}
@@ -14,8 +14,6 @@ ivw_radial(r_input, alpha, weights, tol, summary)
 \item{weights}{A value specifying the inverse variance weights used to calculate IVW estimate and Cochran's Q statistic. By default modified second order weights are used, but one can choose to select first order (\code{1}), second order (\code{2}) or modified second order weights (\code{3}).}
 
 \item{tol}{A value indicating the tolerance threshold for performing the iterative IVW approach. The value represents the minimum difference between the coefficients of the previous and current iterations required for a further iteration to be performed (default= \code{0.0001}).}
-
-\item{summary}{Indicates whether a summary of the radial IVW model should be printed (default= \code{TRUE}) or withheld (\code{FALSE}).}
 }
 \value{
 An object of class \code{"IVW"} containing the following components:\describe{

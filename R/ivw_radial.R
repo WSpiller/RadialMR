@@ -6,7 +6,6 @@
 #' @param alpha A value specifying the statistical significance threshold for identifying outliers (\code{0.05} specifies a p-value threshold of 0.05).
 #' @param weights A value specifying the inverse variance weights used to calculate IVW estimate and Cochran's Q statistic. By default modified second order weights are used, but one can choose to select first order (\code{1}), second order (\code{2}) or modified second order weights (\code{3}).
 #' @param tol A value indicating the tolerance threshold for performing the iterative IVW approach. The value represents the minimum difference between the coefficients of the previous and current iterations required for a further iteration to be performed (default= \code{0.0001}).
-#' @param summary Indicates whether a summary of the radial IVW model should be printed (default= \code{TRUE}) or withheld (\code{FALSE}).
 #' @return An object of class \code{"IVW"} containing the following components:\describe{
 #' \item{\code{coef}}{The estimated coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
 #' \item{\code{qstatistic}}{Cochran's Q statistic for overall heterogeneity.}
@@ -32,7 +31,7 @@
 #' 
 
 
-ivw_radial<-function(r_input,alpha,weights,tol,summary){
+ivw_radial<-function(r_input,alpha,weights,tol){
   
   #Define ratio estimates
   Ratios<-r_input[,3]/r_input[,2]
@@ -56,9 +55,8 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     tol<-0.00001
   }
   
-  if(missing(summary)) {
     summary<-TRUE
-  }
+
   
   if(weights==1){
     
