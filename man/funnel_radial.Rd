@@ -22,7 +22,7 @@ A function for producing generalized radial IVW and MR-Egger funnel plots either
 funnel_radial(r_object,TRUE) 
 }
 \references{
-Bowden, J. et al., 2017. "Improving the visualisation, interpretation and analysis of two-sample summary data Mendelian randomization via the radial plot and radial regression." BioRxiv. doi: https://doi.org/10.1101/200378. Available at: \url{https://www.biorxiv.org/content/early/2017/10/11/200378}
+Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
 }
 \author{
 Wes Spiller; Jack Bowden.

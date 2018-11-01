@@ -6,7 +6,7 @@
 #' @param show_transform Indicates whether to produce a plot including lines showing the magnitude of the MR Egger transformation for each variant (\code{TRUE}), or a scatterplot showing only the variants and corresponding estimates (\code{FALSE}).
 #' @return A ggplot object containing a radial funnel plot of either the IVW, MR-Egger, or both estimates simultaneously.
 #'@author Wes Spiller; Jack Bowden.
-#'@references Bowden, J. et al., 2017. "Improving the visualisation, interpretation and analysis of two-sample summary data Mendelian randomization via the radial plot and radial regression." BioRxiv. doi: https://doi.org/10.1101/200378. Available at: \url{https://www.biorxiv.org/content/early/2017/10/11/200378}
+#'@references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
 #'@export
 #'@examples
 #'
