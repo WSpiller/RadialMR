@@ -43,9 +43,9 @@ radial plot regression for the MR-setting.
 
 ## Citation
 
-The preprint is on BioRxiv:
+The paper has been published in the International Journal of Epidemiology:
 
-[Improving the visualisation, interpretation and analysis of two-sample summary data Mendelian randomization via the radial plot and radial regression. bioRxiv. doi: https://doi.org/10.1101/200378](https://www.biorxiv.org/content/early/2017/10/11/200378)
+[Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
 
 ## License
 
