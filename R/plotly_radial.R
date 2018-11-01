@@ -12,6 +12,8 @@
 #'plotly_radial(r_object) 
 
 plotly_radial<-function(r_object){
+
+library(plotly)
   
   if(length(r_object)==13){
     
