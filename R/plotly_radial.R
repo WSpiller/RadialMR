@@ -11,11 +11,18 @@
 #'
 #'plotly_radial(r_object) 
 
-plotly_radial<-function(r_object){
+plotly_radial<-function(r_object,TEST){
 
+  if(missing(TEST)) {
+    TEST<-FALSE
+  }
+  
 library(plotly)
   
   if(length(r_object)==13){
+    
+    r_object$coef<-c(r_object$coef[2,])
+    r_object$coef<-as.numeric(r_object$coef)
     
     circle.radial <- function(center = c(0,0), radius, num.points, START,END){
       R = radius
@@ -109,6 +116,8 @@ library(plotly)
   
   if(length(r_object)==6){
     
+    if(TEST==T){
+    
     circle.radial <- function(center = c(0,r_object$coef[1,1]), radius, num.points, START,END){
       R = radius
       tt <- seq(START,END,length.out = num.points)
@@ -176,20 +185,6 @@ library(plotly)
       
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     if(nrow(r_object$data[r_object$data$Outliers=="Outlier",]) > 0){
       
       T_PLOT<- plot_ly(r_object$data, mode="marker", type = 'scatter') %>%
@@ -208,6 +203,13 @@ library(plotly)
                         arrowsize = 0,
                         ax = 25,
                         ay = 1)
+      
+    }
+    
+    }
+    
+    if(TEST==FALSE){
+      T_PLOT<- as.character("Coming soon")
       
     }
     
