@@ -18,6 +18,7 @@
 
 plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
   
+  
   if(missing(radial_scale)) {
     radial_scale<-T
   }
@@ -54,6 +55,9 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
   if(length(r_object)>=6 && length(r_object)<=13){
     
     if(class(r_object)=="IVW"){
+      
+      r_object$coef<-c(r_object$coef[2,])
+      r_object$coef<-as.numeric(r_object$coef)
       
       #Define radius for scale and IVW circles
       maximal<-atan(max(abs(r_object$data[,3]))/max(r_object$data[,2]))
@@ -566,7 +570,13 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             if(nrow(r_object$data[r_object$data$Outliers == "Outlier", ])==0){
               
               #Produce plot showing full scale and all variants
-              B<-ggplot(r_object$data,aes(x=Wj,y=BetaWj))+labs(title="IVW Radial")+ geom_point(aes(colour="Variant"))+
+              B<-ggplot(r_object$data,aes(x=Wj,y=BetaWj))+
+              
+              
+              
+              
+              
+              labs(title="IVW Radial")+ geom_point(aes(colour="Variant"))+
                 geom_path(aes(x=cxAll,y=cyAll))+geom_path(aes(x=cxIVW,y=cyIVW,colour="IVW"))+
                 geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5),
                           label=round(r_object$coef[1],digits=3),size=4)+
@@ -1094,6 +1104,8 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
     names(r_object)<-c("IVW.coef","IVW.qstatistic","IVW.df","IVW.outliers","data","IVW.confint","it.coef","Fex.coef",
                        "Rex.coef","It.confint","Fex.confint","Rex.confint","meanF","egger.coef","egger.qstatistic","egger.df","egger.outliers","egger.data","egger.confint")
     
+    r_object$IVW.coef<-c(r_object$IVW.coef[2,])
+    r_object$IVW.coef<-as.numeric(r_object$IVW.coef)
     
     #Define scale, IVW and MR-Egger circle radii
     maximal<-atan(max(abs(r_object$data[,3]))/max(abs(r_object$data[,2])))
