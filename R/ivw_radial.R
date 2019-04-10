@@ -55,8 +55,8 @@ ivw_radial<-function(r_input,alpha,weights,tol){
     tol<-0.00001
   }
   
-    summary<-TRUE
-
+  summary<-TRUE
+  
   
   if(weights==1){
     
@@ -210,15 +210,6 @@ ivw_radial<-function(r_input,alpha,weights,tol){
   
   ###################EXACT WEIGHTS######################
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
   PL2 = function(a){
     b = a[1]
     w = 1/((phi)*r_input[,5]^2/r_input[,2]^2 + (b^2)*r_input[,4]^2/r_input[,2]^2)
@@ -368,8 +359,6 @@ ivw_radial<-function(r_input,alpha,weights,tol){
   RE_EXACT<-data.frame(RE_EXACT)
   names(RE_EXACT)<-c("Estimate","Std.Error","t value","Pr(>|t|)")
   
-  
-  
   #Define a placeholder vector of 0 values for chi square tests
   Qj_Chi<-0
   
@@ -435,6 +424,11 @@ ivw_radial<-function(r_input,alpha,weights,tol){
     combined.dat<-rbind(combined.dat,FE_EXACT)
     combined.dat<-rbind(combined.dat,RE_EXACT)
     
+    for(i in 1:3){
+    combined.dat[i,4]<- 2 * pnorm(abs(combined.dat[i,1]/combined.dat[i,2]), low = FALSE)
+    }
+    
+    
     row.names(combined.dat)<-c("Effect","Iterative","Exact (FE)","Exact (RE)")
     
     if(weights == 1){
@@ -488,7 +482,7 @@ ivw_radial<-function(r_input,alpha,weights,tol){
   names(out_data)<-c("SNP","Wj","BetaWj","Qj","Qj_Chi","Outliers")
   
   multi_return <- function() {
-    Out_list <- list("coef" = EstimatesIVW$coef,"qstatistic"= Total_Q, "df" = length(r_input[,2])-1, "outliers" = outtab, "data" = out_data, "confint" = confint(IVW.Model),
+    Out_list <- list("coef" = combined.dat,"qstatistic"= Total_Q, "df" = length(r_input[,2])-1, "outliers" = outtab, "data" = out_data, "confint" = confint(IVW.Model),
                      "it.coef"=combined.dat[2,],"fe.coef"=combined.dat[3,],"re.coef" = combined.dat[4,1], "it.confint"= Bhat1.Iterative$It.CI,"fe.confint" = FCI$CI, "re.confint" = RCI, "meanF"= mf)
     class(Out_list)<-"IVW"
     
@@ -498,4 +492,3 @@ ivw_radial<-function(r_input,alpha,weights,tol){
   
   
 }
-
