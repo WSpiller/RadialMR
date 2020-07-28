@@ -1,7 +1,7 @@
 #' egger_radial
 #'
-#' Fits a radial MR-Egger model using first order, second order, or modified second order weights. Outliers are identified using a significance threshold specified by the user. The function returns an object of class \code{"egger"}, containing regression estimates, a measure of total heterogeneity using Rucker's Q statistic, the individual contribution to overall heterogeneity of each variant, and a data frame for use in constructing the radial plot. 
-#' 
+#' Fits a radial MR-Egger model using first order, second order, or modified second order weights. Outliers are identified using a significance threshold specified by the user. The function returns an object of class \code{"egger"}, containing regression estimates, a measure of total heterogeneity using Rucker's Q statistic, the individual contribution to overall heterogeneity of each variant, and a data frame for use in constructing the radial plot.
+#'
 #' @param r_input A formatted data frame using the \code{format_radial} function.
 #' @param alpha A value specifying the statistical significance threshold for identifying outliers (\code{0.05} specifies a p-value threshold of 0.05).
 #' @param weights A value specifying the inverse variance weights used to calculate the MR-Egger estimate and Rucker's Q statistic. By default modified second order weights are used, but one can choose to select first order (\code{1}), second order (\code{2}) or modified second order weights (\code{3}).
@@ -24,63 +24,62 @@
 #' egger_radial(r_input, 0.05, 1)
 #' }
 egger_radial<-function(r_input,alpha,weights,summary){
-  
+
   #Define ratio estimates
   Ratios<-r_input[,3]/r_input[,2]
-  
+
   if(missing(alpha)) {
     alpha<-0.05
     warning("Significance threshold for outlier detection not specified: Adopting a 95% threshold")
   }
-  
+
   if(missing(weights)) {
     weights<-3
     warning("Weights not specified: Adopting modified second-order weights")
   }
-  
+
   if(missing(summary)) {
     summary<-TRUE
   }
-  
+
   if(weights==1){
-    
+
     #Define inverse variance weights
     W<-((r_input[,2]^2)/(r_input[,5]^2))
-    
+
   }
-  
+
   if(weights==2){
-    
+
     #Define inverse variance weights
     W<-((r_input[,5]^2/r_input[,2]^2)+((r_input[,3]^2*r_input[,4]^2)/r_input[,2]^4))^-1
-    
+
   }
-  
+
   if(weights==3){
-    
+
     #Define inverse variance weights
     W<-((r_input[,2]^2)/(r_input[,5]^2))
-    
+
   }
-  
+
   #Define vector of squared weights
   Wj<-sqrt(W)
-  
+
   #Define vector of weights * ratio estimates
   BetaWj<-Ratios*Wj
-  
+
   #Define Egger Model
   Egger.Model<-lm(BetaWj~Wj)
-  
+
   #Define output of Egger.Model fit
   EstimatesEGGER<-summary(Egger.Model)
-  
+
   #Define intercept of Egger.Model
   Egger.Intercept<-EstimatesEGGER$coefficients[1]
-  
+
   #Define slope of Egger.Model
   Egger.Slope<-EstimatesEGGER$coefficients[2]
-  
   #Define standard error for intercept of Egger.Model
   Eggerintercept.SE<-EstimatesEGGER$coefficients[3]
   
