@@ -22,14 +22,15 @@
 #' \item{\code{mf}}{The mean F statistic for the set of genetic variants, indicative of instrument strength.}
 #'
 #'}
-#'@export
-#'@examples
 #' @author Wes Spiller; Jack Bowden.
 #' @references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
 #' @importFrom stats lm coef confint optimize pchisq pf pnorm pt qchisq qt sd
+#' @export
+#' @examples
 #'
-#' ivw_radial(r_input,0.05,1,0.0001,T)
-#' 
+#' \dontrun{
+#' ivw_radial(r_input, 0.05, 1, 0.0001)
+#' }
 
 
 ivw_radial<-function(r_input,alpha,weights,tol){
