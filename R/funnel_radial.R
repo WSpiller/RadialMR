@@ -22,8 +22,8 @@ funnel_radial<-function(r_object,show_transform){
   
   
   #Load ggplot2 library
-  library(ggplot2)
-  
+  requireNamespace("ggplot2", quietly = TRUE)
+
   if(length(r_object)>=6 && length(r_object)<=13){
     
     if(class(r_object)=="IVW"){
