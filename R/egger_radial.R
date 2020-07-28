@@ -18,6 +18,7 @@
 #'@references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
 #'@export
 #'@examples
+#' @importFrom stats lm coef confint pchisq pf
 #'
 #' egger_radial(r_input,0.05,1)
 #' 
