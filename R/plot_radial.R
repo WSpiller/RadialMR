@@ -12,9 +12,11 @@
 #'@export
 #'@examples
 #'
-#'plot_radial(r_object,TRUE,TRUE,TRUE) 
+#' \dontrun{
+#' plot_radial(r_object,TRUE,TRUE,TRUE)
 #'
-#'plot_radial(c(r_object,r_object),TRUE,TRUE,FALSE)
+#' plot_radial(c(r_object,r_object),TRUE,TRUE,FALSE)
+#' }
 
 plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
   
