@@ -7,10 +7,12 @@
 #' @return A ggplot object containing a radial funnel plot of either the IVW, MR-Egger, or both estimates simultaneously.
 #'@author Wes Spiller; Jack Bowden.
 #'@references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
-#'@export
-#'@examples
+#' @export
+#' @examples
 #'
-#'funnel_radial(r_object,TRUE) 
+#' \dontrun{
+#' funnel_radial(r_object, TRUE)
+#' }
 
 funnel_radial<-function(r_object,show_transform){
   
