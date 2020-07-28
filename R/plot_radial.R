@@ -20,93 +20,93 @@
 #' }
 
 plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
-  
-  
+
+
   if(missing(radial_scale)) {
     radial_scale<-T
   }
-  
+
   if(missing(show_outliers)) {
     show_outliers<-F
   }
-  
+
   if(missing(scale_match)) {
     scale_match<-T
   }
-  
+
   #Load ggplot2 library
-  library(ggplot2)
-  
+  requireNamespace("ggplot2", quietly = TRUE)
+
   #Function for producing scale and confidence interval circle indicators
-  
+
   circle.radial <- function(center = c(0,0), radius, num.points, START,END){
-    
+
     R = radius
-    
+
     tt <- seq(START,END,length.out = num.points)
-    
+
     #Generates x-axis values for circle
     xx <- center[1] + R * cos(tt)
-    
+
     #Generates y-axis values for circle
     yy <- center[2] + R * sin(tt)
-    
+
     return(data.frame(x = xx, y = yy))
-    
+
   }
-  
+
   if(length(r_object)>=6 && length(r_object)<=13){
-    
+
     if(class(r_object)=="IVW"){
-      
+
       r_object$coef<-c(r_object$coef[2,])
       r_object$coef<-as.numeric(r_object$coef)
-      
+
       #Define radius for scale and IVW circles
       maximal<-atan(max(abs(r_object$data[,3]))/max(r_object$data[,2]))
       R.All<-max(abs(r_object$data[,3]))/sin(maximal)
       R.IVW<-R.All+(R.All/12)
-      
+
       #Define scaling parameter
       Label.Scaling<-R.IVW/24
-      
+
       Scalemin<-min(r_object$data[,3]/r_object$data[,2],r_object$confint[1])
-      
+
       Scalemax<-max(r_object$data[,3]/r_object$data[,2],r_object$confint[2])
-      
+
       #Plot circle for overall scale
       circledat_ALLEST <- circle.radial(c(0,0),R.All,length(r_object$data[,3]),atan(Scalemin),atan(Scalemax))
       cxAll<-circledat_ALLEST$x
       cyAll<-circledat_ALLEST$y
-      
+
       #Plot circle for IVW estimate
       circledat_IVWEST <- circle.radial(c(0,0),R.IVW,length(r_object$data[,3]),atan(r_object$confint[1]),atan(r_object$confint[2]))
       cxIVW<-circledat_IVWEST$x
       cyIVW<-circledat_IVWEST$y
-      
+
       #Define minimum and maximum values of y axis for scaling
       Y_MINIVW<-sin(atan(Scalemin))*(R.IVW+Label.Scaling)
       Y_MAXIVW<-sin(atan(Scalemax))*(R.IVW+Label.Scaling)
-      
+
       Y_Range<-Scalemax-Scalemin
-      
+
       #Function for rounding to nearest 0.05 increment
-      mround <- function(x){ 
-        0.5*round(x/0.5) 
+      mround <- function(x){
+        0.5*round(x/0.5)
       }
-      
+
       #If only outliers are to be shown
       if(show_outliers==TRUE){
-        
+
         #If the full scale is to be shown
         if(radial_scale==TRUE){
-          
+
           #If axes scales should be fixed
           if(scale_match==TRUE){
-            
+
             #If no outliers are present
             if(nrow(r_object$data[r_object$data$Outliers == "Outlier", ])==0){
-              
+
               #Produce plot showing full scale and all variants
               B<-ggplot(r_object$data,aes(x=Wj,y=BetaWj))+labs(title="IVW Radial")+ geom_point(aes(colour="Variant"))+
                 geom_path(aes(x=cxAll,y=cyAll))+geom_path(aes(x=cxIVW,y=cyIVW,colour="IVW"))+
