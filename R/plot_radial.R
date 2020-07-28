@@ -7,11 +7,11 @@
 #' @param show_outliers Indicates whether display only the set of variants identified as outliers (\code{TRUE}) or the complete set of variants (\code{FALSE}). Note that when (\code{show_outliers=TRUE}), non-outlying variants further from the origin than the furthest outlier will cause an error message that one or more points have been omitted. These are non-outlying variants beyond the scale. If no outliers are present, a plot will be produced using the full set of variants, with an accompanying message indicating the absence of outliers.
 #' @param scale_match Indicates whether x and y axes should have the same range(\code{TRUE}), or different ranges (\code{FALSE}) This improves the interpretation of the radial scale, and is set to \code{FALSE} when the radial scale is omitted from the plot.
 #' @return A ggplot object containing a radial plot of either the IVW, MR-Egger, or both estimates simultaneously.
-#'@author Wes Spiller; Jack Bowden.
-#'@references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
-#'@export
-#'@examples
+#' @author Wes Spiller; Jack Bowden.
+#' @references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
 #' @importFrom stats median quantile
+#' @export
+#' @examples
 #'
 #' \dontrun{
 #' plot_radial(r_object,TRUE,TRUE,TRUE)
