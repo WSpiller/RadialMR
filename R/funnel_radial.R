@@ -15,19 +15,19 @@
 #' }
 
 funnel_radial<-function(r_object,show_transform){
-  
+
   if(missing(show_transform)) {
     show_transform<-FALSE
   }
-  
-  
+
+
   #Load ggplot2 library
   requireNamespace("ggplot2", quietly = TRUE)
 
   if(length(r_object)>=6 && length(r_object)<=13){
-    
+
     if(class(r_object)=="IVW"){
-      
+
       #Produce plot showing full scale and all variants
       B<-ggplot(r_object$data,aes(x=r_object$data$BetaWj/r_object$data$Wj,y=Wj))+labs(title="Radial Funnel Plot")+ geom_point(aes(colour="Variant"))+
         theme_bw()+theme(panel.border = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),
@@ -42,13 +42,13 @@ funnel_radial<-function(r_object,show_transform){
       #     geom_text(x=r_object$coef[1], y=-0.2,
       #              label=round(r_object$coef[1],digits=3),size=3)
     }
-    
+
     if(class(r_object)=="egger"){
-      
+
       transeg<-(r_object$data$BetaWj/r_object$data$Wj)-(r_object$coef[1,1]/r_object$data$Wj)
       Wj<-r_object$data$Wj
       temp<-data.frame(transeg,Wj)
-      
+
       #Produce plot showing full scale and all variants
       B<-ggplot(temp,aes(x=transeg,y=Wj))+labs(title="Radial Funnel Plot")+ geom_point(aes(colour="Variant"))+
         theme_bw()+theme(panel.border = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),
@@ -60,20 +60,20 @@ funnel_radial<-function(r_object,show_transform){
         geom_text(x=r_object$coef[2,1], y=-0.2,
                   label=paste(round(r_object$coef[2,1],digits=3),paste("(",round(r_object$confint[1],digits=2),",",round(r_object$confint[2],digits=2),")"),collapse=""),size=3)
     }
-    
+
   }
-  
+
   if(length(r_object)==19){
-    
+
     names(r_object)<-c("IVW.coef","IVW.qstatistic","IVW.df","IVW.outliers","data","IVW.confint","it.coef","Fex.coef",
                        "Rex.coef","It.confint","Fex.confint","Rex.confint","meanF","egger.coef","egger.qstatistic","egger.df","egger.outliers","egger.data","egger.confint")
-    
+
     transeg<-(r_object$data$BetaWj/r_object$data$Wj)-(r_object$egger.coef[1,1]/r_object$data$Wj)
-    
+
     betavec<-c(r_object$data$BetaWj/r_object$data$Wj,transeg)
     Wj<-c(r_object$data$Wj,r_object$data$Wj)
     tran.indicator<-c(rep("Variant",length(betavec)/2),rep("Egger transform",length(betavec)/2))
-    
+
     temp<-data.frame(betavec,Wj,tran.indicator)
     
     
@@ -111,11 +111,18 @@ funnel_radial<-function(r_object,show_transform){
 
 
 
+    if(show_transform==TRUE){
+
+      for(i in 1:length(transeg)){
 
 
+      }
+
+    }
+
+  }
 
 
+  return(B)
 
-
-
-
+}
