@@ -5,8 +5,8 @@
 #' @param r_object An object of class \code{"IVW"} or \code{"egger"}. For visualising both estimates simultaneously, both objects should be included as a vector c(\code{A},\code{B}), where \code{A} and \code{B} denote the \code{"IVW"} and \code{"egger"} objects respectively.
 #' @param show_transform Indicates whether to produce a plot including lines showing the magnitude of the MR Egger transformation for each variant (\code{TRUE}), or a scatterplot showing only the variants and corresponding estimates (\code{FALSE}).
 #' @return A ggplot object containing a radial funnel plot of either the IVW, MR-Egger, or both estimates simultaneously.
-#'@author Wes Spiller; Jack Bowden.
-#'@references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
+#' @author Wes Spiller; Jack Bowden.
+#' @references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
 #' @export
 #' @examples
 #'
