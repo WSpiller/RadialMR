@@ -16,9 +16,9 @@ plotly_radial<-function(r_object,TEST){
   if(missing(TEST)) {
     TEST<-FALSE
   }
-  
-library(plotly)
-  
+
+requireNamespace("plotly", quietly = TRUE)
+
   if(length(r_object)==13){
     
     r_object$coef<-c(r_object$coef[2,])
