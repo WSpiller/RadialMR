@@ -14,31 +14,15 @@
 #' \item{\code{data}}{A data frame containing containing SNP IDs, inverse variance weights, the product of the inverse variance weight and ratio estimate for each variant, contribution to overall heterogeneity with corresponding p-value, and a factor indicator showing outlier status.}
 #' \item{\code{confint}}{A vector giving lower and upper confidence limits for the radial MR-Egger effect estimate.}
 #'}
-#'@author Wes Spiller; Jack Bowden.
-#'@references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
-#'@export
-#'@examples
+#' @author Wes Spiller; Jack Bowden.
+#' @references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
 #' @importFrom stats lm coef confint pchisq pf
+#' @export
+#' @examples
 #'
-#' egger_radial(r_input,0.05,1)
-#' 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#' \dontrun{
+#' egger_radial(r_input, 0.05, 1)
+#' }
 egger_radial<-function(r_input,alpha,weights,summary){
   
   #Define ratio estimates
