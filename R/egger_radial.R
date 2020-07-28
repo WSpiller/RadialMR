@@ -202,46 +202,46 @@ egger_radial<-function(r_input,alpha,weights,summary){
 
     # Print a few summary elements that are common to both lm and plm model summary objects
     cat("\n")
-    
+
     cat("Radial MR-Egger\n")
-    
+
     cat("\n")
-    
+
     print(coef(EstimatesEGGER))
-    
+
     cat("\nResidual standard error:", round(EstimatesEGGER$sigma,3), "on", EstimatesEGGER$df[2], "degrees of freedom")
-    
+
     cat("\n")
-    
+
     cat(paste(c("\nF-statistic:", " on"," and"), round(EstimatesEGGER$fstatistic,2), collapse=""),
         "DF, p-value:",
-        format.pval(pf(EstimatesEGGER$fstatistic[1L], EstimatesEGGER$fstatistic[2L], EstimatesEGGER$fstatistic[3L], 
+        format.pval(pf(EstimatesEGGER$fstatistic[1L], EstimatesEGGER$fstatistic[2L], EstimatesEGGER$fstatistic[3L],
                        lower.tail = FALSE), digits=3))
-    
+
     cat("\n")
-    
+
     cat("Q-Statistic for heterogeneity:",Total_Q, "on", length(r_input[,2])-2, "DF",",", "p-value:" , Total_Q_chi)
-    
+
     cat("\n")
-    
+
     cat("\n",outlier_status,"\n")
-    
+
     cat("\n")
-    
+
   }
-  
+
   out_data<-data.frame(r_input[,1],r_input[,6],r_input[,7],r_input[,8])
   out_data$Wj<-Wj
   out_data$BetaWj<-BetaWj
   out_data<-out_data[c(1,5,6,2,3,4)]
   names(out_data)<-c("SNP","Wj","BetaWj","Qj","Qj_Chi","Outliers")
-  
+
   multi_return <- function() {
     Out_list <- list("coef" = EstimatesEGGER$coef,"qstatistic"= Total_Q, "df" = length(r_input[,2])-1, "outliers" = outtab, "data" = out_data, "confint" = Eggerslope_CI)
     class(Out_list)<-"egger"
-    
-    return(Out_list) 
+
+    return(Out_list)
   }
   OUT<-multi_return()
-  
+
 }
