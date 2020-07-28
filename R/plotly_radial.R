@@ -11,7 +11,7 @@
 #'
 #'plotly_radial(r_object) 
 
-plotly_radial<-function(r_object,TEST){
+plotly_radial<-function(r_object, TEST){
 
   if(missing(TEST)) {
     TEST<-FALSE
