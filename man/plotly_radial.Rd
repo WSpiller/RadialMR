@@ -4,10 +4,12 @@
 \alias{plotly_radial}
 \title{plotly_radial}
 \usage{
-plotly_radial(r_object)
+plotly_radial(r_object, TEST)
 }
 \arguments{
 \item{r_object}{An object of class \code{"IVW"} or \code{"egger"}.}
+
+\item{TEST}{Logical; indicating whether testing the function}
 }
 \value{
 A plotly object containing a radial plot of either the IVW or MR-Egger estimates. Hovering the mouse over individual datapoints will highlight the corresponding SNP identification number for that observation.
@@ -17,7 +19,9 @@ A function for producing interactive radial IVW and MR-Egger plots individually.
 }
 \examples{
 
-plotly_radial(r_object) 
+\dontrun{
+plotly_radial(r_object)
+}
 }
 \references{
 Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.

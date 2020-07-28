@@ -23,9 +23,11 @@ A function for producing radial IVW and MR-Egger plots either individually or si
 }
 \examples{
 
-plot_radial(r_object,TRUE,TRUE,TRUE) 
+\dontrun{
+plot_radial(r_object,TRUE,TRUE,TRUE)
 
 plot_radial(c(r_object,r_object),TRUE,TRUE,FALSE)
+}
 }
 \references{
 Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
