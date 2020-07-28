@@ -9,7 +9,9 @@
 #'@export
 #'@examples
 #'
-#'plotly_radial(r_object) 
+#' \dontrun{
+#' plotly_radial(r_object)
+#' }
 
 plotly_radial<-function(r_object, TEST){
 
