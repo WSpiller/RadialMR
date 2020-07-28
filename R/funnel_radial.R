@@ -29,16 +29,16 @@ funnel_radial<-function(r_object,show_transform){
     if(class(r_object)=="IVW"){
 
       #Produce plot showing full scale and all variants
-      B<-ggplot(r_object$data,aes(x=r_object$data$BetaWj/r_object$data$Wj,y=Wj))+labs(title="Radial Funnel Plot")+ geom_point(aes(colour="Variant"))+
-        theme_bw()+theme(panel.border = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),
-                         axis.line = element_line(colour = "black"))+xlab(expression(hat(beta)[j]))+ylab(expression(sqrt(W[j])))+
-        geom_segment(aes(x = r_object$coef[1], xend = r_object$coef[1], y = 0, yend = max(r_object$data$Wj),colour="IVW Estimate"))+
-        geom_segment(aes(x = r_object$confint[1], xend = r_object$confint[2], y = 0, yend = 0,colour="IVW Estimate"))+
-        scale_y_continuous(limits = c(-0.2,max(r_object$data$Wj)))+
-        scale_color_manual(name="",breaks=c("Variant","IVW Estimate"),values=c("Variant"="black","IVW Estimate"="#56B4E9"))+
-        geom_text(x=r_object$coef[1], y=-0.2,
-                  label=paste(round(r_object$coef[1],digits=3),paste("(",round(r_object$confint[1],digits=2),",",round(r_object$confint[2],digits=2),")"),collapse=""),size=3)
-      
+      B <- ggplot2::ggplot(r_object$data, ggplot2::aes(x=r_object$data$BetaWj/r_object$data$Wj,y=Wj)) + ggplot2::labs(title="Radial Funnel Plot") + ggplot2::geom_point(ggplot2::aes(colour="Variant"))+
+        ggplot2::theme_bw() + ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),
+                         axis.line = ggplot2::element_line(colour = "black"))+ggplot2::xlab(expression(hat(beta)[j]))+ggplot2::ylab(expression(sqrt(W[j])))+
+        ggplot2::geom_segment(ggplot2::aes(x = r_object$coef[1], xend = r_object$coef[1], y = 0, yend = max(r_object$data$Wj),colour="IVW Estimate"))+
+        ggplot2::geom_segment(ggplot2::aes(x = r_object$confint[1], xend = r_object$confint[2], y = 0, yend = 0,colour="IVW Estimate"))+
+        ggplot2::scale_y_continuous(limits = c(-0.2,max(r_object$data$Wj)))+
+        ggplot2::scale_color_manual(name="",breaks=c("Variant","IVW Estimate"),values=c("Variant"="black","IVW Estimate"="#56B4E9"))+
+        ggplot2::geom_text(x=r_object$coef[1], y=-0.2,
+                           label=paste(round(r_object$coef[1],digits=3),paste("(",round(r_object$confint[1],digits=2),",",round(r_object$confint[2],digits=2),")"),collapse=""),size=3)
+
       #     geom_text(x=r_object$coef[1], y=-0.2,
       #              label=round(r_object$coef[1],digits=3),size=3)
     }
@@ -50,14 +50,14 @@ funnel_radial<-function(r_object,show_transform){
       temp<-data.frame(transeg,Wj)
 
       #Produce plot showing full scale and all variants
-      B<-ggplot(temp,aes(x=transeg,y=Wj))+labs(title="Radial Funnel Plot")+ geom_point(aes(colour="Variant"))+
-        theme_bw()+theme(panel.border = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),
-                         axis.line = element_line(colour = "black"))+xlab(expression(hat(beta)[j]))+ylab(expression(sqrt(W[j])))+
-        geom_segment(aes(x = r_object$coef[2,1], xend = r_object$coef[2,1], y = 0, yend = max(r_object$data$Wj),colour="MR Egger Estimate"))+
-        geom_segment(aes(x = r_object$confint[1], xend = r_object$confint[2], y = 0, yend = 0,colour="MR Egger Estimate"))+
-        scale_y_continuous(limits = c(-0.2,max(r_object$data$Wj)))+
-        scale_color_manual(name="",breaks=c("Variant","MR Egger Estimate"),values=c("Variant"="black","MR Egger Estimate"="#D55E00"))+
-        geom_text(x=r_object$coef[2,1], y=-0.2,
+      B<-ggplot2::ggplot(temp,ggplot2::aes(x=transeg,y=Wj))+ggplot2::labs(title="Radial Funnel Plot")+ ggplot2::geom_point(ggplot2::aes(colour="Variant"))+
+        ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),
+                         axis.line = ggplot2::element_line(colour = "black"))+ggplot2::xlab(expression(hat(beta)[j]))+ggplot2::ylab(expression(sqrt(W[j])))+
+        ggplot2::geom_segment(ggplot2::aes(x = r_object$coef[2,1], xend = r_object$coef[2,1], y = 0, yend = max(r_object$data$Wj),colour="MR Egger Estimate"))+
+        ggplot2::geom_segment(ggplot2::aes(x = r_object$confint[1], xend = r_object$confint[2], y = 0, yend = 0,colour="MR Egger Estimate"))+
+        ggplot2::scale_y_continuous(limits = c(-0.2,max(r_object$data$Wj)))+
+        ggplot2::scale_color_manual(name="",breaks=c("Variant","MR Egger Estimate"),values=c("Variant"="black","MR Egger Estimate"="#D55E00"))+
+        ggplot2::geom_text(x=r_object$coef[2,1], y=-0.2,
                   label=paste(round(r_object$coef[2,1],digits=3),paste("(",round(r_object$confint[1],digits=2),",",round(r_object$confint[2],digits=2),")"),collapse=""),size=3)
     }
 
