@@ -75,46 +75,27 @@ funnel_radial<-function(r_object,show_transform){
     tran.indicator<-c(rep("Variant",length(betavec)/2),rep("Egger transform",length(betavec)/2))
 
     temp<-data.frame(betavec,Wj,tran.indicator)
-    
-    
+
+
     #Produce plot showing full scale and all variants
-    B <-ggplot(temp,aes(x=betavec,y=Wj))+labs(title="Radial Funnel Plot")+ geom_point(aes(colour=tran.indicator))+
-      theme_bw()+theme(panel.border = element_blank(),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),
-                       axis.line = element_line(colour = "black"))+xlab(expression(hat(beta)[j]))+ylab(expression(sqrt(W[j])))+
-      geom_segment(aes(x = r_object$IVW.coef[1], xend = r_object$IVW.coef[1], y = -.5, yend = max(r_object$data$Wj),colour="IVW Estimate"))+
-      geom_segment(aes(x = r_object$egger.coef[2,1], xend = r_object$egger.coef[2,1], y = 0, yend = max(r_object$data$Wj),colour="Egger Estimate"))+
-      geom_segment(aes(x = r_object$egger.confint[1], xend = r_object$egger.confint[2], y = 0, yend = 0,colour="Egger Estimate"))+
-      geom_segment(aes(x = r_object$IVW.confint[1], xend = r_object$IVW.confint[2], y = -.5, yend = -.5,colour="IVW Estimate"))+
-      scale_y_continuous(limits = c(-1,max(r_object$data$Wj)))+
-      scale_color_manual(name="",breaks=c("Variant","Egger transform","IVW Estimate","Egger Estimate"),values=c("Variant"="black","Egger transform"="#D55E00","IVW Estimate"="#56B4E9","Egger Estimate"="#D55E00"))+
-      geom_text(x=r_object$IVW.coef[1], y=-0.7,label=paste(round(r_object$IVW.coef[1],digits=3),paste("(",round(r_object$IVW.confint[1],digits=2),",",round(r_object$IVW.confint[2],digits=2),")"),collapse=""),size=3)+
-      geom_text(x=r_object$egger.coef[2,1], y=-0.2,label=paste(round(r_object$egger.coef[2,1],digits=3),paste("(",round(r_object$egger.confint[1],digits=2),",",round(r_object$egger.confint[2],digits=2),")"),collapse=""),size=3)
-    
-    
-    if(show_transform==TRUE){
-      
-      for(i in 1:length(transeg)){
-        
-        B <- B + geom_segment(x = temp$betavec[i], xend = temp$betavec[i+length(transeg)], y = temp$Wj[i], yend = temp$Wj[i],linetype="dotted")
-        
-      }
-      
-    }
-    
-  }
-  
-  
-  return(B)
-  
-}
-
-
+    B <-ggplot2::ggplot(temp,ggplot2::aes(x=betavec,y=Wj))+ggplot2::labs(title="Radial Funnel Plot")+ ggplot2::geom_point(ggplot2::aes(colour=tran.indicator))+
+      ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),
+                       axis.line = ggplot2::element_line(colour = "black"))+ggplot2::xlab(expression(hat(beta)[j]))+ggplot2::ylab(expression(sqrt(W[j])))+
+      ggplot2::geom_segment(ggplot2::aes(x = r_object$IVW.coef[1], xend = r_object$IVW.coef[1], y = -.5, yend = max(r_object$data$Wj),colour="IVW Estimate"))+
+      ggplot2::geom_segment(ggplot2::aes(x = r_object$egger.coef[2,1], xend = r_object$egger.coef[2,1], y = 0, yend = max(r_object$data$Wj),colour="Egger Estimate"))+
+      ggplot2::geom_segment(ggplot2::aes(x = r_object$egger.confint[1], xend = r_object$egger.confint[2], y = 0, yend = 0,colour="Egger Estimate"))+
+      ggplot2::geom_segment(ggplot2::aes(x = r_object$IVW.confint[1], xend = r_object$IVW.confint[2], y = -.5, yend = -.5,colour="IVW Estimate"))+
+      ggplot2::scale_y_continuous(limits = c(-1,max(r_object$data$Wj)))+
+      ggplot2::scale_color_manual(name="",breaks=c("Variant","Egger transform","IVW Estimate","Egger Estimate"),values=c("Variant"="black","Egger transform"="#D55E00","IVW Estimate"="#56B4E9","Egger Estimate"="#D55E00"))+
+      ggplot2::geom_text(x=r_object$IVW.coef[1], y=-0.7,label=paste(round(r_object$IVW.coef[1],digits=3),paste("(",round(r_object$IVW.confint[1],digits=2),",",round(r_object$IVW.confint[2],digits=2),")"),collapse=""),size=3)+
+      ggplot2::geom_text(x=r_object$egger.coef[2,1], y=-0.2,label=paste(round(r_object$egger.coef[2,1],digits=3),paste("(",round(r_object$egger.confint[1],digits=2),",",round(r_object$egger.confint[2],digits=2),")"),collapse=""),size=3)
 
 
     if(show_transform==TRUE){
 
       for(i in 1:length(transeg)){
 
+        B <- B + ggplot2::geom_segment(x = temp$betavec[i], xend = temp$betavec[i+length(transeg)], y = temp$Wj[i], yend = temp$Wj[i],linetype="dotted")
 
       }
 
