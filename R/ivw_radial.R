@@ -34,95 +34,95 @@
 
 
 ivw_radial<-function(r_input,alpha,weights,tol){
-  
+
   #Define ratio estimates
   Ratios<-r_input[,3]/r_input[,2]
-  
+
   F<- r_input[,2]^2/r_input[,4]^2
   mf<- mean(F)
-  
+
   cat()
-  
+
   if(missing(alpha)) {
     alpha<-0.05
     warning("Significance threshold for outlier detection not specified: Adopting a 95% threshold")
   }
-  
+
   if(missing(weights)) {
     weights<-3
     warning("Weights not specified: Adopting modified second-order weights")
   }
-  
+
   if(missing(tol)) {
     tol<-0.00001
   }
-  
+
   summary<-TRUE
-  
-  
+
+
   if(weights==1){
-    
+
     #Define inverse variance weights
     W<-((r_input[,2]^2)/(r_input[,5]^2))
-    
+
   }
-  
+
   if(weights==2){
-    
+
     #Define inverse variance weights
     W<-((r_input[,5]^2/r_input[,2]^2)+((r_input[,3]^2*r_input[,4]^2)/r_input[,2]^4))^-1
-    
+
   }
-  
+
   if(weights==3){
-    
+
     #Define inverse variance weights
     W<-((r_input[,2]^2)/(r_input[,5]^2))
-    
+
   }
-  
+
   #Define vector of squared weights
   Wj<-sqrt(W)
-  
+
   #Define vector of weights * ratio estimates
   BetaWj<-Ratios*Wj
-  
+
   #Define IVW Model
   IVW.Model<-lm(BetaWj~-1+Wj)
-  
+
   #Define output of IVW.Model fit
   EstimatesIVW<-summary(lm(IVW.Model))
-  
+
   #Define slope parameter for IVW.Model
   IVW.Slope<-EstimatesIVW$coefficients[1]
-  
+
   #Define standard error for slope parameter of IVW.Model
   IVW.SE<-EstimatesIVW$coefficients[2]
-  
+
   #Define confidence interval for IVW.Model slope parameter
   IVW_CI<-confint(IVW.Model)
-  
+
   DF<-length(r_input[,1])-1
-  
+
   #Define Q statistic for each individual variant
   Qj<-W*(Ratios-IVW.Slope)^2
-  
+
   #Define total Q statistic
   Total_Q<-sum(Qj)
-  
+
   #Perform chi square test for overall Q statistic
   Total_Q_chi<-pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
-  
+
   if(weights==3){
     #Define inverse variance weights
     W<- ((r_input[,5]^2+(IVW.Slope^2*r_input[,4]^2))/r_input[,2]^2)^-1
-    
+
     #Define vector of squared weights
     Wj<-sqrt(W)
-    
+
     #Define vector of weights * ratio estimates
     BetaWj<-Ratios*Wj
-    
+
     #Define IVW Model
     IVW.Model<-lm(BetaWj~-1+Wj)
     
