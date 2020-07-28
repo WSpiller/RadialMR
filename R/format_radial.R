@@ -6,7 +6,7 @@
 #' @param BYG A numeric vector of beta-coefficient values for genetic associations with the second variable (outcome).
 #' @param seBXG The standard errors corresponding to the beta-coefficients \code{BXG}.
 #' @param seBYG The standard errors corresponding to the beta-coefficients \code{BYG}.
-#' @param RSID A vector of names for genetic variants included in the analysis. If variant IDs are not provided (\code{RSID="NULL"}), a vector of ID numbers will be generated.
+#' @param RSID A vector of names for genetic variants included in the analysis. If variant IDs are not provided (\code{RSID = "NULL"}), a vector of ID numbers will be generated.
 #' @return A formatted data frame.
 #' 
 #'@author Wes Spiller; Jack Bowden.
