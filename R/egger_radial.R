@@ -80,125 +80,126 @@ egger_radial<-function(r_input,alpha,weights,summary){
 
   #Define slope of Egger.Model
   Egger.Slope<-EstimatesEGGER$coefficients[2]
+
   #Define standard error for intercept of Egger.Model
   Eggerintercept.SE<-EstimatesEGGER$coefficients[3]
-  
+
   #Define standard error for slope of Egger.Model
   Eggerslope.SE<-EstimatesEGGER$coefficients[4]
-  
+
   #Define 95% confidence interval for Egger.Model intercept
   Eggerint_CI<-as.numeric(confint(Egger.Model)[1,])
-  
+
   #Define 95% confidence interval for Egger.Model slope
   Eggerslope_CI<-as.numeric(confint(Egger.Model)[2,])
-  
+
   #Define Q statistic for each individual variant
   Qj<-W*(Ratios-(Egger.Intercept/Wj)-Egger.Slope)^2
-  
+
   #Define total Q statistic
   Total_Q<-sum(Qj)
-  
+
   #Perform chi square test for overall Q statistic
   Total_Q_chi<-pchisq(Total_Q,length(r_input[,2])-2,lower.tail = FALSE)
-  
-  
-  
+
+
+
   if(weights==3){
     #Define inverse variance weights
     W<- ((r_input[,5]^2+(Egger.Slope^2*r_input[,4]^2))/r_input[,2]^2)^-1
-    
+
     #Define vector of squared weights
     Wj<-sqrt(W)
-    
+
     #Define vector of weights * ratio estimates
     BetaWj<-Ratios*Wj
-    
+
     #Define Egger Model
     Egger.Model<-lm(BetaWj~Wj)
-    
+
     #Define output of Egger.Model fit
     EstimatesEGGER<-summary(Egger.Model)
-    
+
     #Define intercept of Egger.Model
     Egger.Intercept<-EstimatesEGGER$coefficients[1]
-    
+
     #Define slope of Egger.Model
     Egger.Slope<-EstimatesEGGER$coefficients[2]
-    
+
     #Define standard error for intercept of Egger.Model
     Eggerintercept.SE<-EstimatesEGGER$coefficients[3]
-    
+
     #Define standard error for slope of Egger.Model
     Eggerslope.SE<-EstimatesEGGER$coefficients[4]
-    
+
     #Define 95% confidence interval for Egger.Model intercept
     Eggerint_CI<-as.numeric(confint(Egger.Model)[1,])
-    
+
     #Define 95% confidence interval for Egger.Model slope
     Eggerslope_CI<-as.numeric(confint(Egger.Model)[2,])
-    
+
     #Define Q statistic for each individual variant
     Qj<-W*(Ratios-(Egger.Intercept/Wj)-Egger.Slope)^2
-    
+
     #Define total Q statistic
     Total_Q<-sum(Qj)
-    
+
     #Perform chi square test for overall Q statistic
     Total_Q_chi<-pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
-    
+
   }
-  
+
   #Define a placeholder vector of 0 values for chi square tests
   Qj_Chi<-0
-  
+
   #Perform chi square tests for each Qj value
   for(i in 1:length(Qj)){
     Qj_Chi[i]<-pchisq(Qj[i],1,lower.tail = FALSE)
   }
-  
+
   #Define dataframe with SNP IDs and outlier statistics
   r_input$Qj<-Qj
   r_input$Qj_Chi<-Qj_Chi
-  
+
   #Define a placeholder vector of 0 values for identifying outliers
   Out_Indicator<-rep(0,length(r_input[,2]))
-  
+
   #For loop defining outlier indicator variable.
   for( i in 1:length(r_input[,2])){
     if(Qj_Chi[i]<alpha){
       Out_Indicator[i]<-1
     }
   }
-  
-  #Include the outlier identifier cariable in the dataframe and define as a factor
+
+  #Include the outlier identifier variable in the dataframe and define as a factor
   r_input$Outliers<-factor(Out_Indicator)
   levels(r_input$Outliers)[levels(r_input$Outliers)=="0"] <- "Variant"
   levels(r_input$Outliers)[levels(r_input$Outliers)=="1"] <- "Outlier"
-  
+
   #If no outliers are present indicate this is the case
   if(sum(Out_Indicator==0)){
     outlier_status<-"No significant outliers"
     outtab<-"No significant outliers"
-    
+
   }
-  
+
   #If outliers are present produce dataframe containing individual Q statistics and chi square values for each outlier
   if(sum(Out_Indicator>0)){
     outlier_status<-"Outliers detected"
-    
+
     #Generate a subset of data containing only outliers
     Out_Dat<-subset(r_input, Outliers == "Outlier")
-    
+
     #Construct a datafrae containing SNP IDs, Q statistics and chi-square values for each outlying variant
     outtab<-data.frame(Out_Dat[,1],Out_Dat$Qj,Out_Dat$Qj_Chi)
-    
+
     #Redefine column names
     colnames(outtab) = c("SNP","Q_statistic","p.value")
-    
+
   }
-  
+
   if(summary==TRUE){
-    
+
     # Print a few summary elements that are common to both lm and plm model summary objects
     cat("\n")
     
