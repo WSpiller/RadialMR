@@ -11,11 +11,12 @@
 #' 
 #'@author Wes Spiller; Jack Bowden.
 #'@references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
-#'@export
-#'@examples
+#' @export
+#' @examples
 #'
-#' format_radial(summarydata[,1],summarydata[,3],summarydata[,2],summarydata[,4])
-#' 
+#' \dontrun{
+#' format_radial(summarydata[,1], summarydata[,3], summarydata[,2], summarydata[,4])
+#' }
 
 #Function for formatting data frame
 
