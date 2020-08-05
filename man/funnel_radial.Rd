@@ -19,7 +19,9 @@ A function for producing generalized radial IVW and MR-Egger funnel plots either
 }
 \examples{
 
-funnel_radial(r_object,TRUE) 
+\dontrun{
+funnel_radial(r_object, TRUE)
+}
 }
 \references{
 Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
