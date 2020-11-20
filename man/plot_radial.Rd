@@ -23,15 +23,20 @@ A function for producing radial IVW and MR-Egger plots either individually or si
 }
 \examples{
 
-\dontrun{
-plot_radial(r_object,TRUE,TRUE,TRUE)
 
-plot_radial(c(r_object,r_object),TRUE,TRUE,FALSE)
-}
+ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
+
+ldl.fdat<-format_radial(ldl.dat[,6], ldl.dat[,9],
+              ldl.dat[,15], ldl.dat[,21],
+              ldl.dat[,1])
+             
+ivw.object<-ivw_radial(ldl.fdat, 0.05, 1, 0.0001,T)
+
+plot_radial(ivw.object)
 }
 \references{
 Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
 }
 \author{
-Wes Spiller; Jack Bowden.
+Wes Spiller; Jack Bowden; Tom Palmer.
 }

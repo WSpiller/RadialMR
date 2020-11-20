@@ -5,16 +5,20 @@
 #' @param r_object An object of class \code{"IVW"} or \code{"egger"}.
 #' @param TEST Logical; indicating whether testing the function
 #' @return A plotly object containing a radial plot of either the IVW or MR-Egger estimates. Hovering the mouse over individual datapoints will highlight the corresponding SNP identification number for that observation.
-#' @author Wes Spiller; Jack Bowden.
+#' @author Wes Spiller; Jack Bowden; Tom Palmer.
 #' @references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
-#' @importFrom graphics layout
-#' @importFrom magrittr %>%
 #' @export
 #' @examples
 #'
-#' \dontrun{
-#' plotly_radial(r_object)
-#' }
+#'ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
+#'
+#'ldl.fdat<-format_radial(ldl.dat[,6], ldl.dat[,9],
+#'               ldl.dat[,15], ldl.dat[,21],
+#'               ldl.dat[,1])
+#'              
+#'ivw.object<-ivw_radial(ldl.fdat, 0.05, 1, 0.0001,T)
+#'
+#'plotly_radial(ivw.object)
 
 plotly_radial<-function(r_object, TEST){
 

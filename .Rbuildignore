@@ -1,4 +1,2 @@
-^.*\.Rproj$
+^RadialMR\.Rproj$
 ^\.Rproj\.user$
-^_config.yml$
-^LICENSE$

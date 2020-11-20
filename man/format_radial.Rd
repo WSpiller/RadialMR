@@ -18,20 +18,29 @@ format_radial(BXG, BYG, seBXG, seBYG, RSID)
 \item{RSID}{A vector of names for genetic variants included in the analysis. If variant IDs are not provided (\code{RSID = "NULL"}), a vector of ID numbers will be generated.}
 }
 \value{
-A formatted data frame.
+The function provides a data frame containing the following columns:\describe{
+\item{\code{SNP}} {The identification number for each variant}
+\item{\code{beta.exposure}} {The association estimate for the genetic variant with respect to the exposure}
+\item{\code{beta.outcome}} {The association estimate for the genetic variant with respect to the outcome}
+\item{\code{se.exposure}} {The standard error for the variant-exposure association \code{beta.exposure}}
+\item{\code{se.outcome}} {The standard error for the variant-outcome association \code{beta.outcome}}
+}
 }
 \description{
-Reads in summary data. Checks and organises columns for use in calculating radial IVW and radial MR-Egger estimates. Where variant IDs are not provided, a vector is generated for variant identification.
+A function which restructures summary GWAS data for downstream two-sample Mendelian randomization analyses. Where variant identification numbers are not provided, an index vector is generated corresponding to the ordering of variants provided.
 }
 \examples{
 
-\dontrun{
-format_radial(summarydata[,1], summarydata[,3], summarydata[,2], summarydata[,4])
-}
+ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
+
+format_radial(ldl.dat[,6], ldl.dat[,9],
+ ldl.dat[,15], ldl.dat[,21],
+  ldl.dat[,1])
+  
 }
 \references{
 Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
 }
 \author{
-Wes Spiller; Jack Bowden.
+Wes Spiller; Jack Bowden; Tom Palmer.
 }
