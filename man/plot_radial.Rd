@@ -22,16 +22,10 @@ A ggplot object containing a radial plot of either the IVW, MR-Egger, or both es
 A function for producing radial IVW and MR-Egger plots either individually or simultaneously. The function allows for a variety of aesthetic and scaling options, utilising the output from the \code{IVW_radial} and \code{egger_radial} functions.
 }
 \examples{
-
-
 ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
-
-ldl.fdat<-format_radial(ldl.dat[,6], ldl.dat[,9],
-              ldl.dat[,15], ldl.dat[,21],
-              ldl.dat[,1])
-             
-ivw.object<-ivw_radial(ldl.fdat, 0.05, 1, 0.0001,T)
-
+ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
+                          ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
+ivw.object <- ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
 plot_radial(ivw.object)
 }
 \references{

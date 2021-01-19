@@ -18,15 +18,10 @@ A plotly object containing a radial plot of either the IVW or MR-Egger estimates
 A function for producing interactive radial IVW and MR-Egger plots individually.The function utilises the output from the \code{IVW_radial} and \code{egger_radial} functions.
 }
 \examples{
-
 ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
-
-ldl.fdat<-format_radial(ldl.dat[,6], ldl.dat[,9],
-              ldl.dat[,15], ldl.dat[,21],
-              ldl.dat[,1])
-             
-ivw.object<-ivw_radial(ldl.fdat, 0.05, 1, 0.0001,T)
-
+ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
+                          ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
+ivw.object <- ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
 plotly_radial(ivw.object)
 }
 \references{

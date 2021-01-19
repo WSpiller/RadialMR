@@ -13,7 +13,7 @@ egger_radial(r_input, alpha, weights, summary)
 
 \item{weights}{A value specifying the inverse variance weights used to calculate the MR-Egger estimate and Rucker's Q statistic. By default modified second order weights are used, but one can choose to select first order (\code{1}), second order (\code{2}) or modified second order weights (\code{3}).}
 
-\item{summary}{A logical argument (\code{T} or \code{F}) indicating whether a summary of results and heterogeneity should be presented (default= \code{TRUE}).}
+\item{summary}{A logical argument (\code{TRUE} or \code{FALSE}) indicating whether a summary of results and heterogeneity should be presented (default= \code{TRUE}).}
 }
 \value{
 An object of class \code{"egger"} containing the following components:\describe{
@@ -33,11 +33,11 @@ Fits a radial MR-Egger model using first order, second order, or modified second
 
 ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
 
-ldl.fdat<-format_radial(ldl.dat[,6], ldl.dat[,9],
+ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
               ldl.dat[,15], ldl.dat[,21],
               ldl.dat[,1])
-             
-egger_radial(ldl.fdat, 0.05, 1,T)
+
+egger_radial(ldl.fdat, 0.05, 1, TRUE)
 }
 \references{
 Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.

@@ -19,24 +19,22 @@ format_radial(BXG, BYG, seBXG, seBYG, RSID)
 }
 \value{
 The function provides a data frame containing the following columns:\describe{
-\item{\code{SNP}} {The identification number for each variant}
-\item{\code{beta.exposure}} {The association estimate for the genetic variant with respect to the exposure}
-\item{\code{beta.outcome}} {The association estimate for the genetic variant with respect to the outcome}
-\item{\code{se.exposure}} {The standard error for the variant-exposure association \code{beta.exposure}}
-\item{\code{se.outcome}} {The standard error for the variant-outcome association \code{beta.outcome}}
+\item{\code{SNP}}{The identification number for each variant}
+\item{\code{beta.exposure}}{The association estimate for the genetic variant with respect to the exposure}
+\item{\code{beta.outcome}}{The association estimate for the genetic variant with respect to the outcome}
+\item{\code{se.exposure}}{The standard error for the variant-exposure association \code{beta.exposure}}
+\item{\code{se.outcome}}{The standard error for the variant-outcome association \code{beta.outcome}}
 }
 }
 \description{
 A function which restructures summary GWAS data for downstream two-sample Mendelian randomization analyses. Where variant identification numbers are not provided, an index vector is generated corresponding to the ordering of variants provided.
 }
 \examples{
-
 ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
-
-format_radial(ldl.dat[,6], ldl.dat[,9],
- ldl.dat[,15], ldl.dat[,21],
-  ldl.dat[,1])
-  
+ldl.fmt <- format_radial(ldl.dat[,6], ldl.dat[,9],
+                         ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
+head(ldl.fmt)
+class(ldl.fmt)
 }
 \references{
 Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
