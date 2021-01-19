@@ -25,21 +25,20 @@ plotly_radial<-function(r_object, TEST){
 requireNamespace("plotly", quietly = TRUE)
 
 library(plotly)
+circle.radial <- function(center = c(0,0), radius, num.points, START,END){
+  R = radius
+  tt <- seq(START,END,length.out = num.points)
+  #Generates x-axis values for circle
+  xx <- center[1] + R * cos(tt)
+  #Generates y-axis values for circle
+  yy <- center[2] + R * sin(tt)
+  return(data.frame(x = xx, y = yy))
+}
 
   if(length(r_object)==13){
 
     r_object$coef<-c(r_object$coef[2,])
     r_object$coef<-as.numeric(r_object$coef)
-
-    circle.radial <- function(center = c(0,0), radius, num.points, START,END){
-      R = radius
-      tt <- seq(START,END,length.out = num.points)
-      #Generates x-axis values for circle
-      xx <- center[1] + R * cos(tt)
-      #Generates y-axis values for circle
-      yy <- center[2] + R * sin(tt)
-      return(data.frame(x = xx, y = yy))
-    }
 
     maxWj<-max(r_object$data$Wj)
     Wjcor<-r_object$data[r_object$data$Wj==maxWj,]
@@ -124,16 +123,6 @@ library(plotly)
   if(length(r_object)==6){
 
     if(TEST==TRUE){
-
-    circle.radial <- function(center = c(0,r_object$coef[1,1]), radius, num.points, START,END){
-      R = radius
-      tt <- seq(START,END,length.out = num.points)
-      #Generates x-axis values for circle
-      xx <- center[1] + R * cos(tt)
-      #Generates y-axis values for circle
-      yy <- center[2] + R * sin(tt)
-      return(data.frame(x = xx, y = yy))
-    }
 
     maxWj<-max(r_object$data$Wj)
     Wjcor<-r_object$data[r_object$data$Wj==maxWj,]
