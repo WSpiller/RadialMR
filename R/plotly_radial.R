@@ -7,6 +7,7 @@
 #' @return A plotly object containing a radial plot of either the IVW or MR-Egger estimates. Hovering the mouse over individual datapoints will highlight the corresponding SNP identification number for that observation.
 #' @author Wes Spiller; Jack Bowden; Tom Palmer.
 #' @references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
+#' @importFrom magrittr "%>%"
 #' @export
 #' @examples
 #'
