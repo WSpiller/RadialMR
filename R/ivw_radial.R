@@ -32,3 +32,30 @@
 #'ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
 #'                          ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 #' ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
+
+ivw_radial<-function(r_input,alpha,weights,tol,summary){
+
+  if(!("rmr_format" %in%
+       class(r_input))) {
+    stop('The class of the data object must be "rmr_format", please resave the object with the output of format_radial().')
+
+  }
+
+  if(missing(alpha)) {
+    alpha<-0.05
+    warning("Significance threshold for outlier detection not specified: Adopting a 95% threshold")
+  }
+
+  if(missing(weights)) {
+    weights<-3
+    warning("Weights not specified: Adopting modified second-order weights")
+  }
+
+  if(missing(tol)) {
+    tol<-0.00001
+  }
+
+  if(missing(summary)) {
+    summary <- TRUE
+  }
+
