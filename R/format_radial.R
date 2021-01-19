@@ -21,10 +21,10 @@
 #' @export
 #' @examples
 #' ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
-#' ldl.fmt <- format_radial(ldl.dat[,6], ldl.dat[,9],
-#'                          ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
-#' head(ldl.fmt)
-#' class(ldl.fmt)
+#' ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
+#'                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
+#' head(ldl.fdat)
+#' class(ldl.fdat)
 
 format_radial<-function(BXG,BYG,seBXG,seBYG,RSID){
 
