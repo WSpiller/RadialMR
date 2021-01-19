@@ -6,7 +6,7 @@
 #' @param alpha A value specifying the statistical significance threshold for identifying outliers (\code{0.05} specifies a p-value threshold of 0.05).
 #' @param weights A value specifying the inverse variance weights used to calculate IVW estimate and Cochran's Q statistic. By default modified second order weights are used, but one can choose to select first order (\code{1}), second order (\code{2}) or modified second order weights (\code{3}).
 #' @param tol A value indicating the tolerance threshold for performing the iterative IVW approach. The value represents the minimum difference between the coefficients of the previous and current iterations required for a further iteration to be performed (default= \code{0.0001}).
-#' @param summary A logical argument (\code{T} or \code{F}) indicating whether a summary of results and heterogeneity should be presented (default= \code{TRUE}).
+#' @param summary A logical argument (\code{TRUE} or \code{FALSE}) indicating whether a summary of results and heterogeneity should be presented (default= \code{TRUE}).
 #' @return An object of class \code{"IVW"} containing the following components:\describe{
 #' \item{\code{coef}}{The estimated coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
 #' \item{\code{qstatistic}}{Cochran's Q statistic for overall heterogeneity.}
@@ -28,142 +28,140 @@
 #' @importFrom stats lm coef confint optimize pchisq pf pnorm pt qchisq qt sd
 #' @export
 #' @examples
-#'
 #'ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
-#'
-#'ldl.fdat<-format_radial(ldl.dat[,6], ldl.dat[,9],
-#'               ldl.dat[,15], ldl.dat[,21],
-#'               ldl.dat[,1])
-#'              
-#' ivw_radial(ldl.fdat, 0.05, 1, 0.0001,T)
-
+#'ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
+#'                          ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
+#' ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
 
 ivw_radial<-function(r_input,alpha,weights,tol,summary){
-  
+
   if(!("rmr_format" %in%
        class(r_input))) {
     stop('The class of the data object must be "rmr_format", please resave the object with the output of format_radial().')
-    
+
   }
-  
+
   if(missing(alpha)) {
     alpha<-0.05
     warning("Significance threshold for outlier detection not specified: Adopting a 95% threshold")
   }
-  
+
   if(missing(weights)) {
     weights<-3
     warning("Weights not specified: Adopting modified second-order weights")
   }
-  
+
   if(missing(tol)) {
     tol<-0.00001
   }
-  
+
   if(missing(summary)) {
-    summary<-T
+    summary <- TRUE
   }
-  
+
+  # for R CMD check
+  Outliers <- NULL
+
   # Define ratio estimates
   Ratios<-r_input[,3]/r_input[,2]
-  
+
   # Calculate approximate F-statistic for each variant
   F<- r_input[,2]^2/r_input[,4]^2
-  
+
   # Define mean F-statistic across all variants
   mf<- mean(F)
-  
+
   # Calculate first order weights
-  
+
   if(weights==1){
     W<-((r_input[,2]^2)/(r_input[,5]^2))
     }
-  
+
   # Calculate second order weights
-  
+
   if(weights==2){
     W<-((r_input[,5]^2/r_input[,2]^2)+((r_input[,3]^2*r_input[,4]^2)/r_input[,2]^4))^-1
     }
-  
+
   # Initially calculate first order weights for downstream use of modified second order weights
-  
+
   if(weights==3){
     W<-((r_input[,2]^2)/(r_input[,5]^2))
     }
-  
+
   # Create vector of squareroot weights
   Wj<-sqrt(W)
-  
+
   # Create vector of ratio estimates multiplied by given squareroot weightings
   BetaWj<-Ratios*Wj
-  
+
   # Define IVW Model
   IVW.Model<-lm(BetaWj~-1+Wj)
-  
+
   # Save summary of IVW model
   EstimatesIVW<-summary(lm(IVW.Model))
-  
+
   # Define effect estimate using IVW model
   IVW.Slope<-EstimatesIVW$coefficients[1]
-  
+
   # Define standard error for effect estimate using IVW model
   IVW.SE<-EstimatesIVW$coefficients[2]
-  
+
   # Define confidence interval for effect estimate using IVW model
   IVW_CI<-confint(IVW.Model)
-  
+
   # Specify degrees of freedom as number of SNPs -1.
   DF<-length(r_input[,1])-1
-  
+
   # Calculate Q statistic for each individual variant
   Qj<-W*(Ratios-IVW.Slope)^2
-  
+
   # Calculate total Q statistic as the sum of individual Q contributions Qj
   Total_Q<-sum(Qj)
-  
+
   # Perform chi square test with respect to global Q statistic Total_Q
   Total_Q_chi<-pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
-  
+
   # Perform additional analyses to calculate modified second order weights
   if(weights==3){
   W<- ((r_input[,5]^2+(IVW.Slope^2*r_input[,4]^2))/r_input[,2]^2)^-1
-    
+
     # Create vector of squareroot weights
     Wj<-sqrt(W)
-    
+
     # Create vector of ratio estimates multiplied by given squareroot weightings
     BetaWj<-Ratios*Wj
-    
+
     # Define IVW Model
     IVW.Model<-lm(BetaWj~-1+Wj)
-    
+
     # Save summary of IVW model
     EstimatesIVW<-summary(lm(BetaWj~-1+Wj))
-    
+
     # Define effect estimate using IVW model
     IVW.Slope<-EstimatesIVW$coefficients[1]
-    
+
     # Define standard error for effect estimate using IVW model
     IVW.SE<-EstimatesIVW$coefficients[2]
-    
+
     # Define confidence interval for effect estimate using IVW model
     IVW_CI<-confint(IVW.Model)
-    
+
     # Calculate Q statistic for each individual variant
     Qj<-W*(Ratios-IVW.Slope)^2
-    
+
     # Calculate total Q statistic as the sum of individual Q contributions Qj
     Total_Q<-sum(Qj)
-    
+
     # Perform chi square test with respect to global Q statistic Total_Q
     Total_Q_chi<-pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
-    
+
   }
-  
+
   # Perform interactive analysis with given tolerance tol
-  
+
   iterative_ivw<-function(int.tol){
-    
+
     # Define difference variable indicating whether further iteration is required
     Diff  <- 1
     # Set initial effect estimate value
@@ -172,7 +170,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     count <- 0
     while(Diff >= tol){
       W    <- 1/(r_input[,5]^2/r_input[,2]^2 + (Bhat1.Iterative^2)*r_input[,4]^2/r_input[,2]^2)
-      
+
       # Perform IVW analysis as described above, with prefix new.
       Wj<-sqrt(W)
       BetaWj<-Ratios*Wj
@@ -184,7 +182,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
       new.Qj<-W*(Ratios-new.IVW.Slope)^2
       new.Total_Q<-sum(new.Qj)
       new.Total_Q_chi<-pchisq(new.Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
-      
+
       # Update absolute difference between estimates
       Diff  <- abs(Bhat1.Iterative - new.IVW.Slope)
       # Update effect estimate
@@ -200,10 +198,10 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
       # Update count number for total iterations
       count <- count+1
     }
-    
+
     # Save estimates obtained through iterative approach within a data frame
     It.Dat<-data.frame(Bhat1.Iterative,Bhat1.SE,Bhat1.t,Bhat1.p)
-    
+
     # Define objects to be returned by Iterative_ivw function
     multi_return2 <- function() {
       Out_list2 <- list("It.Res" = It.Dat,"count"= count,"It.CI"=new.IVW_CI)
@@ -211,19 +209,19 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     }
     OUT2<-multi_return2()
     }
-  
+
   #Perform iterative method using specified tolerance
   Bhat1.Iterative<-iterative_ivw(tol)
-  
+
   ## Effect estimation through Q-statistic minimisation
-  
+
   #Calculate Q statistic using input 'a' as initial effect estimate
   PL2 = function(a){
     b = a[1]
     w = 1/((phi)*r_input[,5]^2/r_input[,2]^2 + (b^2)*r_input[,4]^2/r_input[,2]^2)
     q =  sum(w*(Ratios - b)^2)
   }
-  
+
   # Function introducing parameter phi for q-statistic minimisation
   PLfunc = function(a){
     phi    = a[1]
@@ -236,7 +234,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     w    = 1/(phi*r_input[,5]^2/r_input[,2]^2 + (b^2)*r_input[,4]^2/r_input[,2]^2)
     q    =  (sum(w*(Ratios - b)^2) - DF)^2
   }
-  
+
   # Function for calculating standard errors using parametric bootstrap
   BootVar = function(sims=1000){
     B = NULL ; pp=NULL
@@ -246,7 +244,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
       bxg    = r_input[,2][choice] ; seX = r_input[,4][choice]
       byg    = r_input[,3][choice] ; seY = r_input[,5][choice]
       Ratios    = byg/bxg
-      
+
       W1        = 1/(seY^2/bxg^2)
       BIVw1     = Ratios*sqrt(W1)
       sW1       = sqrt(W1)
@@ -257,20 +255,20 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
       sW2       = sqrt(W2)
       IVWfitR2  = summary(lm(BIVw2 ~ -1+sW2))
       phi_IVW2  = IVWfitR2$sigma^2
-      
+
       phi_IVW2 = max(1,phi_IVW2)
       phi_IVW1 = max(1,phi_IVW1)
       lb       = IVWfitR1$coef[1] - 10*IVWfitR1$coef[2]
       ub       = IVWfitR1$coef[1] + 10*IVWfitR1$coef[2]
-      
+
       # Function calculating q-statistics using updated parameter phi
-      
+
       PL2 = function(a){
         b = a[1]
         w = 1/((phi)*seY^2/bxg^2 + (b^2)*seX^2/bxg^2)
         q =  sum(w*(Ratios - b)^2)
       }
-      
+
       # Calculation of causal effect estimate minimising q-statistics from previous functions
       PLfunc = function(a){
         phi    = a[1]
@@ -290,49 +288,49 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     mB   = mean(B)
     return(list(mB=mB,se=se))
   }
-  
+
   CIfunc = function(){
     z = qt(df=DF, 0.975)
     z2 = 2*(1-pnorm(z))
-    
+
     PL3 = function(a){
       b = a[1]
       w = 1/(r_input[,5]^2/r_input[,2]^2 + (b^2)*r_input[,4]^2/r_input[,2]^2)
       q    =  (sum(w*(Ratios - b)^2) - qchisq(1-z2,DF))^2
     }
-    
+
     lb = Bhat - 10*SE
     ub = Bhat + 10*SE
-    
+
     low   = optimize(PL3,interval=c(lb,Bhat))$minimum
     high  = optimize(PL3,interval=c(Bhat,ub))$minimum
     CI    = c(low,high)
     return(list(CI=CI))
   }
-  
+
   # Fit fixed effect model and and perform exact Q test
-  
+
   phi       = 1
   Bhat      = optimize(PL2,interval=c(-2,2))$minimum
   W         = 1/(r_input[,5]^2/r_input[,2]^2 + (Bhat^2)*r_input[,4]^2/r_input[,2]^2)
   SE        = sqrt(1/sum(W))
   FCI        = CIfunc()
-  
+
   QIVW      = sum(W*(Ratios - Bhat)^2)
   Qp        = 1-pchisq(QIVW,DF)
   Qind      = W*(Ratios - Bhat)^2
   ExactQ    = c(QIVW,Qp)
   ExactQind = Qind
   # Estimation (fixed effects) point estimate, se, t-stat, p-value)
-  
+
   FE_EXACT    = t(c(Bhat,SE,Bhat/SE,2*(1-pt(abs(Bhat/SE),DF))))
-  
+
   FE_EXACT<-data.frame(FE_EXACT)
-  
+
   names(FE_EXACT)<-c("Estimate","Std.Error","t value","Pr(>|t|)")
-  
+
   # Fit random effect model and and perform exact Q test
-  
+
   BIVW1      = Ratios*sqrt(1/(r_input[,5]^2/r_input[,2]^2))
   IVWfit1    = summary(lm(BIVW1 ~ -1+sqrt(1/(r_input[,5]^2/r_input[,2]^2))))
   phi_IVW1   = IVWfit1$sigma^2
@@ -347,134 +345,134 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
   Bhat      = optimize(PL2,interval=c(lb,ub))$minimum
   Boot      = BootVar()
   SE        = Boot$se
-  
+
   # Estimation (fixed effects) point estimate, se, t-stat, p-value)
-  
+
   RCI    = Bhat + c(-1,1)*qt(df=DF, 0.975)*SE
   RE_EXACT  = t(c(Bhat,SE,Bhat/SE,2*(1-pt(abs(Bhat/SE),DF))))
   RE_EXACT<-data.frame(RE_EXACT)
   names(RE_EXACT)<-c("Estimate","Std.Error","t value","Pr(>|t|)")
-  
+
   # Define a placeholder vector of 0 values for chi square tests
   Qj_Chi<-0
-  
+
   # Perform chi square tests for each Q contribution Qj
   for(i in 1:length(Qj)){
     Qj_Chi[i]<-pchisq(Qj[i],1,lower.tail = FALSE)
   }
-  
+
   # Create data frame with SNP IDs and outlier information
   r_input$Qj<-Qj
   r_input$Qj_Chi<-Qj_Chi
-  
+
   # Define a placeholder vector of 0 values for outlier status variable
   Out_Indicator<-rep(0,length(r_input[,2]))
-  
+
   # Include value of 1 indicating positive outlier status for given sig.threshold
   for( i in 1:length(r_input[,2])){
     if(Qj_Chi[i]<alpha){
       Out_Indicator[i]<-1
     }
   }
-  
+
   # Include the outlier status variable in the data frame as a factor
   r_input$Outliers<-factor(Out_Indicator)
   levels(r_input$Outliers)[levels(r_input$Outliers)=="0"] <- "Variant"
   levels(r_input$Outliers)[levels(r_input$Outliers)=="1"] <- "Outlier"
-  
+
   # Provide indication if no outliers are present
   if(sum(Out_Indicator==0)){
     outlier_status<-"No significant outliers"
     outtab<-"No significant outliers"
   }
-  
+
   # If outliers are present produce data frame with information on outliers
   if(sum(Out_Indicator>0)){
     outlier_status<-"Outliers detected"
-    
+
     # Generate a subset of data containing only outliers
     Out_Dat<-subset(r_input, Outliers == "Outlier")
-    
+
     # Construct a data frame containing SNP IDs, Q statistics and chi-square values for each outlying variant
     outtab<-data.frame(Out_Dat[,1],Out_Dat$Qj,Out_Dat$Qj_Chi)
-    
+
     # Redefine column names
     colnames(outtab) = c("SNP","Q_statistic","p.value")
   }
-  
+
   # Create data frame for displaying summary results
-  
+
   Sum.Dat<-data.frame(coef(EstimatesIVW))
   names(Sum.Dat)<-c("Estimate","Std.Error","t value","Pr(>|t|)")
   names(Bhat1.Iterative$It.Res)<-names(Sum.Dat)
   combined.dat<-(rbind(Sum.Dat,Bhat1.Iterative$It.Res))
   combined.dat<-rbind(combined.dat,FE_EXACT)
   combined.dat<-rbind(combined.dat,RE_EXACT)
-  
+
   for(i in 1:3){
     combined.dat[i,4]<- 2 * pnorm(abs(combined.dat[i,1]/combined.dat[i,2]), lower.tail = FALSE)
   }
-  
+
   row.names(combined.dat)<-c("Effect","Iterative","Exact (FE)","Exact (RE)")
-  
+
   if(weights == 1){
     row.names(combined.dat)[1] <- "Effect (1st)"
   }
-  
+
   if(weights == 2){
     row.names(combined.dat)[1] <- "Effect (2nd)"
   }
-  
+
   if(weights == 3){
     row.names(combined.dat)[1] <- "Effect (Mod.2nd)"
   }
-  
+
   if(summary==T){
-    
+
     # Print summary elements that are common to both lm and plm model summary objects
     cat("\n")
-    
+
     cat("Radial IVW\n")
-    
+
     cat("\n")
-    
+
     print(combined.dat)
-    
+
     cat("\n")
-    
+
     cat("\nResidual standard error:", round(EstimatesIVW$sigma,3), "on", EstimatesIVW$df[2], "degrees of freedom")
-    
+
     cat("\n")
-    
+
     cat(paste(c("\nF-statistic:", " on"," and"), round(EstimatesIVW$fstatistic,2), collapse=""),
         "DF, p-value:",
         format.pval(pf(EstimatesIVW$fstatistic[1L], EstimatesIVW$fstatistic[2L], EstimatesIVW$fstatistic[3L],
                        lower.tail = FALSE), digits=3))
-    
+
     cat("\n")
-    
+
     cat("Q-Statistic for heterogeneity:",Total_Q, "on", length(r_input[,2])-1, "DF",",", "p-value:" , Total_Q_chi)
-    
+
     cat("\n")
-    
+
     cat("\n",outlier_status,"\n")
     cat("Number of iterations =", Bhat1.Iterative$count)
     cat("\n")
-    
+
   }
-  
+
   # Create data frame containing information used to calculate radial estimates and determine outlier status
   out_data<-data.frame(r_input[,1],r_input[,6],r_input[,7],r_input[,8])
   out_data$Wj<-Wj
   out_data$BetaWj<-BetaWj
   out_data<-out_data[c(1,5,6,2,3,4)]
   names(out_data)<-c("SNP","Wj","BetaWj","Qj","Qj_Chi","Outliers")
-  
+
   multi_return <- function() {
     Out_list <- list("coef" = combined.dat,"qstatistic"= Total_Q, "df" = length(r_input[,2])-1, "outliers" = outtab, "data" = out_data, "confint" = confint(IVW.Model),
                      "it.coef"=combined.dat[2,],"fe.coef"=combined.dat[3,],"re.coef" = combined.dat[4,1], "it.confint"= Bhat1.Iterative$It.CI,"fe.confint" = FCI$CI, "re.confint" = RCI, "meanF"= mf)
     class(Out_list)<-"IVW"
-    
+
     return(Out_list)
   }
   OUT<-multi_return()

@@ -9,37 +9,32 @@
 #' @return A ggplot object containing a radial plot of either the IVW, MR-Egger, or both estimates simultaneously.
 #' @author Wes Spiller; Jack Bowden; Tom Palmer.
 #' @references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
+#' @importFrom stats quantile median
 #' @export
 #' @examples
-#'
-#'
-#'ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
-#'
-#'ldl.fdat<-format_radial(ldl.dat[,6], ldl.dat[,9],
-#'               ldl.dat[,15], ldl.dat[,21],
-#'               ldl.dat[,1])
-#'              
-#'ivw.object<-ivw_radial(ldl.fdat, 0.05, 1, 0.0001,T)
-#'
-#'plot_radial(ivw.object)
+#' ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
+#' ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
+#'                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
+#' ivw.object <- ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
+#' plot_radial(ivw.object)
 
 plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
 
   if(missing(radial_scale)) {
-    radial_scale<-T
+    radial_scale <- TRUE
   }
 
   if(missing(show_outliers)) {
-    show_outliers<-F
+    show_outliers <- FALSE
   }
 
   if(missing(scale_match)) {
-    scale_match<-T
+    scale_match <- TRUE
   }
 
-  #Load ggplot2 library
-  requireNamespace("ggplot2", quietly = TRUE)
+  # for R CMD check
+  Wj <- BetaWj <- Outliers <- out_types <- layout <- NULL
 
   #Function for producing scale and confidence interval circle indicators
 

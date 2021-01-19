@@ -15,7 +15,7 @@ ivw_radial(r_input, alpha, weights, tol, summary)
 
 \item{tol}{A value indicating the tolerance threshold for performing the iterative IVW approach. The value represents the minimum difference between the coefficients of the previous and current iterations required for a further iteration to be performed (default= \code{0.0001}).}
 
-\item{summary}{A logical argument (\code{T} or \code{F}) indicating whether a summary of results and heterogeneity should be presented (default= \code{TRUE}).}
+\item{summary}{A logical argument (\code{TRUE} or \code{FALSE}) indicating whether a summary of results and heterogeneity should be presented (default= \code{TRUE}).}
 }
 \value{
 An object of class \code{"IVW"} containing the following components:\describe{
@@ -39,14 +39,10 @@ An object of class \code{"IVW"} containing the following components:\describe{
 Fits a radial inverse variance weighted (IVW) model using a range of weighting specifications. Outliers are determined with respect to their contribution to global heterogeneity, quantified by Cochran's Q-statistic, using a significance threshold specified by the user. The \code{ivw_radial} function returns an object of class \code{"IVW"}, containing effect estimates, total estimated heterogeneity using Cochran's Q-statistic, the individual contribution to overall heterogeneity of each variant, and a data frame for used in the downstream plotting functions \code{plot_radial} and \code{plotly_radial}.
 }
 \examples{
-
 ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
-
-ldl.fdat<-format_radial(ldl.dat[,6], ldl.dat[,9],
-              ldl.dat[,15], ldl.dat[,21],
-              ldl.dat[,1])
-             
-ivw_radial(ldl.fdat, 0.05, 1, 0.0001,T)
+ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
+                         ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
+ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
 }
 \references{
 Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
