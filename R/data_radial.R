@@ -1,11 +1,11 @@
 #' Two Sample Summary GWAS data published in Do et al (2014).
 #'
-#' A dataset containing summary data GWAS data for 185 independent SNPs with respect to lipid fractions and coronary heart disease (CHD), previously published in Do et al (2013).  
+#' A dataset containing summary data GWAS data for 185 independent SNPs with respect to lipid fractions and coronary heart disease (CHD), previously published in Do et al (2013).
 #' Lipid fractions include low-density lipoprotein (LDL-C),high-density lipoprotein (HDL-C), and triglycerides, with association estimates
-#' obtained from the Global Lipids Genetics Consortium (GLGC) (Willer et al, 2013). Summary data for CHD was obtained from the CARDIoGRAM study (Schunkert et al, 2011).  
+#' obtained from the Global Lipids Genetics Consortium (GLGC) (Willer et al, 2013). Summary data for CHD was obtained from the CARDIoGRAM study (Schunkert et al, 2011).
 #' Association estimates were obtained by regressing each phenotype upon the genetic variant and additional adjusted covariates, with links to further information
 #' related to each study presented below.
-#' 
+#'
 #' data_radial
 #'
 #' @format A data frame with 185 rows and 21 variables. Specifically this includes the following information:
@@ -32,8 +32,8 @@
 #'  \item{\code{chdz}}{The z-score corresponding to association estimate `chdbeta`}
 #'  \item{\code{chdse}}{The standard error corresponding to association estimate `chdbeta`}
 #' }
-#' 
-#' @source 
+#'
+#' @source
 #' \itemize{
 #' \item \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3904346/}
 #' \item \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3838666/}
