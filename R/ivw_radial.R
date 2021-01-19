@@ -59,3 +59,5 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     summary <- TRUE
   }
 
+  # for R CMD check
+  Outliers <- NULL
