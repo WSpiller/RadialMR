@@ -55,3 +55,5 @@ egger_radial<-function(r_input,alpha,weights,summary){
     summary <- TRUE
   }
 
+  # for R CMD check
+  Outliers <- NULL
