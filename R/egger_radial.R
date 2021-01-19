@@ -28,3 +28,30 @@
 #'               ldl.dat[,1])
 #'
 #' egger_radial(ldl.fdat, 0.05, 1, TRUE)
+
+
+egger_radial<-function(r_input,alpha,weights,summary){
+
+  # Perform check that r_input has been formatted using format_radial function
+
+  if(!("rmr_format" %in%
+       class(r_input))) {
+    stop('The class of the data object must be "rmr_format", please resave the object with the output of format_radial().')
+    }
+
+  # Provide default value for outlier significance threshold if not provided
+  if(missing(alpha)) {
+    alpha<-0.05
+    warning("Significance threshold for outlier detection not specified: Adopting a 95% threshold")
+  }
+
+  # Set default weighting to modified second order weights if not provided
+  if(missing(weights)) {
+    weights<-3
+    warning("Weights not specified: Adopting modified second-order weights")
+  }
+
+  if(missing(summary)) {
+    summary <- TRUE
+  }
+
