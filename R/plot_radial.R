@@ -33,3 +33,5 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
     scale_match <- TRUE
   }
 
+  # for R CMD check
+  Wj <- BetaWj <- Outliers <- out_types <- layout <- NULL
