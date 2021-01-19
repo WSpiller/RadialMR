@@ -10,28 +10,27 @@
 #'
 #' @format A data frame with 185 rows and 21 variables. Specifically this includes the following information:
 #' \describe{
-#'  \item{\code{rsid}} {The identification number for each variant}
-#'  \item{\code{a1}} {The reference allele for each variant}
-#'  \item{\code{a2}} {The other allele for each variant}
-#'  \item{\code{chr}} {The chromosome number in which each variant is located}
-#'  \item{\code{pos}} {The genomic position for the genetic variant relative to chromosome number}
-#'  \item{\code{ldlcbeta}} {The association estimate for the genetic variant obtained by regressing LDL-C upon the genetic variant}
-#'  \item{\code{hdlcbeta}} {The association estimate obtained by regressing HDL-C upon the genetic variant}
-#'  \item{\code{tgbeta}} {The association estimate obtained by regressing triglycerides upon the genetic variant}
-#'  \item{\code{chdbeta}} {The association estimate for CHD obtained by regressing CHD upon the genetic variant}
-#'  \item{\code{ldlcp2}} {The p-value corresponding to association estimate `ldlcbeta`}
-#'  \item{\code{hdlcp2}} {The p-value corresponding to association estimate `hdlcbeta`}
-#'  \item{\code{tgp2}} {The p-value corresponding to association estimate `tgbeta`}
-#'  \item{\code{chdp2}} {The p-value corresponding to association estimate `chdbeta`}
-#'  \item{\code{ldlcz2}} {The z-score corresponding to association estimate `ldlcbeta`}
-#'  \item{\code{ldlcse}} {The standard error corresponding to association estimate `ldlcbeta`}
-#'  \item{\code{hdlcz2}} {The z-score corresponding to association estimate `hdlcbeta`}
-#'  \item{\code{hdlcse}} {The standard error corresponding to association estimate `hdlcbeta`}
-#'  \item{\code{tgz}} {The z-score corresponding to association estimate `tgbeta`}
-#'  \item{\code{tgse}} {The standard error corresponding to association estimate `tgbeta`}
-#'  \item{\code{chdz}} {The z-score corresponding to association estimate `chdbeta`}
-#'  \item{\code{chdse}} {The standard error corresponding to association estimate `chdbeta`}
-#'  
+#'  \item{\code{rsid}}{The identification number for each variant}
+#'  \item{\code{a1}}{The reference allele for each variant}
+#'  \item{\code{a2}}{The other allele for each variant}
+#'  \item{\code{chr}}{The chromosome number in which each variant is located}
+#'  \item{\code{pos}}{The genomic position for the genetic variant relative to chromosome number}
+#'  \item{\code{ldlcbeta}}{The association estimate for the genetic variant obtained by regressing LDL-C upon the genetic variant}
+#'  \item{\code{hdlcbeta}}{The association estimate obtained by regressing HDL-C upon the genetic variant}
+#'  \item{\code{tgbeta}}{The association estimate obtained by regressing triglycerides upon the genetic variant}
+#'  \item{\code{chdbeta}}{The association estimate for CHD obtained by regressing CHD upon the genetic variant}
+#'  \item{\code{ldlcp2}}{The p-value corresponding to association estimate `ldlcbeta`}
+#'  \item{\code{hdlcp2}}{The p-value corresponding to association estimate `hdlcbeta`}
+#'  \item{\code{tgp2}}{The p-value corresponding to association estimate `tgbeta`}
+#'  \item{\code{chdp2}}{The p-value corresponding to association estimate `chdbeta`}
+#'  \item{\code{ldlcz}}{The z-score corresponding to association estimate `ldlcbeta`}
+#'  \item{\code{ldlcse}}{The standard error corresponding to association estimate `ldlcbeta`}
+#'  \item{\code{hdlcz}}{The z-score corresponding to association estimate `hdlcbeta`}
+#'  \item{\code{hdlcse}}{The standard error corresponding to association estimate `hdlcbeta`}
+#'  \item{\code{tgz}}{The z-score corresponding to association estimate `tgbeta`}
+#'  \item{\code{tgse}}{The standard error corresponding to association estimate `tgbeta`}
+#'  \item{\code{chdz}}{The z-score corresponding to association estimate `chdbeta`}
+#'  \item{\code{chdse}}{The standard error corresponding to association estimate `chdbeta`}
 #' }
 #' 
 #' @source 
