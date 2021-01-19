@@ -4,14 +4,15 @@
 
 To install `RadialMR` directly from the GitHub repository, first make sure you have the `devtools` package installed:
 
-    install.packages("devtools")
+```r
+install.packages("remotes")
+```
 
 Then the `RadialMR` package can be installed using:
-
-    library(devtools)
-    install_github("WSpiller/RadialMR")
-    
-To update the package just run the `install_github("WSpiller/RadialMR")` command again.
+```r
+remotes::install_github("WSpiller/RadialMR")
+```
+To update the package just run the `remotes::install_github("WSpiller/RadialMR")` command again.
 
 ## Description
 
@@ -46,7 +47,3 @@ The paper has been published in the International Journal of Epidemiology:
 ## License
 
 This project is licensed under GNU GPL v3.
-
-
-
-
