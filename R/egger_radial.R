@@ -28,7 +28,19 @@
 #'                           ldl.dat[,1])
 #'
 #' egger_radial(ldl.fdat, 0.05, 1, TRUE)
-
+#'
+#' # Example using TwoSampleMR format data
+#' \dontrun{
+#' # Example with one exposure-outcome pair
+#' bmi_exp_dat <- TwoSampleMR::extract_instruments(outcomes = 'ieu-a-2')
+#' chd_out_dat <- TwoSampleMR::extract_outcome_data(
+#'                                snps = bmi_exp_dat$SNP,
+#'                                outcomes = 'ieu-a-7')
+#' tsmrdat <- TwoSampleMR::harmonise_data(exposure_dat = bmi_exp_dat,
+#'                                    outcome_dat = chd_out_dat)
+#' egger_radial(r_input = tsmrdat, alpha = 0.05,
+#'              weights = 1, summary = TRUE)
+#' }
 
 egger_radial<-function(r_input,alpha,weights,summary){
 
