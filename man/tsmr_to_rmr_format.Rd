@@ -10,10 +10,13 @@ tsmr_to_rmr_format(dat)
 \item{dat}{Output for a single exposure-outcome pair from \code{\link[TwoSampleMR:harmonise_data]{TwoSampleMR::harmonise_data}}.}
 }
 \value{
-List of RadialMR format dataframes
+Object of class \code{rmr_format}, the RadialMR format
 }
 \description{
 Creates an object of RadialMR format, i.e. of class \code{rmr_format}, for a single exposure - outcome pair.
+}
+\details{
+Only the rows where the column \code{mr_keep} are \code{TRUE} are kept.
 }
 \examples{
 \dontrun{

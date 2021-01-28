@@ -39,10 +39,34 @@ An object of class \code{"IVW"} containing the following components:\describe{
 Fits a radial inverse variance weighted (IVW) model using a range of weighting specifications. Outliers are determined with respect to their contribution to global heterogeneity, quantified by Cochran's Q-statistic, using a significance threshold specified by the user. The \code{ivw_radial} function returns an object of class \code{"IVW"}, containing effect estimates, total estimated heterogeneity using Cochran's Q-statistic, the individual contribution to overall heterogeneity of each variant, and a data frame for used in the downstream plotting functions \code{plot_radial} and \code{plotly_radial}.
 }
 \examples{
+# Example using format_radial data
 ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
 ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
-                         ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
+                          ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
+
+# Example using TwoSampleMR format data
+\dontrun{
+# Example with one exposure-outcome pair
+bmi_exp_dat <- TwoSampleMR::extract_instruments(outcomes = 'ieu-a-2')
+chd_out_dat <- TwoSampleMR::extract_outcome_data(
+                               snps = bmi_exp_dat$SNP,
+                               outcomes = 'ieu-a-7')
+tsmrdat <- TwoSampleMR::harmonise_data(exposure_dat = bmi_exp_dat,
+                                   outcome_dat = chd_out_dat)
+ivw_radial(r_input = tsmrdat, alpha = 0.05,
+           weights = 1, tol = 0.0001, summary = TRUE)
+}
+
+# Example using MendelianRandomization format data
+dat <- data_radial[data_radial[,10] < 5e-8,]
+mrdat <- MendelianRandomization::mr_input(bx = dat$ldlcbeta,
+                                          bxse = dat$ldlcse,
+                                          by = dat$chdbeta,
+                                          byse = dat$chdse,
+                                          snps = dat$rsid)
+ivw_radial(r_input = mrdat, alpha = 0.05,
+           weights = 1, tol = 0.0001, summary = TRUE)
 }
 \references{
 Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
