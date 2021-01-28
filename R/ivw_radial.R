@@ -28,9 +28,9 @@
 #' @importFrom stats lm coef confint optimize pchisq pf pnorm pt qchisq qt sd
 #' @export
 #' @examples
-#'ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
-#'ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
-#'                          ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
+#' ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
+#' ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
+#'                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 #' ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
 
 ivw_radial<-function(r_input,alpha,weights,tol,summary){
