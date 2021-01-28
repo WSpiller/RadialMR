@@ -20,6 +20,7 @@
 #' @importFrom stats lm coef confint optimize pchisq pf pnorm pt qchisq qt sd
 #' @export
 #' @examples
+#' # Example using format_radial data
 #' ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
 #'
 #' ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
