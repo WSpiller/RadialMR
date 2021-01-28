@@ -41,7 +41,8 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
                     "beta.outcome",
                     "se.exposure",
                     "se.outcome",
-                    "SNP")
+                    "SNP",
+                    "mr_keep")
     for (i in 1:length(cnamesneed)) {
       if (!(cnamesneed[i] %in% colnames(r_input))) {
         stop(paste('This data.frame does not have the required column',
