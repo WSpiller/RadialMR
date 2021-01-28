@@ -50,6 +50,12 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     }
     r_input <- tsmr_to_rmr_format(r_input)
   }
+
+  # convert MRInput object to rmr_format
+  if ("MRInput" %in% class(r_input)) {
+    r_input <- mrinput_to_rmr_format(r_input)
+  }
+
   if(!("rmr_format" %in%
        class(r_input))) {
     stop('The class of the data object must be "rmr_format", please resave the object with the output of format_radial().')
