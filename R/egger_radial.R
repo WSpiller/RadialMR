@@ -47,6 +47,12 @@ egger_radial<-function(r_input,alpha,weights,summary){
     }
     r_input <- tsmr_to_rmr_format(r_input)
   }
+
+  # convert MRInput object to rmr_format
+  if ("MRInput" %in% class(r_input)) {
+    r_input <- mrinput_to_rmr_format(r_input)
+  }
+
   # Perform check that r_input has been formatted using format_radial function
 
   if(!("rmr_format" %in%
