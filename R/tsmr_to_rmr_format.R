@@ -7,7 +7,7 @@
 #' @param dat Output for a single exposure-outcome pair from [`TwoSampleMR::harmonise_data`].
 #'
 #' @export
-#' @return List of RadialMR format dataframes
+#' @return Object of class `rmr_format`, the RadialMR format
 #' @examples
 #' \dontrun{
 #' # Example with one exposure-outcome pair
