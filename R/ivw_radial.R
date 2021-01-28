@@ -35,6 +35,21 @@
 
 ivw_radial<-function(r_input,alpha,weights,tol,summary){
 
+  # convert TwoSampleMR single exposure-outcome pair object to rmr_format
+  if (length(class(r_input)) == 1 && class(r_input) == "data.frame") {
+    cnamesneed <- c("beta.exposure",
+                    "beta.outcome",
+                    "se.exposure",
+                    "se.outcome",
+                    "SNP")
+    for (i in 1:length(cnamesneed)) {
+      if (!(cnamesneed[i] %in% colnames(r_input))) {
+        stop(paste('This data.frame does not have the required column',
+                   cnamesneed[i]))
+      }
+    }
+    r_input <- tsmr_to_rmr_format(r_input)
+  }
   if(!("rmr_format" %in%
        class(r_input))) {
     stop('The class of the data object must be "rmr_format", please resave the object with the output of format_radial().')
