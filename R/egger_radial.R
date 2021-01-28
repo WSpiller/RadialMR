@@ -32,6 +32,21 @@
 
 egger_radial<-function(r_input,alpha,weights,summary){
 
+  # convert TwoSampleMR single exposure-outcome pair object to rmr_format
+  if (length(class(r_input)) == 1 && class(r_input) == "data.frame") {
+    cnamesneed <- c("beta.exposure",
+                    "beta.outcome",
+                    "se.exposure",
+                    "se.outcome",
+                    "SNP")
+    for (i in 1:length(cnamesneed)) {
+      if (!(cnamesneed[i] %in% colnames(r_input))) {
+        stop(paste('This data.frame does not have the required column',
+                   cnamesneed[i]))
+      }
+    }
+    r_input <- tsmr_to_rmr_format(r_input)
+  }
   # Perform check that r_input has been formatted using format_radial function
 
   if(!("rmr_format" %in%
