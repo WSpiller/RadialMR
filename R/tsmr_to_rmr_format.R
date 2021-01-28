@@ -2,6 +2,8 @@
 #'
 #' Creates an object of RadialMR format, i.e. of class `rmr_format`, for a single exposure - outcome pair.
 #'
+#' Only the rows where the column `mr_keep` are `TRUE` are kept.
+#'
 #' @param dat Output for a single exposure-outcome pair from [`TwoSampleMR::harmonise_data`].
 #'
 #' @export
