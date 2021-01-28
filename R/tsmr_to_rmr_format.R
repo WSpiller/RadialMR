@@ -20,6 +20,7 @@
 #' head(dat)
 #' }
 tsmr_to_rmr_format <- function(dat) {
+  dat <- dat[dat$mr_keep == TRUE,]
   out <- format_radial(BXG = dat$beta.exposure,
                        BYG = dat$beta.outcome,
                        seBXG = dat$se.exposure,
