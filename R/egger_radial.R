@@ -41,6 +41,16 @@
 #' egger_radial(r_input = tsmrdat, alpha = 0.05,
 #'              weights = 1, summary = TRUE)
 #' }
+#'
+#' # Example using MendelianRandomization format data
+#' dat <- data_radial[data_radial[,10] < 5e-8,]
+#' mrdat <- MendelianRandomization::mr_input(bx = dat$ldlcbeta,
+#'                                           bxse = dat$ldlcse,
+#'                                           by = dat$chdbeta,
+#'                                           byse = dat$chdse,
+#'                                           snps = dat$rsid)
+#' egger_radial(r_input = mrdat, alpha = 0.05,
+#'              weights = 1, summary = TRUE)
 
 egger_radial<-function(r_input,alpha,weights,summary){
 
