@@ -33,6 +33,19 @@
 #' ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
 #'                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 #' ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
+#'
+#' # Example using TwoSampleMR format data
+#' \dontrun{
+#' # Example with one exposure-outcome pair
+#' bmi_exp_dat <- TwoSampleMR::extract_instruments(outcomes = 'ieu-a-2')
+#' chd_out_dat <- TwoSampleMR::extract_outcome_data(
+#'                                snps = bmi_exp_dat$SNP,
+#'                                outcomes = 'ieu-a-7')
+#' tsmrdat <- TwoSampleMR::harmonise_data(exposure_dat = bmi_exp_dat,
+#'                                    outcome_dat = chd_out_dat)
+#' ivw_radial(r_input = tsmrdat, alpha = 0.05,
+#'            weights = 1, tol = 0.0001, summary = TRUE)
+#' }
 
 ivw_radial<-function(r_input,alpha,weights,tol,summary){
 
