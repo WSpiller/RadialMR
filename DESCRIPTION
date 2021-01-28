@@ -21,6 +21,11 @@ Imports:
   ggplot2,
   magrittr,
   plotly
+Suggests:
+  MendelianRandomization,
+  TwoSampleMR
+Remotes:
+  mrcieu/twosamplemr
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
