@@ -1,3 +1,5 @@
 ^RadialMR\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE$
+^docs$
+^_pkgdown\.yml
