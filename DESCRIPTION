@@ -23,7 +23,7 @@ Imports:
   plotly
 Suggests:
   MendelianRandomization,
-  TwoSampleMR
+  TwoSampleMR (>= 0.5.0)
 Remotes:
   mrcieu/twosamplemr
 LazyData: true

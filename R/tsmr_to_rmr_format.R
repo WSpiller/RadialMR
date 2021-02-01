@@ -2,10 +2,12 @@
 #'
 #' Creates an object of RadialMR format, i.e. of class `rmr_format`, for a single exposure - outcome pair.
 #'
+#' Only the rows where the column `mr_keep` are `TRUE` are kept.
+#'
 #' @param dat Output for a single exposure-outcome pair from [`TwoSampleMR::harmonise_data`].
 #'
 #' @export
-#' @return List of RadialMR format dataframes
+#' @return Object of class `rmr_format`, the RadialMR format
 #' @examples
 #' \dontrun{
 #' # Example with one exposure-outcome pair
@@ -20,6 +22,7 @@
 #' head(dat)
 #' }
 tsmr_to_rmr_format <- function(dat) {
+  dat <- dat[dat$mr_keep == TRUE,]
   out <- format_radial(BXG = dat$beta.exposure,
                        BYG = dat$beta.outcome,
                        seBXG = dat$se.exposure,

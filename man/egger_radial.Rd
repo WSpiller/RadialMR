@@ -30,14 +30,37 @@ An object of class \code{"egger"} containing the following components:\describe{
 Fits a radial MR-Egger model using first order, second order, or modified second order weights. Outliers are identified using a significance threshold specified by the user. The function returns an object of class \code{"egger"}, containing regression estimates, a measure of total heterogeneity using Rucker's Q statistic, the individual contribution to overall heterogeneity of each variant, and a data frame for use in constructing the radial plot.
 }
 \examples{
-
+# Example using format_radial data
 ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
 
 ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
-              ldl.dat[,15], ldl.dat[,21],
-              ldl.dat[,1])
+                          ldl.dat[,15], ldl.dat[,21],
+                          ldl.dat[,1])
 
 egger_radial(ldl.fdat, 0.05, 1, TRUE)
+
+# Example using TwoSampleMR format data
+\dontrun{
+# Example with one exposure-outcome pair
+bmi_exp_dat <- TwoSampleMR::extract_instruments(outcomes = 'ieu-a-2')
+chd_out_dat <- TwoSampleMR::extract_outcome_data(
+                               snps = bmi_exp_dat$SNP,
+                               outcomes = 'ieu-a-7')
+tsmrdat <- TwoSampleMR::harmonise_data(exposure_dat = bmi_exp_dat,
+                                   outcome_dat = chd_out_dat)
+egger_radial(r_input = tsmrdat, alpha = 0.05,
+             weights = 1, summary = TRUE)
+}
+
+# Example using MendelianRandomization format data
+dat <- data_radial[data_radial[,10] < 5e-8,]
+mrdat <- MendelianRandomization::mr_input(bx = dat$ldlcbeta,
+                                          bxse = dat$ldlcse,
+                                          by = dat$chdbeta,
+                                          byse = dat$chdse,
+                                          snps = dat$rsid)
+egger_radial(r_input = mrdat, alpha = 0.05,
+             weights = 1, summary = TRUE)
 }
 \references{
 Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.

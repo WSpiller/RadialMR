@@ -20,15 +20,37 @@
 #' @importFrom stats lm coef confint optimize pchisq pf pnorm pt qchisq qt sd
 #' @export
 #' @examples
+#' # Example using format_radial data
+#' ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
 #'
-#'ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
-#'
-#'ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
-#'               ldl.dat[,15], ldl.dat[,21],
-#'               ldl.dat[,1])
+#' ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
+#'                           ldl.dat[,15], ldl.dat[,21],
+#'                           ldl.dat[,1])
 #'
 #' egger_radial(ldl.fdat, 0.05, 1, TRUE)
-
+#'
+#' # Example using TwoSampleMR format data
+#' \dontrun{
+#' # Example with one exposure-outcome pair
+#' bmi_exp_dat <- TwoSampleMR::extract_instruments(outcomes = 'ieu-a-2')
+#' chd_out_dat <- TwoSampleMR::extract_outcome_data(
+#'                                snps = bmi_exp_dat$SNP,
+#'                                outcomes = 'ieu-a-7')
+#' tsmrdat <- TwoSampleMR::harmonise_data(exposure_dat = bmi_exp_dat,
+#'                                    outcome_dat = chd_out_dat)
+#' egger_radial(r_input = tsmrdat, alpha = 0.05,
+#'              weights = 1, summary = TRUE)
+#' }
+#'
+#' # Example using MendelianRandomization format data
+#' dat <- data_radial[data_radial[,10] < 5e-8,]
+#' mrdat <- MendelianRandomization::mr_input(bx = dat$ldlcbeta,
+#'                                           bxse = dat$ldlcse,
+#'                                           by = dat$chdbeta,
+#'                                           byse = dat$chdse,
+#'                                           snps = dat$rsid)
+#' egger_radial(r_input = mrdat, alpha = 0.05,
+#'              weights = 1, summary = TRUE)
 
 egger_radial<-function(r_input,alpha,weights,summary){
 
@@ -38,7 +60,8 @@ egger_radial<-function(r_input,alpha,weights,summary){
                     "beta.outcome",
                     "se.exposure",
                     "se.outcome",
-                    "SNP")
+                    "SNP",
+                    "mr_keep")
     for (i in 1:length(cnamesneed)) {
       if (!(cnamesneed[i] %in% colnames(r_input))) {
         stop(paste('This data.frame does not have the required column',
