@@ -81,12 +81,6 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     r_input <- mrinput_to_rmr_format(r_input)
   }
 
-  if(!("rmr_format" %in%
-       class(r_input))) {
-    stop('The class of the data object must be "rmr_format", please resave the object with the output of format_radial().')
-
-  }
-
   if(missing(alpha)) {
     alpha<-0.05
     warning("Significance threshold for outlier detection not specified: Adopting a 95% threshold")
