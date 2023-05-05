@@ -7,6 +7,7 @@
 #' @export
 #' @return Object of class `rmr_format`, the RadialMR format
 #' @examples
+#' if (require("MendelianRandomization")) {
 #' dat <- data_radial[data_radial[,10] < 5e-8,]
 #' dat <- MendelianRandomization::mr_input(bx = dat$ldlcbeta,
 #'                                         bxse = dat$ldlcse,
@@ -16,6 +17,7 @@
 #' dat <- mrinput_to_rmr_format(dat)
 #' head(dat)
 #' class(dat)
+#' }
 mrinput_to_rmr_format <- function(dat) {
   if (!("MRInput" %in% class(dat))) {
     stop('The class of the input data object must be "MRInput"')
