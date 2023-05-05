@@ -266,7 +266,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
 
     cat("\n")
 
-    print(coef(EstimatesEGGER))
+    print(stats::coef(EstimatesEGGER))
 
     cat("\nResidual standard error:", round(EstimatesEGGER$sigma,3), "on", EstimatesEGGER$df[2], "degrees of freedom")
 
