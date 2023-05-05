@@ -7,7 +7,7 @@
 #' @export
 #' @return Object of class `rmr_format`, the RadialMR format
 #' @examples
-#' if (require("MendelianRandomization")) {
+#' if (require("MendelianRandomization", quietly = TRUE)) {
 #' dat <- data_radial[data_radial[,10] < 5e-8,]
 #' dat <- MendelianRandomization::mr_input(bx = dat$ldlcbeta,
 #'                                         bxse = dat$ldlcse,
