@@ -20,7 +20,7 @@
 #' @export
 #' @examples
 #' # Example using format_radial data
-#' ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
+#' ldl.dat <- data_radial[data_radial[,10]<5e-8,]
 #'
 #' ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
 #'                           ldl.dat[,15], ldl.dat[,21],

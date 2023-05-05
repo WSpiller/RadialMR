@@ -10,7 +10,7 @@
 #' @importFrom magrittr "%>%"
 #' @export
 #' @examples
-#' ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
+#' ldl.dat <- data_radial[data_radial[,10]<5e-8,]
 #' ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
 #'                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 #' ivw.object <- ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
