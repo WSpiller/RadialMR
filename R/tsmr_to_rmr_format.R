@@ -10,7 +10,7 @@
 #' @return Object of class `rmr_format`, the RadialMR format
 #' @examples
 #' \dontrun{
-#' if (require("TwoSampleMR")) {
+#' if (require("TwoSampleMR", quietly = TRUE)) {
 #'   # Example with one exposure-outcome pair
 #'   bmi_exp_dat <- TwoSampleMR::extract_instruments(outcomes = 'ieu-a-2')
 #'   chd_out_dat <- TwoSampleMR::extract_outcome_data(
