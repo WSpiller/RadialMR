@@ -59,7 +59,7 @@
 ivw_radial<-function(r_input,alpha,weights,tol,summary){
 
   # convert TwoSampleMR single exposure-outcome pair object to rmr_format
-  if (length(class(r_input)) == 1 && class(r_input) == "data.frame") {
+  if (length(class(r_input)) == 1 && is.data.frame(r_input)) {
     cnamesneed <- c("beta.exposure",
                     "beta.outcome",
                     "se.exposure",
