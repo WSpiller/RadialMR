@@ -441,7 +441,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
 
   # Create data frame for displaying summary results
 
-  Sum.Dat<-data.frame(coef(EstimatesIVW))
+  Sum.Dat<-data.frame(stats::coef(EstimatesIVW))
   names(Sum.Dat)<-c("Estimate","Std.Error","t value","Pr(>|t|)")
   names(Bhat1.Iterative$It.Res)<-names(Sum.Dat)
   combined.dat<-(rbind(Sum.Dat,Bhat1.Iterative$It.Res))
