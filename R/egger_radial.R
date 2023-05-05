@@ -132,7 +132,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
   BetaWj<-Ratios*Wj
 
   # Define Egger Model
-  Egger.Model<-lm(BetaWj~Wj)
+  Egger.Model<-stats::lm(BetaWj~Wj)
 
   # Save summary of Radial Egger model
   EstimatesEGGER<-summary(Egger.Model)
@@ -175,7 +175,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
     BetaWj<-Ratios*Wj
 
     # Define Radial Egger model
-    Egger.Model<-lm(BetaWj~Wj)
+    Egger.Model<-stats::lm(BetaWj~Wj)
 
     # Save summary of Radial Egger model
     EstimatesEGGER<-summary(Egger.Model)
