@@ -17,6 +17,8 @@ Description: A package for implementing radial inverse variance weighted and MR-
 License: GPL-3
 Depends: R (>= 3.5.0)
 Encoding: UTF-8
+URL: https://github.com/WSpiller/RadialMR,
+    https://wspiller.github.io/RadialMR/
 Imports:
   ggplot2,
   magrittr,
