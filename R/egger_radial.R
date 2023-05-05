@@ -163,7 +163,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
   Total_Q<-sum(Qj)
 
   # Perform chi square test with respect to global Q statistic Total_Q
-  Total_Q_chi<-pchisq(Total_Q,length(r_input[,2])-2,lower.tail = FALSE)
+  Total_Q_chi<-stats::pchisq(Total_Q,length(r_input[,2])-2,lower.tail = FALSE)
 
   # Perform additional analyses to calculate modified second order weights
   if(weights==3){
@@ -206,7 +206,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
     Total_Q<-sum(Qj)
 
     # Perform chi square test with respect to global Q statistic Total_Q
-    Total_Q_chi<-pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
+    Total_Q_chi<-stats::pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
 
   }
 
@@ -215,7 +215,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
 
   # Perform chi square tests for each Q contribution Qj
   for(i in 1:length(Qj)){
-    Qj_Chi[i]<-pchisq(Qj[i],1,lower.tail = FALSE)
+    Qj_Chi[i]<-stats::pchisq(Qj[i],1,lower.tail = FALSE)
   }
 
   # Create data frame with SNP IDs and outlier information
@@ -275,7 +275,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
 
     cat(paste(c("\nF-statistic:", " on"," and"), round(EstimatesEGGER$fstatistic,2), collapse=""),
         "DF, p-value:",
-        format.pval(pf(EstimatesEGGER$fstatistic[1L], EstimatesEGGER$fstatistic[2L], EstimatesEGGER$fstatistic[3L],
+        format.pval(stats::pf(EstimatesEGGER$fstatistic[1L], EstimatesEGGER$fstatistic[2L], EstimatesEGGER$fstatistic[3L],
                        lower.tail = FALSE), digits=3))
 
     cat("\n")
