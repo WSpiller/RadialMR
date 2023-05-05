@@ -269,7 +269,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
       w      = 1/(phi*r_input[,5]^2/r_input[,2]^2 + (beta^2)*r_input[,4]^2/r_input[,2]^2)
       q      =  (sum(w*(Ratios - beta)^2))
     }
-    b  = optimize(PL2,interval=c(lb,ub))$minimum
+    b  = stats::optimize(PL2,interval=c(lb,ub))$minimum
     w    = 1/(phi*r_input[,5]^2/r_input[,2]^2 + (b^2)*r_input[,4]^2/r_input[,2]^2)
     q    =  (sum(w*(Ratios - b)^2) - DF)^2
   }
