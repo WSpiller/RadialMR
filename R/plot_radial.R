@@ -55,7 +55,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
   if(length(r_object)>=6 && length(r_object)<=13){
 
-    if(class(r_object)=="IVW"){
+    if(inherits(r_object, "IVW")){
 
       r_object$coef<-c(r_object$coef[2,])
       r_object$coef<-as.numeric(r_object$coef)
@@ -954,7 +954,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
     }
 
-    if(class(r_object)=="egger"){
+    if(inherits(r_object, "egger")){
 
 
       maximal<-atan(max(abs(r_object$data[,3]))/max(r_object$data[,2]))
