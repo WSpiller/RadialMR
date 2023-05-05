@@ -30,7 +30,7 @@ The function provides a data frame containing the following columns:\describe{
 A function which restructures summary GWAS data for downstream two-sample Mendelian randomization analyses. Where variant identification numbers are not provided, an index vector is generated corresponding to the ordering of variants provided.
 }
 \examples{
-ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
+ldl.dat <- data_radial[data_radial[,10]<5e-8,]
 ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 head(ldl.fdat)
