@@ -1,6 +1,6 @@
 Package: RadialMR
 Title: RadialMR
-Version: 1.0
+Version: 1.1
 Authors@R: c(person("Wes", "Spiller", 
                     email = "wes.spiller@bristol.ac.uk", 
                     role = c("aut", "cre"),
