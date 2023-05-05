@@ -80,7 +80,7 @@ circle.radial <- function(center = c(0,0), radius, num.points, START,END){
 
       T_PLOT<- plotly::plot_ly(r_object$data, mode="marker", type = 'scatter') %>%
         plotly::add_trace(x = r_object$data[r_object$data$Outliers=="Variant",]$Wj , y = r_object$data[r_object$data$Outliers=="Variant",]$BetaWj, name = 'Variant', mode = 'markers', marker= list(color="black"),text= r_object$data[r_object$data$Outliers=="Variant",]$SNP, hoverinfo = 'text') %>%
-        plotly::add_trace(x = cxIVW , y = cyIVW, mode = 'line',showlegend=FALSE,name="IVW_CI", line= list(color = "#56B4E9",size=1)) %>%
+        plotly::add_trace(x = cxIVW , y = cyIVW, mode = 'lines',showlegend=FALSE,name="IVW_CI", line= list(color = "#56B4E9",size=1)) %>%
         plotly::layout(xaxis = ax,yaxis = ay) %>%
         plotly::add_segments(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,name = "IVW", line= list(color = "#56B4E9",size=1))%>%
         plotly::add_annotations(x = c(cxIVW[1],cos(atan(r_object$coef[1]))*R.IVW,cxIVW[100]),
@@ -101,7 +101,7 @@ circle.radial <- function(center = c(0,0), radius, num.points, START,END){
       T_PLOT<- plotly::plot_ly(r_object$data, mode="marker", type = 'scatter') %>%
         plotly::add_trace(x = r_object$data[r_object$data$Outliers=="Variant",]$Wj , y = r_object$data[r_object$data$Outliers=="Variant",]$BetaWj, name = 'Variant', mode = 'markers', marker= list(color="black"),text= r_object$data[r_object$data$Outliers=="Variant",]$SNP, hoverinfo = 'text') %>%
         plotly::add_trace(x = r_object$data[r_object$data$Outliers=="Outlier",]$Wj , y = r_object$data[r_object$data$Outliers=="Outlier",]$BetaWj, name = 'Outlier', mode = 'markers', marker= list(color="#E69F00"),text= r_object$data[r_object$data$Outliers=="Outlier",]$SNP, hoverinfo = 'text') %>%
-        plotly::add_trace(x = cxIVW , y = cyIVW, mode = 'line',showlegend=FALSE,name="IVW_CI", line= list(color = "#56B4E9",size=1)) %>%
+        plotly::add_trace(x = cxIVW , y = cyIVW, mode = 'lines',showlegend=FALSE,name="IVW_CI", line= list(color = "#56B4E9",size=1)) %>%
         plotly::layout(xaxis = ax,yaxis = ay) %>%
         plotly::add_segments(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,name = "IVW", line= list(color = "#56B4E9",size=1))%>%
         plotly::add_annotations(x = c(cxIVW[1],cos(atan(r_object$coef[1]))*R.IVW,cxIVW[100]),
@@ -164,7 +164,7 @@ circle.radial <- function(center = c(0,0), radius, num.points, START,END){
 
       T_PLOT<- plotly::plot_ly(r_object$data, mode="marker", type = 'scatter') %>%
         plotly::add_trace(x = r_object$data[r_object$data$Outliers=="Variant",]$Wj , y = r_object$data[r_object$data$Outliers=="Variant",]$BetaWj, name = 'Variant', mode = 'markers', marker= list(color="black"),text= r_object$data[r_object$data$Outliers=="Variant",]$SNP, hoverinfo = 'text') %>%
-        plotly::add_trace(x = cxEgger , y = cyEgger, mode = 'line',showlegend=FALSE,name="Egger_CI", line= list(color = "#D55E00",size=1)) %>%
+        plotly::add_trace(x = cxEgger , y = cyEgger, mode = 'lines',showlegend=FALSE,name="Egger_CI", line= list(color = "#D55E00",size=1)) %>%
         plotly::layout(xaxis = ax,yaxis = ay) %>%
         plotly::add_segments(x = 0, xend = cos(atan(r_object$coef[2,1]))*R.Egger, y = r_object$coef[1,1], yend = (sin(atan(r_object$coef[2,1]))*R.Egger)+r_object$coef[1,1],name = "Egger", line= list(color = "#D55E00",size=1))%>%
         plotly::add_annotations(x = c(cxEgger[1],cos(atan(r_object$coef[2,1]))*R.Egger,cxEgger[100]),
@@ -185,7 +185,7 @@ circle.radial <- function(center = c(0,0), radius, num.points, START,END){
       T_PLOT<- plotly::plot_ly(r_object$data, mode="marker", type = 'scatter') %>%
         plotly::add_trace(x = r_object$data[r_object$data$Outliers=="Variant",]$Wj , y = r_object$data[r_object$data$Outliers=="Variant",]$BetaWj, name = 'Variant', mode = 'markers', marker= list(color="black"),text= r_object$data[r_object$data$Outliers=="Variant",]$SNP, hoverinfo = 'text') %>%
         plotly::add_trace(x = r_object$data[r_object$data$Outliers=="Outlier",]$Wj , y = r_object$data[r_object$data$Outliers=="Outlier",]$BetaWj, name = 'Outlier', mode = 'markers', marker= list(color="#E69F00"),text= r_object$data[r_object$data$Outliers=="Outlier",]$SNP, hoverinfo = 'text') %>%
-        plotly::add_trace(x = cxEgger , y = cyEgger, mode = 'line',showlegend=FALSE,name="Egger_CI", line= list(color = "#D55E00",size=1)) %>%
+        plotly::add_trace(x = cxEgger , y = cyEgger, mode = 'lines',showlegend=FALSE,name="Egger_CI", line= list(color = "#D55E00",size=1)) %>%
         plotly::layout(xaxis = ax,yaxis = ay) %>%
         plotly::add_segments(x = 0, xend = cos(atan(r_object$coef[2,1]))*R.Egger, y = r_object$coef[1,1], yend = (sin(atan(r_object$coef[2,1]))*R.Egger)+r_object$coef[1,1],name = "Egger", line= list(color = "#D55E00",size=1))%>%
         plotly::add_annotations(x = c(cxEgger[1],cos(atan(r_object$coef[2,1]))*R.Egger,cxEgger[100]),
