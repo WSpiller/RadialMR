@@ -184,7 +184,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     IVW.SE<-EstimatesIVW$coefficients[2]
 
     # Define confidence interval for effect estimate using IVW model
-    IVW_CI<-confint(IVW.Model)
+    IVW_CI<-stats::confint(IVW.Model)
 
     # Calculate Q statistic for each individual variant
     Qj<-W*(Ratios-IVW.Slope)^2
@@ -508,7 +508,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
   names(out_data)<-c("SNP","Wj","BetaWj","Qj","Qj_Chi","Outliers")
 
   multi_return <- function() {
-    Out_list <- list("coef" = combined.dat,"qstatistic"= Total_Q, "df" = length(r_input[,2])-1, "outliers" = outtab, "data" = out_data, "confint" = confint(IVW.Model),
+    Out_list <- list("coef" = combined.dat,"qstatistic"= Total_Q, "df" = length(r_input[,2])-1, "outliers" = outtab, "data" = out_data, "confint" = stats::confint(IVW.Model),
                      "it.coef"=combined.dat[2,],"fe.coef"=combined.dat[3,],"re.coef" = combined.dat[4,1], "it.confint"= Bhat1.Iterative$It.CI,"fe.confint" = FCI$CI, "re.confint" = RCI, "meanF"= mf)
     class(Out_list)<-"IVW"
 
