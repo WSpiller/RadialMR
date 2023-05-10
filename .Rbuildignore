@@ -2,4 +2,5 @@
 ^\.Rproj\.user$
 ^LICENSE$
 ^docs$
-^_pkgdown\.yml
+^_pkgdown\.yml$
+^pkgdown$

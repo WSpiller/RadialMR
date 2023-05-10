@@ -25,17 +25,17 @@
 #'}
 #' @author Wes Spiller; Jack Bowden; Tom Palmer.
 #' @references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
-#' @importFrom stats lm coef confint optimize pchisq pf pnorm pt qchisq qt sd
 #' @export
 #' @examples
 #' # Example using format_radial data
-#' ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
+#' ldl.dat <- data_radial[data_radial[,10]<5e-8,]
 #' ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
 #'                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 #' ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
 #'
 #' # Example using TwoSampleMR format data
 #' \dontrun{
+#' if (require("TwoSampleMR", quietly = TRUE)) {
 #' # Example with one exposure-outcome pair
 #' bmi_exp_dat <- TwoSampleMR::extract_instruments(outcomes = 'ieu-a-2')
 #' chd_out_dat <- TwoSampleMR::extract_outcome_data(
@@ -46,8 +46,10 @@
 #' ivw_radial(r_input = tsmrdat, alpha = 0.05,
 #'            weights = 1, tol = 0.0001, summary = TRUE)
 #' }
+#' }
 #'
 #' # Example using MendelianRandomization format data
+#' if (require("MendelianRandomization", quietly = TRUE)) {
 #' dat <- data_radial[data_radial[,10] < 5e-8,]
 #' mrdat <- MendelianRandomization::mr_input(bx = dat$ldlcbeta,
 #'                                           bxse = dat$ldlcse,
@@ -56,11 +58,12 @@
 #'                                           snps = dat$rsid)
 #' ivw_radial(r_input = mrdat, alpha = 0.05,
 #'            weights = 1, tol = 0.0001, summary = TRUE)
+#' }
 
 ivw_radial<-function(r_input,alpha,weights,tol,summary){
 
   # convert TwoSampleMR single exposure-outcome pair object to rmr_format
-  if (length(class(r_input)) == 1 && class(r_input) == "data.frame") {
+  if (length(class(r_input)) == 1 && is.data.frame(r_input)) {
     cnamesneed <- c("beta.exposure",
                     "beta.outcome",
                     "se.exposure",
@@ -136,10 +139,10 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
   BetaWj<-Ratios*Wj
 
   # Define IVW Model
-  IVW.Model<-lm(BetaWj~-1+Wj)
+  IVW.Model<-stats::lm(BetaWj~-1+Wj)
 
   # Save summary of IVW model
-  EstimatesIVW<-summary(lm(IVW.Model))
+  EstimatesIVW<-summary(stats::lm(IVW.Model))
 
   # Define effect estimate using IVW model
   IVW.Slope<-EstimatesIVW$coefficients[1]
@@ -148,7 +151,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
   IVW.SE<-EstimatesIVW$coefficients[2]
 
   # Define confidence interval for effect estimate using IVW model
-  IVW_CI<-confint(IVW.Model)
+  IVW_CI<-stats::confint(IVW.Model)
 
   # Specify degrees of freedom as number of SNPs -1.
   DF<-length(r_input[,1])-1
@@ -160,7 +163,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
   Total_Q<-sum(Qj)
 
   # Perform chi square test with respect to global Q statistic Total_Q
-  Total_Q_chi<-pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
+  Total_Q_chi<-stats::pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
 
   # Perform additional analyses to calculate modified second order weights
   if(weights==3){
@@ -173,10 +176,10 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     BetaWj<-Ratios*Wj
 
     # Define IVW Model
-    IVW.Model<-lm(BetaWj~-1+Wj)
+    IVW.Model<-stats::lm(BetaWj~-1+Wj)
 
     # Save summary of IVW model
-    EstimatesIVW<-summary(lm(BetaWj~-1+Wj))
+    EstimatesIVW<-summary(stats::lm(BetaWj~-1+Wj))
 
     # Define effect estimate using IVW model
     IVW.Slope<-EstimatesIVW$coefficients[1]
@@ -185,7 +188,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     IVW.SE<-EstimatesIVW$coefficients[2]
 
     # Define confidence interval for effect estimate using IVW model
-    IVW_CI<-confint(IVW.Model)
+    IVW_CI<-stats::confint(IVW.Model)
 
     # Calculate Q statistic for each individual variant
     Qj<-W*(Ratios-IVW.Slope)^2
@@ -194,7 +197,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     Total_Q<-sum(Qj)
 
     # Perform chi square test with respect to global Q statistic Total_Q
-    Total_Q_chi<-pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
+    Total_Q_chi<-stats::pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
 
   }
 
@@ -214,14 +217,14 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
       # Perform IVW analysis as described above, with prefix new.
       Wj<-sqrt(W)
       BetaWj<-Ratios*Wj
-      new.IVW.Model<-lm(BetaWj~-1+Wj)
-      new.EstimatesIVW<-summary(lm(BetaWj~-1+Wj))
+      new.IVW.Model<-stats::lm(BetaWj~-1+Wj)
+      new.EstimatesIVW<-summary(stats::lm(BetaWj~-1+Wj))
       new.IVW.Slope<-new.EstimatesIVW$coefficients[1]
       new.IVW.SE<-new.EstimatesIVW$coefficients[2]
-      new.IVW_CI<-confint(new.IVW.Model)
+      new.IVW_CI<-stats::confint(new.IVW.Model)
       new.Qj<-W*(Ratios-new.IVW.Slope)^2
       new.Total_Q<-sum(new.Qj)
-      new.Total_Q_chi<-pchisq(new.Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
+      new.Total_Q_chi<-stats::pchisq(new.Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
 
       # Update absolute difference between estimates
       Diff  <- abs(Bhat1.Iterative - new.IVW.Slope)
@@ -270,7 +273,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
       w      = 1/(phi*r_input[,5]^2/r_input[,2]^2 + (beta^2)*r_input[,4]^2/r_input[,2]^2)
       q      =  (sum(w*(Ratios - beta)^2))
     }
-    b  = optimize(PL2,interval=c(lb,ub))$minimum
+    b  = stats::optimize(PL2,interval=c(lb,ub))$minimum
     w    = 1/(phi*r_input[,5]^2/r_input[,2]^2 + (b^2)*r_input[,4]^2/r_input[,2]^2)
     q    =  (sum(w*(Ratios - b)^2) - DF)^2
   }
@@ -288,12 +291,12 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
       W1        = 1/(seY^2/bxg^2)
       BIVw1     = Ratios*sqrt(W1)
       sW1       = sqrt(W1)
-      IVWfitR1  = summary(lm(BIVw1 ~ -1+sW1))
+      IVWfitR1  = summary(stats::lm(BIVw1 ~ -1+sW1))
       phi_IVW1  = IVWfitR1$sigma^2
       W2        = 1/(seY^2/bxg^2 + (byg^2)*seX^2/bxg^4)
       BIVw2     = Ratios*sqrt(W2)
       sW2       = sqrt(W2)
-      IVWfitR2  = summary(lm(BIVw2 ~ -1+sW2))
+      IVWfitR2  = summary(stats::lm(BIVw2 ~ -1+sW2))
       phi_IVW2  = IVWfitR2$sigma^2
 
       phi_IVW2 = max(1,phi_IVW2)
@@ -317,33 +320,33 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
           w      = 1/(phi*seY^2/bxg^2 + (beta^2)*seX^2/bxg^2)
           q      =  (sum(w*(Ratios - beta)^2))
         }
-        b  = optimize(PL2,interval=c(-lb,ub))$minimum
+        b  = stats::optimize(PL2,interval=c(-lb,ub))$minimum
         w    = 1/(phi*seY^2/bxg^2 + (b^2)*seX^2/bxg^2)
         q    =  (sum(w*(Ratios - b)^2) - DF)^2
       }
-      phi    = optimize(PLfunc,interval=c(phi_IVW2,phi_IVW1+0.001))$minimum
-      B[hh]  = optimize(PL2,interval=c(lb,ub))$minimum
+      phi    = stats::optimize(PLfunc,interval=c(phi_IVW2,phi_IVW1+0.001))$minimum
+      B[hh]  = stats::optimize(PL2,interval=c(lb,ub))$minimum
     }
-    se   = sd(B)
+    se   = stats::sd(B)
     mB   = mean(B)
     return(list(mB=mB,se=se))
   }
 
   CIfunc = function(){
-    z = qt(df=DF, 0.975)
-    z2 = 2*(1-pnorm(z))
+    z = stats::qt(df=DF, 0.975)
+    z2 = 2*(1-stats::pnorm(z))
 
     PL3 = function(a){
       b = a[1]
       w = 1/(r_input[,5]^2/r_input[,2]^2 + (b^2)*r_input[,4]^2/r_input[,2]^2)
-      q    =  (sum(w*(Ratios - b)^2) - qchisq(1-z2,DF))^2
+      q    =  (sum(w*(Ratios - b)^2) - stats::qchisq(1-z2,DF))^2
     }
 
     lb = Bhat - 10*SE
     ub = Bhat + 10*SE
 
-    low   = optimize(PL3,interval=c(lb,Bhat))$minimum
-    high  = optimize(PL3,interval=c(Bhat,ub))$minimum
+    low   = stats::optimize(PL3,interval=c(lb,Bhat))$minimum
+    high  = stats::optimize(PL3,interval=c(Bhat,ub))$minimum
     CI    = c(low,high)
     return(list(CI=CI))
   }
@@ -351,19 +354,19 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
   # Fit fixed effect model and and perform exact Q test
 
   phi       = 1
-  Bhat      = optimize(PL2,interval=c(-2,2))$minimum
+  Bhat      = stats::optimize(PL2,interval=c(-2,2))$minimum
   W         = 1/(r_input[,5]^2/r_input[,2]^2 + (Bhat^2)*r_input[,4]^2/r_input[,2]^2)
   SE        = sqrt(1/sum(W))
   FCI        = CIfunc()
 
   QIVW      = sum(W*(Ratios - Bhat)^2)
-  Qp        = 1-pchisq(QIVW,DF)
+  Qp        = 1-stats::pchisq(QIVW,DF)
   Qind      = W*(Ratios - Bhat)^2
   ExactQ    = c(QIVW,Qp)
   ExactQind = Qind
   # Estimation (fixed effects) point estimate, se, t-stat, p-value)
 
-  FE_EXACT    = t(c(Bhat,SE,Bhat/SE,2*(1-pt(abs(Bhat/SE),DF))))
+  FE_EXACT    = t(c(Bhat,SE,Bhat/SE,2*(1-stats::pt(abs(Bhat/SE),DF))))
 
   FE_EXACT<-data.frame(FE_EXACT)
 
@@ -372,24 +375,24 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
   # Fit random effect model and and perform exact Q test
 
   BIVW1      = Ratios*sqrt(1/(r_input[,5]^2/r_input[,2]^2))
-  IVWfit1    = summary(lm(BIVW1 ~ -1+sqrt(1/(r_input[,5]^2/r_input[,2]^2))))
+  IVWfit1    = summary(stats::lm(BIVW1 ~ -1+sqrt(1/(r_input[,5]^2/r_input[,2]^2))))
   phi_IVW1   = IVWfit1$sigma^2
   BIVW2 <- Ratios*sqrt(1/(r_input[,5]^2/r_input[,2]^2 + (r_input[,3]^2)*r_input[,4]^2/r_input[,2]^4))
-  IVWfit2    = summary(lm(BIVW2 ~ -1+sqrt(1/(r_input[,5]^2/r_input[,2]^2 + (r_input[,3]^2)*r_input[,4]^2/r_input[,2]^4))))
+  IVWfit2    = summary(stats::lm(BIVW2 ~ -1+sqrt(1/(r_input[,5]^2/r_input[,2]^2 + (r_input[,3]^2)*r_input[,4]^2/r_input[,2]^4))))
   phi_IVW2   = IVWfit2$sigma^2
   phi_IVW2 = max(1,phi_IVW2)
   phi_IVW1 = max(1,phi_IVW1)+0.001
   lb = Bhat - 10*SE
   ub = Bhat + 10*SE
-  phi       = optimize(PLfunc,interval=c(phi_IVW2,phi_IVW1))$minimum
-  Bhat      = optimize(PL2,interval=c(lb,ub))$minimum
+  phi       = stats::optimize(PLfunc,interval=c(phi_IVW2,phi_IVW1))$minimum
+  Bhat      = stats::optimize(PL2,interval=c(lb,ub))$minimum
   Boot      = BootVar()
   SE        = Boot$se
 
   # Estimation (fixed effects) point estimate, se, t-stat, p-value)
 
-  RCI    = Bhat + c(-1,1)*qt(df=DF, 0.975)*SE
-  RE_EXACT  = t(c(Bhat,SE,Bhat/SE,2*(1-pt(abs(Bhat/SE),DF))))
+  RCI    = Bhat + c(-1,1)*stats::qt(df=DF, 0.975)*SE
+  RE_EXACT  = t(c(Bhat,SE,Bhat/SE,2*(1-stats::pt(abs(Bhat/SE),DF))))
   RE_EXACT<-data.frame(RE_EXACT)
   names(RE_EXACT)<-c("Estimate","Std.Error","t value","Pr(>|t|)")
 
@@ -398,7 +401,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
 
   # Perform chi square tests for each Q contribution Qj
   for(i in 1:length(Qj)){
-    Qj_Chi[i]<-pchisq(Qj[i],1,lower.tail = FALSE)
+    Qj_Chi[i]<-stats::pchisq(Qj[i],1,lower.tail = FALSE)
   }
 
   # Create data frame with SNP IDs and outlier information
@@ -442,7 +445,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
 
   # Create data frame for displaying summary results
 
-  Sum.Dat<-data.frame(coef(EstimatesIVW))
+  Sum.Dat<-data.frame(stats::coef(EstimatesIVW))
   names(Sum.Dat)<-c("Estimate","Std.Error","t value","Pr(>|t|)")
   names(Bhat1.Iterative$It.Res)<-names(Sum.Dat)
   combined.dat<-(rbind(Sum.Dat,Bhat1.Iterative$It.Res))
@@ -450,7 +453,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
   combined.dat<-rbind(combined.dat,RE_EXACT)
 
   for(i in 1:3){
-    combined.dat[i,4]<- 2 * pnorm(abs(combined.dat[i,1]/combined.dat[i,2]), lower.tail = FALSE)
+    combined.dat[i,4]<- 2 * stats::pnorm(abs(combined.dat[i,1]/combined.dat[i,2]), lower.tail = FALSE)
   }
 
   row.names(combined.dat)<-c("Effect","Iterative","Exact (FE)","Exact (RE)")
@@ -486,7 +489,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
 
     cat(paste(c("\nF-statistic:", " on"," and"), round(EstimatesIVW$fstatistic,2), collapse=""),
         "DF, p-value:",
-        format.pval(pf(EstimatesIVW$fstatistic[1L], EstimatesIVW$fstatistic[2L], EstimatesIVW$fstatistic[3L],
+        format.pval(stats::pf(EstimatesIVW$fstatistic[1L], EstimatesIVW$fstatistic[2L], EstimatesIVW$fstatistic[3L],
                        lower.tail = FALSE), digits=3))
 
     cat("\n")
@@ -509,7 +512,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
   names(out_data)<-c("SNP","Wj","BetaWj","Qj","Qj_Chi","Outliers")
 
   multi_return <- function() {
-    Out_list <- list("coef" = combined.dat,"qstatistic"= Total_Q, "df" = length(r_input[,2])-1, "outliers" = outtab, "data" = out_data, "confint" = confint(IVW.Model),
+    Out_list <- list("coef" = combined.dat,"qstatistic"= Total_Q, "df" = length(r_input[,2])-1, "outliers" = outtab, "data" = out_data, "confint" = stats::confint(IVW.Model),
                      "it.coef"=combined.dat[2,],"fe.coef"=combined.dat[3,],"re.coef" = combined.dat[4,1], "it.confint"= Bhat1.Iterative$It.CI,"fe.confint" = FCI$CI, "re.confint" = RCI, "meanF"= mf)
     class(Out_list)<-"IVW"
 

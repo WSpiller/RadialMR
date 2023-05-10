@@ -9,10 +9,9 @@
 #' @return A ggplot object containing a radial plot of either the IVW, MR-Egger, or both estimates simultaneously.
 #' @author Wes Spiller; Jack Bowden; Tom Palmer.
 #' @references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
-#' @importFrom stats quantile median
 #' @export
 #' @examples
-#' ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
+#' ldl.dat <- data_radial[data_radial[,10]<5e-8,]
 #' ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
 #'                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 #' ivw.object <- ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
@@ -56,7 +55,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
   if(length(r_object)>=6 && length(r_object)<=13){
 
-    if(class(r_object)=="IVW"){
+    if(inherits(r_object, "IVW")){
 
       r_object$coef<-c(r_object$coef[2,])
       r_object$coef<-as.numeric(r_object$coef)
@@ -111,14 +110,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 ggplot2::geom_path(ggplot2::aes(x=cxAll,y=cyAll))+ggplot2::geom_path(ggplot2::aes(x=cxIVW,y=cyIVW,colour="IVW"))+
                 ggplot2::geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5),
                           label=round(r_object$coef[1],digits=3),size=4)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[1],digits=3),size=3)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[2],digits=3),size=3)+
                 ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),
                                  axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
                 ggplot2::geom_segment(ggplot2::aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 ggplot2::coord_fixed()+ggplot2::scale_color_manual(name="Estimate",breaks=c("Variant","IVW"),values=c("IVW"="#56B4E9","Variant"="#000000"))
 
 
@@ -189,11 +188,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               B<-ggplot2::ggplot(r_object$data,ggplot2::aes(x=Wj,y=BetaWj))+ggplot2::labs(title="IVW Radial") + ggplot2::geom_point(ggplot2::aes(colour = Outliers))+ggplot2::geom_path(ggplot2::aes(x=cxAll,y=cyAll))+ggplot2::geom_path(ggplot2::aes(x=cxIVW,y=cyIVW,colour="IVW"))+
 
                 ggplot2::geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), label=round(r_object$coef[1],digits=3),size=4)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[1],digits=3),size=3)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[2],digits=3),size=3)+
+                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[1],digits=3),size=3)+
+                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[2],digits=3),size=3)+
                 ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
                 ggplot2::geom_segment(ggplot2::aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 ggplot2::coord_fixed()+ggplot2::theme(legend.title=ggplot2::element_blank())+ggplot2::scale_colour_manual(breaks=c("Outlier","IVW"),values=c("#56B4E9","#E69F00","white"))
 
               #Function for rounding to nearest 0.05 increment
@@ -257,14 +256,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 ggplot2::geom_path(ggplot2::aes(x=cxAll,y=cyAll))+ggplot2::geom_path(ggplot2::aes(x=cxIVW,y=cyIVW,colour="IVW"))+
                 ggplot2::geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5),
                           label=round(r_object$coef[1],digits=3),size=4)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[1],digits=3),size=3)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[2],digits=3),size=3)+
                 ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),
                                  axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
                 ggplot2::geom_segment(ggplot2::aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 ggplot2::scale_color_manual(name="Estimate",breaks=c("Variant","IVW"),values=c("IVW"="#56B4E9","Variant"="#000000"))
 
 
@@ -335,11 +334,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               B<-ggplot2::ggplot(r_object$data,ggplot2::aes(x=Wj,y=BetaWj))+ggplot2::labs(title="IVW Radial") + ggplot2::geom_point(ggplot2::aes(colour = Outliers))+ggplot2::geom_path(ggplot2::aes(x=cxAll,y=cyAll))+ggplot2::geom_path(ggplot2::aes(x=cxIVW,y=cyIVW,colour="IVW"))+
 
                 ggplot2::geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), label=round(r_object$coef[1],digits=3),size=4)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[1],digits=3),size=3)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[2],digits=3),size=3)+
+                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[1],digits=3),size=3)+
+                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[2],digits=3),size=3)+
                 ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
                 ggplot2::geom_segment(ggplot2::aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 ggplot2::theme(legend.title=ggplot2::element_blank())+ggplot2::scale_colour_manual(breaks=c("Outlier","IVW"),values=c("#56B4E9","#E69F00","white"))
 
 
@@ -403,14 +402,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 ggplot2::geom_path(ggplot2::aes(x=cxIVW,y=cyIVW,colour="IVW"))+
                 ggplot2::geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5),
                           label=round(r_object$coef[1],digits=3),size=4)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[1],digits=3),size=3)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[2],digits=3),size=3)+
                 ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),
                                  axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
                 ggplot2::geom_segment(ggplot2::aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 ggplot2::coord_fixed()+ggplot2::scale_color_manual(name="Estimate",breaks=c("Variant","IVW"),values=c("IVW"="#56B4E9","Variant"="#000000"))
 
               print("No significant Outliers")
@@ -447,11 +446,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               B<-ggplot2::ggplot(r_object$data,ggplot2::aes(x=Wj,y=BetaWj))+ggplot2::labs(title="IVW Radial") + ggplot2::geom_point(ggplot2::aes(colour = Outliers))+ggplot2::geom_path(ggplot2::aes(x=cxIVW,y=cyIVW,colour="IVW"))+
 
                 ggplot2::geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), label=round(r_object$coef[1],digits=3),size=4)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[1],digits=3),size=3)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[2],digits=3),size=3)+
+                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[1],digits=3),size=3)+
+                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[2],digits=3),size=3)+
                 ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
                 ggplot2::geom_segment(ggplot2::aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 ggplot2::coord_fixed()+ggplot2::theme(legend.title=ggplot2::element_blank())+ggplot2::scale_colour_manual(breaks=c("Outlier","IVW"),values=c("#56B4E9","#E69F00","white"))
 
               #Draw lines indicating individual Q contributions and give text displaying each value
@@ -484,14 +483,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 ggplot2::geom_path(ggplot2::aes(x=cxIVW,y=cyIVW,colour="IVW"))+
                 ggplot2::geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5),
                           label=round(r_object$coef[1],digits=3),size=4)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[1],digits=3),size=3)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[2],digits=3),size=3)+
                 ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),
                                  axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
                 ggplot2::geom_segment(ggplot2::aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 ggplot2::scale_color_manual(name="Estimate",breaks=c("Variant","IVW"),values=c("IVW"="#56B4E9","Variant"="#000000"))
 
               print("No significant Outliers")
@@ -528,11 +527,11 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               B<-ggplot2::ggplot(r_object$data,ggplot2::aes(x=Wj,y=BetaWj))+ggplot2::labs(title="IVW Radial") + ggplot2::geom_point(ggplot2::aes(colour = Outliers))+ggplot2::geom_path(ggplot2::aes(x=cxIVW,y=cyIVW,colour="IVW"))+
 
                 ggplot2::geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), label=round(r_object$coef[1],digits=3),size=4)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[1],digits=3),size=3)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[2],digits=3),size=3)+
+                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[1],digits=3),size=3)+
+                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[2],digits=3),size=3)+
                 ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
                 ggplot2::geom_segment(ggplot2::aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 ggplot2::theme(legend.title=ggplot2::element_blank())+ggplot2::scale_colour_manual(breaks=c("Outlier","IVW"),values=c("#56B4E9","#E69F00","white"))
 
               #Draw lines indicating individual Q contributions and give text displaying each value
@@ -582,14 +581,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 ggplot2::geom_path(ggplot2::aes(x=cxAll,y=cyAll))+ggplot2::geom_path(ggplot2::aes(x=cxIVW,y=cyIVW,colour="IVW"))+
                 ggplot2::geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5),
                           label=round(r_object$coef[1],digits=3),size=4)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[1],digits=3),size=3)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[2],digits=3),size=3)+
                 ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),
                                  axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
                 ggplot2::geom_segment(ggplot2::aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 ggplot2::coord_fixed()+ggplot2::scale_color_manual(name="Estimate",breaks=c("Variant","IVW"),values=c("IVW"="#56B4E9","Variant"="#000000"))
 
 
@@ -708,14 +707,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 ggplot2::geom_path(ggplot2::aes(x=cxAll,y=cyAll))+ggplot2::geom_path(ggplot2::aes(x=cxIVW,y=cyIVW,colour="IVW"))+
                 ggplot2::geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5),
                           label=round(r_object$coef[1],digits=3),size=4)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[1],digits=3),size=3)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[2],digits=3),size=3)+
                 ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),
                                  axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
                 ggplot2::geom_segment(ggplot2::aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 ggplot2::scale_color_manual(name="Estimate",breaks=c("Variant","IVW"),values=c("IVW"="#56B4E9","Variant"="#000000"))
 
 
@@ -843,14 +842,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 ggplot2::geom_path(ggplot2::aes(x=cxIVW,y=cyIVW,colour="IVW"))+
                 ggplot2::geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5),
                           label=round(r_object$coef[1],digits=3),size=4)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[1],digits=3),size=3)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[2],digits=3),size=3)+
                 ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),
                                  axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
                 ggplot2::geom_segment(ggplot2::aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 ggplot2::coord_fixed()+ggplot2::scale_color_manual(name="Estimate",breaks=c("Variant","IVW"),values=c("IVW"="#56B4E9","Variant"="#000000"))
 
 
@@ -901,14 +900,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 ggplot2::geom_path(ggplot2::aes(x=cxIVW,y=cyIVW,colour="IVW"))+
                 ggplot2::geom_text(x=cos(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5), y=sin(atan(r_object$coef[1]))*(R.IVW+Label.Scaling*1.5),
                           label=round(r_object$coef[1],digits=3),size=4)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[1],digits=3),size=3)+
-                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
+                ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),
                           label=round(r_object$confint[2],digits=3),size=3)+
                 ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),
                                  axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
                 ggplot2::geom_segment(ggplot2::aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
-                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
+                ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 ggplot2::scale_color_manual(name="Estimate",breaks=c("Variant","IVW"),values=c("IVW"="#56B4E9","Variant"="#000000"))
 
 
@@ -955,7 +954,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
     }
 
-    if(class(r_object)=="egger"){
+    if(inherits(r_object, "egger")){
 
 
       maximal<-atan(max(abs(r_object$data[,3]))/max(r_object$data[,2]))
@@ -1111,7 +1110,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
     #Define scale, IVW and MR-Egger circle radii
     maximal<-atan(max(abs(r_object$data[,3]))/max(abs(r_object$data[,2])))
-    R.All<-max(abs(r_object$data[,3]- r_object$egger.coef[1,1]))/sin(maximal)+median(r_object$data[,2])
+    R.All<-max(abs(r_object$data[,3]- r_object$egger.coef[1,1]))/sin(maximal)+stats::median(r_object$data[,2])
     R.IVW<-R.All+(R.All/12)
     R.Egger<-R.All+(R.All/4)
 
@@ -1262,7 +1261,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
             #Redefine IVW, MR-Egger and scale radii
             maximal<-atan(max(abs(temp.dat[,3]))/max(abs(temp.dat[,2])))
-            R.All<-max(abs(r_object$data[,3]- r_object$egger.coef[1,1]))/sin(maximal)+median(r_object$data[,2])
+            R.All<-max(abs(r_object$data[,3]- r_object$egger.coef[1,1]))/sin(maximal)+stats::median(r_object$data[,2])
             R.IVW<-R.All+(R.All/12)
             R.Egger<-R.All+(R.All/4)
 
@@ -1423,7 +1422,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
             #Redefine IVW, MR-Egger and scale radii
             maximal<-atan(max(abs(temp.dat[,3]))/max(abs(temp.dat[,2])))
-            R.All<-max(abs(r_object$data[,3]- r_object$egger.coef[1,1]))/sin(maximal)+median(r_object$data[,2])
+            R.All<-max(abs(r_object$data[,3]- r_object$egger.coef[1,1]))/sin(maximal)+stats::median(r_object$data[,2])
             R.IVW<-R.All+(R.All/12)
             R.Egger<-R.All+(R.All/4)
 
@@ -1598,7 +1597,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
           #Redefine IVW, MR-Egger and scale radii
           maximal<-atan(max(abs(temp.dat[,3]))/max(abs(temp.dat[,2])))
-          R.All<-max(abs(r_object$data[,3]- r_object$egger.coef[1,1]))/sin(maximal)+median(r_object$data[,2])
+          R.All<-max(abs(r_object$data[,3]- r_object$egger.coef[1,1]))/sin(maximal)+stats::median(r_object$data[,2])
           R.IVW<-R.All+(R.All/12)
           R.Egger<-R.All+(R.All/4)
 

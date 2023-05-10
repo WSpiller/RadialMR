@@ -40,13 +40,14 @@ Fits a radial inverse variance weighted (IVW) model using a range of weighting s
 }
 \examples{
 # Example using format_radial data
-ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
+ldl.dat <- data_radial[data_radial[,10]<5e-8,]
 ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
 
 # Example using TwoSampleMR format data
 \dontrun{
+if (require("TwoSampleMR", quietly = TRUE)) {
 # Example with one exposure-outcome pair
 bmi_exp_dat <- TwoSampleMR::extract_instruments(outcomes = 'ieu-a-2')
 chd_out_dat <- TwoSampleMR::extract_outcome_data(
@@ -57,8 +58,10 @@ tsmrdat <- TwoSampleMR::harmonise_data(exposure_dat = bmi_exp_dat,
 ivw_radial(r_input = tsmrdat, alpha = 0.05,
            weights = 1, tol = 0.0001, summary = TRUE)
 }
+}
 
 # Example using MendelianRandomization format data
+if (require("MendelianRandomization", quietly = TRUE)) {
 dat <- data_radial[data_radial[,10] < 5e-8,]
 mrdat <- MendelianRandomization::mr_input(bx = dat$ldlcbeta,
                                           bxse = dat$ldlcse,
@@ -67,6 +70,7 @@ mrdat <- MendelianRandomization::mr_input(bx = dat$ldlcbeta,
                                           snps = dat$rsid)
 ivw_radial(r_input = mrdat, alpha = 0.05,
            weights = 1, tol = 0.0001, summary = TRUE)
+}
 }
 \references{
 Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.

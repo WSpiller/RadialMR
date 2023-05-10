@@ -10,16 +10,19 @@
 #' @return Object of class `rmr_format`, the RadialMR format
 #' @examples
 #' \dontrun{
-#' # Example with one exposure-outcome pair
-#' bmi_exp_dat <- TwoSampleMR::extract_instruments(outcomes = 'ieu-a-2')
-#' chd_out_dat <- TwoSampleMR::extract_outcome_data(
-#'                                snps = bmi_exp_dat$SNP,
-#'                                outcomes = 'ieu-a-7')
+#' if (require("TwoSampleMR", quietly = TRUE)) {
+#'   # Example with one exposure-outcome pair
+#'   bmi_exp_dat <- TwoSampleMR::extract_instruments(outcomes = 'ieu-a-2')
+#'   chd_out_dat <- TwoSampleMR::extract_outcome_data(
+#'     snps = bmi_exp_dat$SNP,
+#'     outcomes = 'ieu-a-7'
+#'   )
 #' dat <- TwoSampleMR::harmonise_data(exposure_dat = bmi_exp_dat,
 #'                                    outcome_dat = chd_out_dat)
 #' dat <- tsmr_to_rmr_format(dat)
 #' class(dat)
 #' head(dat)
+#' }
 #' }
 tsmr_to_rmr_format <- function(dat) {
   dat <- dat[dat$mr_keep == TRUE,]

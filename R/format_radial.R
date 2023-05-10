@@ -20,7 +20,7 @@
 #' @references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
 #' @export
 #' @examples
-#' ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
+#' ldl.dat <- data_radial[data_radial[,10]<5e-8,]
 #' ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
 #'                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 #' head(ldl.fdat)

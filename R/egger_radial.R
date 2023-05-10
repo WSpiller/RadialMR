@@ -17,11 +17,10 @@
 #'}
 #' @author Wes Spiller; Jack Bowden; Tom Palmer.
 #' @references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
-#' @importFrom stats lm coef confint optimize pchisq pf pnorm pt qchisq qt sd
 #' @export
 #' @examples
 #' # Example using format_radial data
-#' ldl.dat <- data_radial[data_radial[,10]<5*10^-8,]
+#' ldl.dat <- data_radial[data_radial[,10]<5e-8,]
 #'
 #' ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
 #'                           ldl.dat[,15], ldl.dat[,21],
@@ -31,6 +30,7 @@
 #'
 #' # Example using TwoSampleMR format data
 #' \dontrun{
+#' if (require("TwoSampleMR", quietly = TRUE)) {
 #' # Example with one exposure-outcome pair
 #' bmi_exp_dat <- TwoSampleMR::extract_instruments(outcomes = 'ieu-a-2')
 #' chd_out_dat <- TwoSampleMR::extract_outcome_data(
@@ -41,8 +41,10 @@
 #' egger_radial(r_input = tsmrdat, alpha = 0.05,
 #'              weights = 1, summary = TRUE)
 #' }
+#' }
 #'
 #' # Example using MendelianRandomization format data
+#' if (require("MendelianRandomization", quietly = TRUE)) {
 #' dat <- data_radial[data_radial[,10] < 5e-8,]
 #' mrdat <- MendelianRandomization::mr_input(bx = dat$ldlcbeta,
 #'                                           bxse = dat$ldlcse,
@@ -51,11 +53,12 @@
 #'                                           snps = dat$rsid)
 #' egger_radial(r_input = mrdat, alpha = 0.05,
 #'              weights = 1, summary = TRUE)
+#' }
 
 egger_radial<-function(r_input,alpha,weights,summary){
 
   # convert TwoSampleMR single exposure-outcome pair object to rmr_format
-  if (length(class(r_input)) == 1 && class(r_input) == "data.frame") {
+  if (length(class(r_input)) == 1 && is.data.frame(r_input)) {
     cnamesneed <- c("beta.exposure",
                     "beta.outcome",
                     "se.exposure",
@@ -133,7 +136,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
   BetaWj<-Ratios*Wj
 
   # Define Egger Model
-  Egger.Model<-lm(BetaWj~Wj)
+  Egger.Model<-stats::lm(BetaWj~Wj)
 
   # Save summary of Radial Egger model
   EstimatesEGGER<-summary(Egger.Model)
@@ -151,10 +154,10 @@ egger_radial<-function(r_input,alpha,weights,summary){
   Eggerslope.SE<-EstimatesEGGER$coefficients[4]
 
   # Define 95% confidence interval for intercept from Radial Egger model
-  Eggerint_CI<-as.numeric(confint(Egger.Model)[1,])
+  Eggerint_CI<-as.numeric(stats::confint(Egger.Model)[1,])
 
   # Define 95% confidence interval causal effect estimate from Radial Egger model
-  Eggerslope_CI<-as.numeric(confint(Egger.Model)[2,])
+  Eggerslope_CI<-as.numeric(stats::confint(Egger.Model)[2,])
 
   # Calculate Q statistic for each individual variant
   Qj<-W*(Ratios-(Egger.Intercept/Wj)-Egger.Slope)^2
@@ -163,7 +166,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
   Total_Q<-sum(Qj)
 
   # Perform chi square test with respect to global Q statistic Total_Q
-  Total_Q_chi<-pchisq(Total_Q,length(r_input[,2])-2,lower.tail = FALSE)
+  Total_Q_chi<-stats::pchisq(Total_Q,length(r_input[,2])-2,lower.tail = FALSE)
 
   # Perform additional analyses to calculate modified second order weights
   if(weights==3){
@@ -176,7 +179,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
     BetaWj<-Ratios*Wj
 
     # Define Radial Egger model
-    Egger.Model<-lm(BetaWj~Wj)
+    Egger.Model<-stats::lm(BetaWj~Wj)
 
     # Save summary of Radial Egger model
     EstimatesEGGER<-summary(Egger.Model)
@@ -194,10 +197,10 @@ egger_radial<-function(r_input,alpha,weights,summary){
     Eggerslope.SE<-EstimatesEGGER$coefficients[4]
 
     # Define 95% confidence interval for intercept from Radial Egger model
-    Eggerint_CI<-as.numeric(confint(Egger.Model)[1,])
+    Eggerint_CI<-as.numeric(stats::confint(Egger.Model)[1,])
 
     # Define 95% confidence interval forcausal effect estimate from Radial Egger model
-    Eggerslope_CI<-as.numeric(confint(Egger.Model)[2,])
+    Eggerslope_CI<-as.numeric(stats::confint(Egger.Model)[2,])
 
     # Calculate Q statistic for each individual variant
     Qj<-W*(Ratios-(Egger.Intercept/Wj)-Egger.Slope)^2
@@ -206,7 +209,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
     Total_Q<-sum(Qj)
 
     # Perform chi square test with respect to global Q statistic Total_Q
-    Total_Q_chi<-pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
+    Total_Q_chi<-stats::pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
 
   }
 
@@ -215,7 +218,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
 
   # Perform chi square tests for each Q contribution Qj
   for(i in 1:length(Qj)){
-    Qj_Chi[i]<-pchisq(Qj[i],1,lower.tail = FALSE)
+    Qj_Chi[i]<-stats::pchisq(Qj[i],1,lower.tail = FALSE)
   }
 
   # Create data frame with SNP IDs and outlier information
@@ -267,7 +270,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
 
     cat("\n")
 
-    print(coef(EstimatesEGGER))
+    print(stats::coef(EstimatesEGGER))
 
     cat("\nResidual standard error:", round(EstimatesEGGER$sigma,3), "on", EstimatesEGGER$df[2], "degrees of freedom")
 
@@ -275,7 +278,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
 
     cat(paste(c("\nF-statistic:", " on"," and"), round(EstimatesEGGER$fstatistic,2), collapse=""),
         "DF, p-value:",
-        format.pval(pf(EstimatesEGGER$fstatistic[1L], EstimatesEGGER$fstatistic[2L], EstimatesEGGER$fstatistic[3L],
+        format.pval(stats::pf(EstimatesEGGER$fstatistic[1L], EstimatesEGGER$fstatistic[2L], EstimatesEGGER$fstatistic[3L],
                        lower.tail = FALSE), digits=3))
 
     cat("\n")
