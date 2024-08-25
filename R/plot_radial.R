@@ -1155,25 +1155,25 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
     for(i in 1:length(r_object$data[,3])){
 
-      if(r_object$data[,6][i]=="Variant" & r_object$egger.data[,6][i]=="Variant"){
+      if(r_object$data[,6][i]=="Variant" && r_object$egger.data[,6][i]=="Variant"){
 
         r_object$data$out_types[i]<-"Variant"
 
       }
 
-      if(r_object$data[,6][i]=="Variant" & r_object$egger.data[,6][i]=="Outlier"){
+      if(r_object$data[,6][i]=="Variant" && r_object$egger.data[,6][i]=="Outlier"){
 
         r_object$data$out_types[i]<-"MR-Egger Outlier"
 
       }
 
-      if(r_object$data[,6][i]=="Outlier" & r_object$egger.data[,6][i]=="Variant"){
+      if(r_object$data[,6][i]=="Outlier" && r_object$egger.data[,6][i]=="Variant"){
 
         r_object$data$out_types[i]<-"IVW Outlier"
 
       }
 
-      if(r_object$data[,6][i]=="Outlier" & r_object$egger.data[,6][i]=="Outlier"){
+      if(r_object$data[,6][i]=="Outlier" && r_object$egger.data[,6][i]=="Outlier"){
 
         r_object$data$out_types[i]<-"IVW and MR-Egger Outlier"
 
