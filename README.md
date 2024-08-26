@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/WSpiller/RadialMR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/WSpiller/RadialMR/actions/workflows/R-CMD-check.yaml)
+[![r-universe](https://mrcieu.r-universe.dev/badges/RadialMR)](https://mrcieu.r-universe.dev/RadialMR)
 <!-- badges: end -->
 
 ## Installation
