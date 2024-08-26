@@ -25,7 +25,7 @@ Suggests:
     MendelianRandomization,
     TwoSampleMR (>= 0.5.0)
 Remotes:
-    mrcieu/twosamplemr
+    MRCIEU/TwoSampleMR
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
