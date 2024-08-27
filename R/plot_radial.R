@@ -128,7 +128,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
@@ -142,12 +142,12 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
               }
-              for(i in 1:length(r_object$data[,3])){
+              for(i in seq_along(r_object$data[,3])){
                 Theta<-atan(r_object$data[,3]/r_object$data[,2])
 
                 b<-sin(Theta)*R.All
@@ -208,7 +208,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
@@ -222,7 +222,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
@@ -232,7 +232,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               #Draw individual ratio estimate lines for each outlier and Q distance indicator lines
               Theta<-rep(0,length(r_object$data[r_object$data$Outliers == "Outlier", ]$Outliers))
 
-              for(i in 1:length(r_object$data[r_object$data$Outliers == "Outlier", ][,3])){
+              for(i in seq_along(r_object$data[r_object$data$Outliers == "Outlier", ][,3])){
                 Theta<-atan(r_object$data[r_object$data$Outliers == "Outlier", ][,3]/r_object$data[r_object$data$Outliers == "Outlier", ][,2])
                 b<-sin(Theta)*R.All
                 a<-cos(Theta)*R.All
@@ -274,7 +274,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
@@ -288,12 +288,12 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
               }
-              for(i in 1:length(r_object$data[,3])){
+              for(i in seq_along(r_object$data[,3])){
                 Theta<-atan(r_object$data[,3]/r_object$data[,2])
 
                 b<-sin(Theta)*R.All
@@ -351,7 +351,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
@@ -365,7 +365,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
@@ -373,7 +373,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               #Draw individual ratio estimate lines for each outlier and Q distance indicator lines
               Theta<-rep(0,length(r_object$data[r_object$data$Outliers == "Outlier", ]$Outliers))
 
-              for(i in 1:length(r_object$data[r_object$data$Outliers == "Outlier", ][,3])){
+              for(i in seq_along(r_object$data[r_object$data$Outliers == "Outlier", ][,3])){
                 Theta<-atan(r_object$data[r_object$data$Outliers == "Outlier", ][,3]/r_object$data[r_object$data$Outliers == "Outlier", ][,2])
                 b<-sin(Theta)*R.All
                 a<-cos(Theta)*R.All
@@ -454,7 +454,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 ggplot2::coord_fixed()+ggplot2::theme(legend.title=ggplot2::element_blank())+ggplot2::scale_colour_manual(breaks=c("Outlier","IVW"),values=c("#56B4E9","#E69F00","white"))
 
               #Draw lines indicating individual Q contributions and give text displaying each value
-              for(i in 1:length(r_object$data[r_object$data$Outliers == "Outlier", ][,3])){
+              for(i in seq_along(r_object$data[r_object$data$Outliers == "Outlier", ][,3])){
 
 
 
@@ -535,7 +535,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 ggplot2::theme(legend.title=ggplot2::element_blank())+ggplot2::scale_colour_manual(breaks=c("Outlier","IVW"),values=c("#56B4E9","#E69F00","white"))
 
               #Draw lines indicating individual Q contributions and give text displaying each value
-              for(i in 1:length(r_object$data[r_object$data$Outliers == "Outlier", ][,3])){
+              for(i in seq_along(r_object$data[r_object$data$Outliers == "Outlier", ][,3])){
 
 
 
@@ -599,7 +599,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
@@ -613,12 +613,12 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
               }
-              for(i in 1:length(r_object$data[,3])){
+              for(i in seq_along(r_object$data[,3])){
                 Theta<-atan(r_object$data[,3]/r_object$data[,2])
 
                 b<-sin(Theta)*R.All
@@ -667,7 +667,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
@@ -681,14 +681,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
               }
 
               #Draw lines showing the ratio estimate for each individual variant
-              for(i in 1:length(r_object$data[,3])){
+              for(i in seq_along(r_object$data[,3])){
                 Theta<-atan(r_object$data[,3]/r_object$data[,2])
                 b<-sin(Theta)*R.All
                 a<-cos(Theta)*R.All
@@ -725,7 +725,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
@@ -739,12 +739,12 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
               }
-              for(i in 1:length(r_object$data[,3])){
+              for(i in seq_along(r_object$data[,3])){
                 Theta<-atan(r_object$data[,3]/r_object$data[,2])
 
                 b<-sin(Theta)*R.All
@@ -793,7 +793,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
@@ -807,14 +807,14 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Y_Scale<-mround(Y_Scale)
                 Y_Scale<-unique(Y_Scale)
 
-                for (i in 1:length(Y_Scale)){
+                for (i in seq_along(Y_Scale)){
                   B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
                 }
               }
 
               #Draw lines showing the ratio estimate for each individual variant
-              for(i in 1:length(r_object$data[,3])){
+              for(i in seq_along(r_object$data[,3])){
                 Theta<-atan(r_object$data[,3]/r_object$data[,2])
                 b<-sin(Theta)*R.All
                 a<-cos(Theta)*R.All
@@ -1038,7 +1038,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             ggplot2::theme(legend.title=ggplot2::element_blank())
 
           #Draw lines indicating individual Q contributions and give text displaying each value
-          for(i in 1:length(r_object$data[r_object$data$Outliers == "Outlier", ][,3])){
+          for(i in seq_along(r_object$data[r_object$data$Outliers == "Outlier", ][,3])){
             B<- B + ggplot2::geom_segment(x = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], xend = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], y = r_object$data[r_object$data$Outliers == "Outlier", ][,3][i], yend =r_object$data[r_object$data$Outliers == "Outlier", ][,2][i]*r_object$coef[2,1]+r_object$coef[1,1],linetype="solid",colour="#D55E00")
             B<- B + ggplot2::geom_text(x=r_object$data[r_object$data$Outliers == "Outlier", ][,2][i],y=(r_object$data[r_object$data$Outliers == "Outlier", ][,3][i]*0.9),label=round(r_object$data[r_object$data$Outliers == "Outlier", ][,4][i],digits=2),size=2.5)
 
@@ -1153,7 +1153,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
     r_object$data$out_types<-rep(0,length(r_object$data[,6]))
 
-    for(i in 1:length(r_object$data[,3])){
+    for(i in seq_along(r_object$data[,3])){
 
       if(r_object$data[,6][i]=="Variant" && r_object$egger.data[,6][i]=="Variant"){
 
@@ -1221,7 +1221,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
@@ -1235,12 +1235,12 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
             }
-            for(i in 1:length(r_object$data[,3])){
+            for(i in seq_along(r_object$data[,3])){
               Theta<-atan(r_object$data[,3]/r_object$data[,2])
 
               b<-sin(Theta)*R.All
@@ -1313,7 +1313,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
@@ -1327,7 +1327,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
@@ -1336,7 +1336,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             #Draw individual ratio estimate lines for each outlier and Q distance indicator lines
             Theta<-rep(0,length(temp.dat[,3]))
 
-            for(i in 1:length(temp.dat[,3])){
+            for(i in seq_along(temp.dat[,3])){
               Theta<-atan(temp.dat[,3]/temp.dat[,2])
               b<-sin(Theta)*R.All
               a<-cos(Theta)*R.All
@@ -1382,7 +1382,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
@@ -1396,12 +1396,12 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
             }
-            for(i in 1:length(r_object$data[,3])){
+            for(i in seq_along(r_object$data[,3])){
               Theta<-atan(r_object$data[,3]/r_object$data[,2])
 
               b<-sin(Theta)*R.All
@@ -1474,7 +1474,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
@@ -1488,7 +1488,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
@@ -1497,7 +1497,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             #Draw individual ratio estimate lines for each outlier and Q distance indicator lines
             Theta<-rep(0,length(temp.dat[,3]))
 
-            for(i in 1:length(temp.dat[,3])){
+            for(i in seq_along(temp.dat[,3])){
               Theta<-atan(temp.dat[,3]/temp.dat[,2])
               b<-sin(Theta)*R.All
               a<-cos(Theta)*R.All
@@ -1660,7 +1660,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             ggplot2::scale_y_continuous(limits = c(Y_MIN,Y_MAX))+ggplot2::scale_color_manual(breaks=c("IVW and MR-Egger Outlier","MR-Egger Outlier","IVW Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="white","IVW and MR-Egger Outlier"="#CC79A7","MR-Egger Outlier"="#E69F00","IVW Outlier"="#009E73"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
 
           #Draw lines showing Q statistic contributions for each variant using respective colours
-          for(i in 1:length(temp.dat[,3])){
+          for(i in seq_along(temp.dat[,3])){
             if(abs((temp.dat[,3][i]-temp.dat[,2][i]*r_object$IVW.coef[1]))>abs((temp.dat[,3][i]-(temp.dat[,2][i]*r_object$egger.coef[2,1]+r_object$egger.coef[1,1])))){
 
               B<- B + ggplot2::geom_segment(x = temp.dat[,2][i], xend = temp.dat[,2][i], y = temp.dat[,3][i], yend =temp.dat[,2][i]*r_object$IVW.coef[1],linetype="solid",colour="#56B4E9")
@@ -1724,7 +1724,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
@@ -1738,12 +1738,12 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
             }
-            for(i in 1:length(r_object$data[,3])){
+            for(i in seq_along(r_object$data[,3])){
               Theta<-atan(r_object$data[,3]/r_object$data[,2])
 
               b<-sin(Theta)*R.All
@@ -1782,7 +1782,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
@@ -1796,7 +1796,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
@@ -1805,7 +1805,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             #Draw individual ratio estimate lines for each outlier and Q distance indicator lines
             Theta<-rep(0,length(r_object$data[,3]))
 
-            for(i in 1:length(r_object$data[,3])){
+            for(i in seq_along(r_object$data[,3])){
               Theta<-atan(r_object$data[,3]/r_object$data[,2])
               b<-sin(Theta)*R.All
               a<-cos(Theta)*R.All
@@ -1850,7 +1850,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
@@ -1864,12 +1864,12 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
             }
-            for(i in 1:length(r_object$data[,3])){
+            for(i in seq_along(r_object$data[,3])){
               Theta<-atan(r_object$data[,3]/r_object$data[,2])
 
               b<-sin(Theta)*R.All
@@ -1908,7 +1908,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
@@ -1922,7 +1922,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Y_Scale<-mround(Y_Scale)
               Y_Scale<-unique(Y_Scale)
 
-              for (i in 1:length(Y_Scale)){
+              for (i in seq_along(Y_Scale)){
                 B<- B + ggplot2::geom_text(x=(cos(atan(Y_Scale[i]))*(R.All+Label.Scaling)), y=(sin(atan(Y_Scale[i]))*(R.All+Label.Scaling)), label=Y_Scale[i],size=2.5)
 
               }
@@ -1931,7 +1931,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             #Draw individual ratio estimate lines for each outlier and Q distance indicator lines
             Theta<-rep(0,length(r_object$data[,3]))
 
-            for(i in 1:length(r_object$data[,3])){
+            for(i in seq_along(r_object$data[,3])){
               Theta<-atan(r_object$data[,3]/r_object$data[,2])
               b<-sin(Theta)*R.All
               a<-cos(Theta)*R.All
