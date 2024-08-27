@@ -980,8 +980,8 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
 
       #Define minimum and maximum range of values for y axis
-      Y_MINEGGER<-min(  c(min(r_object$data[,3]),(sin(atan(r_object$confint[1]))*(R.Egger+Label.Scaling_Egg))+r_object$coef[1,1],r_object$coef[1,1]-Label.Scaling_Egg))
-      Y_MAXEGGER<-max(  c(max(r_object$data[,3]),(sin(atan(r_object$confint[2]))*(R.Egger+Label.Scaling_Egg))+r_object$coef[1,1],r_object$coef[1,1]+Label.Scaling_Egg))
+      Y_MINEGGER<-min(c(min(r_object$data[,3]),(sin(atan(r_object$confint[1]))*(R.Egger+Label.Scaling_Egg))+r_object$coef[1,1],r_object$coef[1,1]-Label.Scaling_Egg))
+      Y_MAXEGGER<-max(c(max(r_object$data[,3]),(sin(atan(r_object$confint[2]))*(R.Egger+Label.Scaling_Egg))+r_object$coef[1,1],r_object$coef[1,1]+Label.Scaling_Egg))
 
       #If all variants are to be shown
       if(show_outliers==TRUE){
