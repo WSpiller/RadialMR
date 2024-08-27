@@ -65,7 +65,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
                     "se.outcome",
                     "SNP",
                     "mr_keep")
-    for (i in 1:length(cnamesneed)) {
+    for (i in seq_along(cnamesneed)) {
       if (!(cnamesneed[i] %in% colnames(r_input))) {
         stop(paste('This data.frame does not have the required column',
                    cnamesneed[i]))
@@ -217,7 +217,7 @@ egger_radial<-function(r_input,alpha,weights,summary){
   Qj_Chi<-0
 
   # Perform chi square tests for each Q contribution Qj
-  for(i in 1:length(Qj)){
+  for(i in seq_along(Qj)){
     Qj_Chi[i]<-stats::pchisq(Qj[i],1,lower.tail = FALSE)
   }
 
@@ -229,8 +229,8 @@ egger_radial<-function(r_input,alpha,weights,summary){
   Out_Indicator<-rep(0,length(r_input[,2]))
 
   # Include value of 1 indicating positive outlier status for given sig.threshold
-  for( i in 1:length(r_input[,2])){
-    if(Qj_Chi[i]<alpha){
+  for (i in seq_along(r_input[,2])) {
+    if (Qj_Chi[i]<alpha) {
       Out_Indicator[i]<-1
     }
   }
