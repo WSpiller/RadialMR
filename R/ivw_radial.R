@@ -471,7 +471,7 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     row.names(combined.dat)[1] <- "Effect (Mod.2nd)"
   }
 
-  if(summary==T){
+  if(summary==TRUE){
 
     # Print summary elements that are common to both lm and plm model summary objects
     cat("\n")
