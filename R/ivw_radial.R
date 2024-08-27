@@ -285,8 +285,10 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     for(hh in 1:sims){
       L      = length(r_input[,2])
       choice = sample(seq(1,L),L,replace=TRUE)
-      bxg    = r_input[,2][choice] ; seX = r_input[,4][choice]
-      byg    = r_input[,3][choice] ; seY = r_input[,5][choice]
+      bxg    = r_input[,2][choice]
+      seX = r_input[,4][choice]
+      byg    = r_input[,3][choice]
+      seY = r_input[,5][choice]
       Ratios    = byg/bxg
 
       W1        = 1/(seY^2/bxg^2)
