@@ -280,7 +280,8 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
 
   # Function for calculating standard errors using parametric bootstrap
   BootVar = function(sims=1000){
-    B = NULL ; pp=NULL
+    B = NULL
+    pp=NULL
     for(hh in 1:sims){
       L      = length(r_input[,2])
       choice = sample(seq(1,L),L,replace=TRUE)
