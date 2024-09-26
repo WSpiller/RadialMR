@@ -7,7 +7,7 @@ on:
     branches: [main, master]
   workflow_dispatch:
   schedule:
-    - cron: "37 7 * * THU" # run at 7:37am UTC on Thursdays
+    - cron: "47 2 * * TUE" # run at 2:47am UTC on Tuesdays
 
 name: R-CMD-check.yaml
 
