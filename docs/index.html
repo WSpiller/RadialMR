@@ -58,6 +58,8 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="radialmr">RadialMR<a class="anchor" aria-label="anchor" href="#radialmr"></a>
 </h1></div>
+<!-- badges: start -->
+
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -70,18 +72,18 @@
 <p>Then the <code>RadialMR</code> package can be installed using:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"WSpiller/RadialMR"</span><span class="op">)</span></span></code></pre></div>
-<p>To update the package just run the <code>remotes::install_github("WSpiller/RadialMR")</code> command again.</p>
+<p>To update the package just run the command above again.</p>
 </div>
 <div class="section level2">
 <h2 id="description">Description<a class="anchor" aria-label="anchor" href="#description"></a>
 </h2>
 <p>We have written the <code>RadialMR</code> R package to produce radial plots and to perform radial regression for inverse variance weighted and MR-Egger regression models. The package contains a total of five functions:</p>
 <ol style="list-style-type: decimal">
-<li><p>The <code>format_radial</code> function is used to convert a data frame containing summary data into a set format for radial analyses.</p></li>
-<li><p>The <code>ivw_radial</code> function fits a radial inverse variance weighted (IVW) model using either first order, second order, or modified second order weights. It provides an effect estimate and allows for outliers to be identified using Cochran’s Q-statistic. This function now also includes iterative and exact IVW estimation, as described in: Improving the accuracy of two-sample summary data Mendelian randomization: moving beyond the NOME assumption(<a href="https://www.biorxiv.org/content/early/2018/07/02/159442" class="external-link uri">https://www.biorxiv.org/content/early/2018/07/02/159442</a>).</p></li>
-<li><p>The <code>egger_radial</code> function fits a radial MR-Egger model using either first order, second order, or modified second order weights. It provides an effect estimate and allows for outliers to be identified using Rucker’s Q-statistic.</p></li>
-<li><p>The <code>plotly_radial</code> function produces interactive radial plots corresponding to the output of the <code>ivw_radial</code> and <code>egger_radial</code> functions.</p></li>
-<li><p>The <code>plot_radial</code> function produces a radial plot corresponding to the output of the <code>ivw_radial</code> and <code>egger_radial</code> functions. The function provides a range of scaling and aesthetic options showing either an IVW estimate, MR-Egger estimate, or both estimates simultaneously.</p></li>
+<li><p>The <code><a href="reference/format_radial.html">format_radial()</a></code> function is used to convert a data frame containing summary data into a set format for radial analyses.</p></li>
+<li><p>The <code><a href="reference/ivw_radial.html">ivw_radial()</a></code> function fits a radial inverse variance weighted (IVW) model using either first order, second order, or modified second order weights. It provides an effect estimate and allows for outliers to be identified using Cochran’s Q-statistic. This function now also includes iterative and exact IVW estimation, as described in: Improving the accuracy of two-sample summary data Mendelian randomization: moving beyond the NOME assumption(<a href="https://www.biorxiv.org/content/early/2018/07/02/159442" class="external-link uri">https://www.biorxiv.org/content/early/2018/07/02/159442</a>).</p></li>
+<li><p>The <code><a href="reference/egger_radial.html">egger_radial()</a></code> function fits a radial MR-Egger model using either first order, second order, or modified second order weights. It provides an effect estimate and allows for outliers to be identified using Rucker’s Q-statistic.</p></li>
+<li><p>The <code><a href="reference/plotly_radial.html">plotly_radial()</a></code> function produces interactive radial plots corresponding to the output of the <code><a href="reference/ivw_radial.html">ivw_radial()</a></code> and <code><a href="reference/egger_radial.html">egger_radial()</a></code> functions.</p></li>
+<li><p>The <code><a href="reference/plot_radial.html">plot_radial()</a></code> function produces a radial plot corresponding to the output of the <code><a href="reference/ivw_radial.html">ivw_radial()</a></code> and <code><a href="reference/egger_radial.html">egger_radial()</a></code> functions. The function provides a range of scaling and aesthetic options showing either an IVW estimate, MR-Egger estimate, or both estimates simultaneously.</p></li>
 </ol>
 <p>Radial plots are produced by many existing R packages such as <code>metafor</code>, <code>numOSL</code>, and <code>Luminescence</code>. Care will need to be taken, however, to input data from an MR-analysis appropriately into these generic platforms. For this reason we will also continue to develop our own <code>RadialMR</code> package to produce radial plots and conduct radial plot regression for the MR-setting.</p>
 </div>
@@ -89,7 +91,7 @@
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <p>The paper has been published in the International Journal of Epidemiology:</p>
-<p>Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278. <a href="https://doi.org/10.1093/ije/dyy101" class="external-link uri">https://doi.org/10.1093/ije/dyy101</a></p>
+<p>Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264–1278. <a href="https://doi.org/10.1093/ije/dyy101" class="external-link uri">https://doi.org/10.1093/ije/dyy101</a></p>
 </div>
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
@@ -128,7 +130,13 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/WSpiller/RadialMR/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/WSpiller/RadialMR/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://mrcieu.r-universe.dev/RadialMR" class="external-link"><img src="https://mrcieu.r-universe.dev/badges/RadialMR" alt="r-universe"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>
@@ -139,7 +147,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
