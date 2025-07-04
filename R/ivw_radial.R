@@ -22,7 +22,7 @@
 #' \item{\code{re.confint}}{A vector giving lower and upper confidence limits for the random effect exact radial IVW effect estimate.}
 #' \item{\code{mf}}{The mean F statistic for the set of genetic variants, indicative of instrument strength.}
 #'
-#'}
+#' }
 #' @author Wes Spiller; Jack Bowden; Tom Palmer.
 #' @references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.
 #' @export
@@ -59,7 +59,6 @@
 #' ivw_radial(r_input = mrdat, alpha = 0.05,
 #'            weights = 1, tol = 0.0001, summary = TRUE)
 #' }
-
 ivw_radial<-function(r_input,alpha,weights,tol,summary){
 
   # convert TwoSampleMR single exposure-outcome pair object to rmr_format

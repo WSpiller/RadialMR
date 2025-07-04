@@ -15,7 +15,6 @@
 #'                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 #' ivw.object <- ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
 #' plotly_radial(ivw.object)
-
 plotly_radial<-function(r_object, TEST){
 
   if(missing(TEST)) {

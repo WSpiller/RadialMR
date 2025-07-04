@@ -25,7 +25,6 @@
 #'                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 #' head(ldl.fdat)
 #' class(ldl.fdat)
-
 format_radial<-function(BXG,BYG,seBXG,seBYG,RSID){
 
   #Generates placeholder SNP IDs if not provided.

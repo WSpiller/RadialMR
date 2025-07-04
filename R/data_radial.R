@@ -39,10 +39,7 @@
 #' \item \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3838666/}
 #' \item \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3119261/}
 #' }
-#'@author Wes Spiller; Jack Bowden; Tom Palmer.
-#'
+#' @author Wes Spiller; Jack Bowden; Tom Palmer.
 #' @examples
-#'
 #' head(data_radial)
-
 "data_radial"

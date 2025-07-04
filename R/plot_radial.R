@@ -16,7 +16,6 @@
 #'                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 #' ivw.object <- ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
 #' plot_radial(ivw.object)
-
 plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
 
