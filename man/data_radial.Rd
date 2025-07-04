@@ -51,7 +51,6 @@ related to each study presented below.
 data_radial
 }
 \examples{
-
 head(data_radial)
 }
 \author{
