@@ -997,7 +997,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                                                                                                                                                                                          r_object$coef[1,1],label=round(r_object$confint[2],digits=3),size=3)+ggplot2::theme_bw() +
             ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),
                   panel.grid.minor = ggplot2::element_blank(),axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
-            ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$coef[2,1]))*R.Egger, y = r_object$coef[1,1], yend = (sin(atan(r_object$coef[2,1]))*R.Egger)+r_object$coef[1,1],colour="MR-Egger")+
+            ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$coef[2,1]))*R.Egger, y = r_object$coef[1,1], yend = (sin(atan(r_object$coef[2,1]))*R.Egger)+r_object$coef[1,1],colour="black")+
             ggplot2::scale_x_continuous(limits = c(0,max(cxEgger)+Label.Scaling_Egg*2),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINEGGER,Y_MAXEGGER))+ggplot2::scale_color_manual(breaks=c("variant","MR-Egger"),values=c("MR-Egger"="#D55E00","variant"="#000000"))+
             ggplot2::theme(legend.title=ggplot2::element_blank())
 
@@ -1031,7 +1031,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                                                                                                                                                                                          r_object$coef[1,1],label=round(r_object$confint[2],digits=3),size=3)+ggplot2::theme_bw() +
             ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),
                   panel.grid.minor = ggplot2::element_blank(),axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
-            ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$coef[2,1]))*R.Egger, y = r_object$coef[1,1], yend = (sin(atan(r_object$coef[2,1]))*R.Egger)+r_object$coef[1,1],colour="MR-Egger")+
+            ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$coef[2,1]))*R.Egger, y = r_object$coef[1,1], yend = (sin(atan(r_object$coef[2,1]))*R.Egger)+r_object$coef[1,1],colour="black")+
             ggplot2::scale_x_continuous(limits = c(0,max(cxEgger)+Label.Scaling_Egg*2),expand=c(0,0))+
             ggplot2::scale_y_continuous(limits = c(Y_MINEGGER,Y_MAXEGGER))+ggplot2::scale_colour_manual(breaks=c("Variant","Outlier","MR-Egger"),values=c("#D55E00","#E69F00","#000000"))+
             ggplot2::theme(legend.title=ggplot2::element_blank())
@@ -1066,7 +1066,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                                                                                                                                                                                          r_object$coef[1,1],label=round(r_object$confint[2],digits=3),size=3)+ggplot2::theme_bw() +
             ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),
                   panel.grid.minor = ggplot2::element_blank(),axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
-            ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$coef[2,1]))*R.Egger, y = r_object$coef[1,1], yend = (sin(atan(r_object$coef[2,1]))*R.Egger)+r_object$coef[1,1],colour="MR-Egger")+
+            ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$coef[2,1]))*R.Egger, y = r_object$coef[1,1], yend = (sin(atan(r_object$coef[2,1]))*R.Egger)+r_object$coef[1,1],colour="black")+
             ggplot2::scale_x_continuous(limits = c(0,max(cxEgger)+Label.Scaling_Egg*2),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINEGGER,Y_MAXEGGER))+ggplot2::scale_color_manual(breaks=c("variant","MR-Egger"),values=c("MR-Egger"="#D55E00","variant"="#000000"))+
             ggplot2::theme(legend.title=ggplot2::element_blank())
 
@@ -1086,7 +1086,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                                                                                                                                                                                          r_object$coef[1,1],label=round(r_object$confint[2],digits=3),size=3)+ggplot2::theme_bw() +
             ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),
                   panel.grid.minor = ggplot2::element_blank(),axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
-            ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$coef[2,1]))*R.Egger, y = r_object$coef[1,1], yend = (sin(atan(r_object$coef[2,1]))*R.Egger)+r_object$coef[1,1],colour="MR-Egger")+
+            ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$coef[2,1]))*R.Egger, y = r_object$coef[1,1], yend = (sin(atan(r_object$coef[2,1]))*R.Egger)+r_object$coef[1,1],colour="black")+
             ggplot2::scale_x_continuous(limits = c(0,max(cxEgger)+Label.Scaling_Egg*2),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINEGGER,Y_MAXEGGER))+ggplot2::scale_colour_manual(breaks=c("Variant","Outlier","MR-Egger"),values=c("#D55E00","#E69F00","#000000"))+
             ggplot2::theme(legend.title=ggplot2::element_blank())
 
@@ -1210,7 +1210,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[1],digits=3),size=3)+
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[2],digits=3),size=3)+
               ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+
-                                 r_object$egger.coef[1,1],colour="MR-Egger")+ggplot2::scale_color_manual(breaks=c("Variant","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="#000000"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
+                                 r_object$egger.coef[1,1],colour="black")+ggplot2::scale_color_manual(breaks=c("Variant","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="#000000"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
 
 
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
@@ -1303,7 +1303,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               ggplot2::geom_text(x=cos(atan(r_object$egger.coef[2,1]))*(R.Egger+Label.Scaling*1.5), y=sin(atan(r_object$egger.coef[2,1]))*(R.Egger+Label.Scaling*1.5) +r_object$egger.coef[1,1],label=round(r_object$egger.coef[2,1],digits=3),size=4)+
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[1],digits=3),size=3)+
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[2],digits=3),size=3)+
-              ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+r_object$egger.coef[1,1],colour="MR-Egger")+ggplot2::scale_color_manual(breaks=c("IVW and MR-Egger Outlier","MR-Egger Outlier","IVW Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="white","IVW and MR-Egger Outlier"="#CC79A7","MR-Egger Outlier"="#E69F00","IVW Outlier"="#009E73"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
+              ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+r_object$egger.coef[1,1],colour="black")+ggplot2::scale_color_manual(breaks=c("IVW and MR-Egger Outlier","MR-Egger Outlier","IVW Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="white","IVW and MR-Egger Outlier"="#CC79A7","MR-Egger Outlier"="#E69F00","IVW Outlier"="#009E73"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
 
             if(max(abs(temp.dat[,3]/temp.dat[,2]))>2){
               Y_Scale<-Y_Range/6
@@ -1371,7 +1371,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[1],digits=3),size=3)+
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[2],digits=3),size=3)+
               ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+
-                                 r_object$egger.coef[1,1],colour="MR-Egger")+ggplot2::scale_color_manual(breaks=c("Variant","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="#000000"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
+                                 r_object$egger.coef[1,1],colour="black")+ggplot2::scale_color_manual(breaks=c("Variant","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="#000000"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
 
 
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
@@ -1464,7 +1464,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               ggplot2::geom_text(x=cos(atan(r_object$egger.coef[2,1]))*(R.Egger+Label.Scaling*1.5), y=sin(atan(r_object$egger.coef[2,1]))*(R.Egger+Label.Scaling*1.5) +r_object$egger.coef[1,1],label=round(r_object$egger.coef[2,1],digits=3),size=4)+
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[1],digits=3),size=3)+
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[2],digits=3),size=3)+
-              ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+r_object$egger.coef[1,1],colour="MR-Egger")+ggplot2::scale_color_manual(breaks=c("IVW and MR-Egger Outlier","MR-Egger Outlier","IVW Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="white","IVW and MR-Egger Outlier"="#CC79A7","MR-Egger Outlier"="#E69F00","IVW Outlier"="#009E73"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
+              ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+r_object$egger.coef[1,1],colour="black")+ggplot2::scale_color_manual(breaks=c("IVW and MR-Egger Outlier","MR-Egger Outlier","IVW Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="white","IVW and MR-Egger Outlier"="#CC79A7","MR-Egger Outlier"="#E69F00","IVW Outlier"="#009E73"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
 
             if(max(abs(temp.dat[,3]/temp.dat[,2]))>2){
               Y_Scale<-Y_Range/6
@@ -1581,7 +1581,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                               axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
             ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$IVW.coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$IVW.coef[1]))*R.IVW,colour="black")+
             ggplot2::scale_x_continuous(limits = c(0,max(cxEgger)+Label.Scaling_Egg*2),expand=c(0,0))+ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+
-                                                                                                                r_object$egger.coef[1,1],colour="MR-Egger")+ggplot2::scale_y_continuous(limits = c(Y_MIN,Y_MAX))+ggplot2::scale_color_manual(breaks=c("Variant","Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="#000000","Outlier"="#E69F00"))+
+                                                                                                                r_object$egger.coef[1,1],colour="black")+ggplot2::scale_y_continuous(limits = c(Y_MIN,Y_MAX))+ggplot2::scale_color_manual(breaks=c("Variant","Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="#000000","Outlier"="#E69F00"))+
             ggplot2::theme(legend.title=ggplot2::element_blank())
 
           #Indicate that no outliers are present
@@ -1655,7 +1655,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),
                   panel.grid.minor = ggplot2::element_blank(),
                   axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$IVW.coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$IVW.coef[1]))*R.IVW,colour="black")+
-            ggplot2::scale_x_continuous(limits = c(0,max(cxEgger)+Label.Scaling_Egg*2),expand=c(0,0))+ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+r_object$egger.coef[1,1],colour="MR-Egger")+
+            ggplot2::scale_x_continuous(limits = c(0,max(cxEgger)+Label.Scaling_Egg*2),expand=c(0,0))+ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+r_object$egger.coef[1,1],colour="black")+
             ggplot2::scale_y_continuous(limits = c(Y_MIN,Y_MAX))+ggplot2::scale_color_manual(breaks=c("IVW and MR-Egger Outlier","MR-Egger Outlier","IVW Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="white","IVW and MR-Egger Outlier"="#CC79A7","MR-Egger Outlier"="#E69F00","IVW Outlier"="#009E73"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
 
           #Draw lines showing Q statistic contributions for each variant using respective colours
@@ -1713,7 +1713,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[1],digits=3),size=3)+
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[2],digits=3),size=3)+
               ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+
-                                 r_object$egger.coef[1,1],colour="MR-Egger")+ggplot2::scale_color_manual(breaks=c("Variant","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="#000000"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
+                                 r_object$egger.coef[1,1],colour="black")+ggplot2::scale_color_manual(breaks=c("Variant","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="#000000"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
 
 
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
@@ -1771,7 +1771,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               ggplot2::geom_text(x=cos(atan(r_object$egger.coef[2,1]))*(R.Egger+Label.Scaling*1.5), y=sin(atan(r_object$egger.coef[2,1]))*(R.Egger+Label.Scaling*1.5) +r_object$egger.coef[1,1],label=round(r_object$egger.coef[2,1],digits=3),size=4)+
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[1],digits=3),size=3)+
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[2],digits=3),size=3)+
-              ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+r_object$egger.coef[1,1],colour="MR-Egger")+ggplot2::scale_color_manual(breaks=c("Variant","IVW and MR-Egger Outlier","MR-Egger Outlier","IVW Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="black","IVW and MR-Egger Outlier"="#CC79A7","MR-Egger Outlier"="#E69F00","IVW Outlier"="#009E73"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
+              ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+r_object$egger.coef[1,1],colour="black")+ggplot2::scale_color_manual(breaks=c("Variant","IVW and MR-Egger Outlier","MR-Egger Outlier","IVW Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="black","IVW and MR-Egger Outlier"="#CC79A7","MR-Egger Outlier"="#E69F00","IVW Outlier"="#009E73"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
 
 
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
@@ -1839,7 +1839,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[1],digits=3),size=3)+
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[2],digits=3),size=3)+
               ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+
-                                 r_object$egger.coef[1,1],colour="MR-Egger")+ggplot2::scale_color_manual(breaks=c("Variant","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="#000000"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
+                                 r_object$egger.coef[1,1],colour="black")+ggplot2::scale_color_manual(breaks=c("Variant","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="#000000"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
 
 
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
@@ -1897,7 +1897,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               ggplot2::geom_text(x=cos(atan(r_object$egger.coef[2,1]))*(R.Egger+Label.Scaling*1.5), y=sin(atan(r_object$egger.coef[2,1]))*(R.Egger+Label.Scaling*1.5) +r_object$egger.coef[1,1],label=round(r_object$egger.coef[2,1],digits=3),size=4)+
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[1],digits=3),size=3)+
               ggplot2::geom_text(x=cos(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[2],digits=3),size=3)+
-              ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+r_object$egger.coef[1,1],colour="MR-Egger")+ggplot2::scale_color_manual(breaks=c("Variant","IVW and MR-Egger Outlier","MR-Egger Outlier","IVW Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="black","IVW and MR-Egger Outlier"="#CC79A7","MR-Egger Outlier"="#E69F00","IVW Outlier"="#009E73"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
+              ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+r_object$egger.coef[1,1],colour="black")+ggplot2::scale_color_manual(breaks=c("Variant","IVW and MR-Egger Outlier","MR-Egger Outlier","IVW Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="black","IVW and MR-Egger Outlier"="#CC79A7","MR-Egger Outlier"="#E69F00","IVW Outlier"="#009E73"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
 
 
             if(max(abs(r_object$data[,3]/r_object$data[,2]))>2){
@@ -1988,7 +1988,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                               axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
             ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$IVW.coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$IVW.coef[1]))*R.IVW,colour="black")+
             ggplot2::scale_x_continuous(limits = c(0,max(cxEgger)+Label.Scaling_Egg*2),expand=c(0,0))+ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+
-                                                                                                                r_object$egger.coef[1,1],colour="MR-Egger")+ggplot2::scale_y_continuous(limits = c(Y_MIN,Y_MAX))+ggplot2::scale_color_manual(breaks=c("Variant","Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="#000000","Outlier"="#E69F00"))+
+                                                                                                                r_object$egger.coef[1,1],colour="black")+ggplot2::scale_y_continuous(limits = c(Y_MIN,Y_MAX))+ggplot2::scale_color_manual(breaks=c("Variant","Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="#000000","Outlier"="#E69F00"))+
             ggplot2::theme(legend.title=ggplot2::element_blank())
 
           #Indicate that no outliers are present
@@ -2011,7 +2011,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
             ggplot2::geom_text(x=cos(atan(r_object$egger.coef[2,1]))*(R.Egger+Label.Scaling*1.5), y=sin(atan(r_object$egger.coef[2,1]))*(R.Egger+Label.Scaling*1.5) +r_object$egger.coef[1,1],label=round(r_object$egger.coef[2,1],digits=3),size=4)+
             ggplot2::geom_text(x=cos(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[1]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[1],digits=3),size=3)+
             ggplot2::geom_text(x=cos(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5),y=(sin(atan(r_object$egger.confint[2]))*(R.Egger+Label.Scaling*1.5))+r_object$egger.coef[1,1],label=round(r_object$egger.confint[2],digits=3),size=3)+
-            ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+r_object$egger.coef[1,1],colour="MR-Egger")+ggplot2::scale_color_manual(breaks=c("Variant","IVW and MR-Egger Outlier","MR-Egger Outlier","IVW Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="black","IVW and MR-Egger Outlier"="#CC79A7","MR-Egger Outlier"="#E69F00","IVW Outlier"="#009E73"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
+            ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$egger.coef[2,1]))*R.Egger, y = r_object$egger.coef[1,1], yend = (sin(atan(r_object$egger.coef[2,1]))*R.Egger)+r_object$egger.coef[1,1],colour="black")+ggplot2::scale_color_manual(breaks=c("Variant","IVW and MR-Egger Outlier","MR-Egger Outlier","IVW Outlier","IVW","MR-Egger"),values=c("IVW"="#56B4E9","MR-Egger"="#D55E00","Variant"="black","IVW and MR-Egger Outlier"="#CC79A7","MR-Egger Outlier"="#E69F00","IVW Outlier"="#009E73"))+ ggplot2::theme(legend.title=ggplot2::element_blank())
 
 
         }
