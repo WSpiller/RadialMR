@@ -691,7 +691,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Theta<-atan(r_object$data[,3]/r_object$data[,2])
                 b<-sin(Theta)*R.All
                 a<-cos(Theta)*R.All
-                B<- B + ggplot2::annotate(segment, x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
+                B<- B + ggplot2::annotate("segment", x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
               }
             }
           }
