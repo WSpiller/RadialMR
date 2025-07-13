@@ -190,7 +190,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 ggplot2::geom_text(x=cos(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[1])-0.02)*(R.IVW+Label.Scaling)-c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[1],digits=3),size=3)+
                 ggplot2::geom_text(x=cos(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling),y=sin(atan(r_object$confint[2])+0.02)*(R.IVW+Label.Scaling)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1]),label=round(r_object$confint[2],digits=3),size=3)+
                 ggplot2::theme_bw()+ggplot2::theme(panel.border = ggplot2::element_blank(),panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),axis.line = ggplot2::element_line(colour = "black"))+ggplot2::ylab(expression(hat(beta)[j]~sqrt(W[j])))+ggplot2::xlab(expression(sqrt(W[j])))+
-                ggplot2::geom_segment(ggplot2::aes(x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW"))+
+                ggplot2::annotate("segment", x = 0, xend = cos(atan(r_object$coef[1]))*R.IVW, y = 0, yend = sin(atan(r_object$coef[1]))*R.IVW,colour="IVW")+
                 ggplot2::scale_x_continuous(limits = c(0,R.IVW+(Label.Scaling*5)+c(stats::quantile(r_object$data$Wj,seq(0,0.1,0.1))[1])),expand=c(0,0))+ggplot2::scale_y_continuous(limits = c(Y_MINIVW,Y_MAXIVW))+
                 ggplot2::coord_fixed()+ggplot2::theme(legend.title=ggplot2::element_blank())+ggplot2::scale_colour_manual(breaks=c("Outlier","IVW"),values=c("#56B4E9","#E69F00","white"))
 
