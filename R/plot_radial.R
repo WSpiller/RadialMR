@@ -458,7 +458,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
 
 
-                B<- B + ggplot2::geom_segment(x = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], xend = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], y = r_object$data[r_object$data$Outliers == "Outlier", ][,3][i], yend =r_object$data[r_object$data$Outliers == "Outlier", ][,2][i]*r_object$coef[1],linetype="solid",colour="#56B4E9")
+                B<- B + ggplot2::annotate("segment", x = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], xend = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], y = r_object$data[r_object$data$Outliers == "Outlier", ][,3][i], yend =r_object$data[r_object$data$Outliers == "Outlier", ][,2][i]*r_object$coef[1],linetype="solid",colour="#56B4E9")
 
 
 
@@ -539,7 +539,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
 
 
-                B<- B + ggplot2::geom_segment(x = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], xend = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], y = r_object$data[r_object$data$Outliers == "Outlier", ][,3][i], yend =r_object$data[r_object$data$Outliers == "Outlier", ][,2][i]*r_object$coef[1],linetype="solid",colour="#56B4E9")
+                B<- B + ggplot2::annotate("segment", x = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], xend = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], y = r_object$data[r_object$data$Outliers == "Outlier", ][,3][i], yend =r_object$data[r_object$data$Outliers == "Outlier", ][,2][i]*r_object$coef[1],linetype="solid",colour="#56B4E9")
 
 
 
@@ -623,7 +623,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 b<-sin(Theta)*R.All
                 a<-cos(Theta)*R.All
 
-                B<- B + ggplot2::geom_segment(x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
+                B<- B + ggplot2::annotate("segment", x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
               }
 
               print("No significant Outliers")
@@ -691,7 +691,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Theta<-atan(r_object$data[,3]/r_object$data[,2])
                 b<-sin(Theta)*R.All
                 a<-cos(Theta)*R.All
-                B<- B + ggplot2::geom_segment(x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
+                B<- B + ggplot2::annotate(segment, x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
               }
             }
           }
@@ -749,7 +749,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 b<-sin(Theta)*R.All
                 a<-cos(Theta)*R.All
 
-                B<- B + ggplot2::geom_segment(x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
+                B<- B + ggplot2::annotate("segment", x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
               }
 
               print("No significant Outliers")
@@ -817,7 +817,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
                 Theta<-atan(r_object$data[,3]/r_object$data[,2])
                 b<-sin(Theta)*R.All
                 a<-cos(Theta)*R.All
-                B<- B + ggplot2::geom_segment(x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
+                B<- B + ggplot2::annotate("segment", x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
               }
             }
           }
@@ -1038,7 +1038,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
 
           #Draw lines indicating individual Q contributions and give text displaying each value
           for(i in seq_along(r_object$data[r_object$data$Outliers == "Outlier", ][,3])){
-            B<- B + ggplot2::geom_segment(x = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], xend = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], y = r_object$data[r_object$data$Outliers == "Outlier", ][,3][i], yend =r_object$data[r_object$data$Outliers == "Outlier", ][,2][i]*r_object$coef[2,1]+r_object$coef[1,1],linetype="solid",colour="#D55E00")
+            B<- B + ggplot2::annotate("segment", x = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], xend = r_object$data[r_object$data$Outliers == "Outlier", ][,2][i], y = r_object$data[r_object$data$Outliers == "Outlier", ][,3][i], yend =r_object$data[r_object$data$Outliers == "Outlier", ][,2][i]*r_object$coef[2,1]+r_object$coef[1,1],linetype="solid",colour="#D55E00")
             B<- B + ggplot2::geom_text(x=r_object$data[r_object$data$Outliers == "Outlier", ][,2][i],y=(r_object$data[r_object$data$Outliers == "Outlier", ][,3][i]*0.9),label=round(r_object$data[r_object$data$Outliers == "Outlier", ][,4][i],digits=2),size=2.5)
 
           }
@@ -1245,7 +1245,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               b<-sin(Theta)*R.All
               a<-cos(Theta)*R.All
 
-              B<- B + ggplot2::geom_segment(x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
+              B<- B + ggplot2::annotate("segment", x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
             }
 
             print("No significant Outliers")
@@ -1339,7 +1339,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Theta<-atan(temp.dat[,3]/temp.dat[,2])
               b<-sin(Theta)*R.All
               a<-cos(Theta)*R.All
-              B<- B + ggplot2::geom_segment(x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
+              B<- B + ggplot2::annotate("segment", x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
             }
 
 
@@ -1406,7 +1406,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               b<-sin(Theta)*R.All
               a<-cos(Theta)*R.All
 
-              B<- B + ggplot2::geom_segment(x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
+              B<- B + ggplot2::annotate("segment", x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
             }
 
             print("No significant Outliers")
@@ -1500,7 +1500,7 @@ plot_radial<-function(r_object,radial_scale,show_outliers,scale_match){
               Theta<-atan(temp.dat[,3]/temp.dat[,2])
               b<-sin(Theta)*R.All
               a<-cos(Theta)*R.All
-              B<- B + ggplot2::geom_segment(x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
+              B<- B + ggplot2::annotate("segment", x = 0, xend = a[i], y = 0, yend =b[i],linetype="dotted",colour="grey75")
             }
 
 
