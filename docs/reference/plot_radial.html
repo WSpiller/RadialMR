@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">RadialMR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -105,10 +105,24 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Outliers detected </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of iterations = 3</span>
 <span class="r-in"><span><span class="fu">plot_radial</span><span class="op">(</span><span class="va">ivw.object</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>All aesthetics have length 1, but the data has 82 rows.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please consider using `annotate()` or provide this layer with data containing</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   a single row.</span>
 <span class="r-plt img"><img src="plot_radial-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="va">egg.object</span> <span class="op">&lt;-</span> <span class="fu"><a href="egger_radial.html">egger_radial</a></span><span class="op">(</span><span class="va">ldl.fdat</span>, <span class="fl">0.05</span>, <span class="fl">1</span>, <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Radial MR-Egger</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Estimate Std. Error   t value     Pr(&gt;|t|)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -0.4303552  0.3244151 -1.326557 1.884296e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Wj           0.6129126  0.1109369  5.524877 3.988423e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residual standard error: 1.537 on 80 degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F-statistic: 30.52 on 1 and 80 DF, p-value: 3.99e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Q-Statistic for heterogeneity: 188.9285 on 80 DF , p-value: 8.445607e-11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Outliers detected </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">plot_radial</span><span class="op">(</span><span class="va">egg.object</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="plot_radial-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
