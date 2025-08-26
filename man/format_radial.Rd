@@ -18,7 +18,8 @@ format_radial(BXG, BYG, seBXG, seBYG, RSID)
 \item{RSID}{A vector of names for genetic variants included in the analysis. If variant IDs are not provided (\code{RSID = "NULL"}), a vector of ID numbers will be generated.}
 }
 \value{
-The function provides a data frame containing the following columns:\describe{
+The function provides a data frame containing the following columns:
+\describe{
 \item{\code{SNP}}{The identification number for each variant}
 \item{\code{beta.exposure}}{The association estimate for the genetic variant with respect to the exposure}
 \item{\code{beta.outcome}}{The association estimate for the genetic variant with respect to the outcome}

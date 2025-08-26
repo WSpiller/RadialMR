@@ -16,14 +16,14 @@ egger_radial(r_input, alpha, weights, summary)
 \item{summary}{A logical argument (\code{TRUE} or \code{FALSE}) indicating whether a summary of results and heterogeneity should be presented (default= \code{TRUE}).}
 }
 \value{
-An object of class \code{"egger"} containing the following components:\describe{
+An object of class \code{"egger"} containing the following components:
+\describe{
 \item{\code{coef}}{A matrix giving the intercept and slope coefficient, corresponding standard errors, t-statistics, and (two-sided) p-values.}
 \item{\code{qstatistic}}{Rucker's Q statistic for overall heterogeneity.}
 \item{\code{df}}{Degrees of freedom. This is equal to the number of variants -2 when fitting the radial MR-Egger model.}
 \item{\code{outliers}}{A data frame containing variants identified as outliers, with respective Q statistics, chi-squared tests and SNP identification.}
 \item{\code{data}}{A data frame containing containing SNP IDs, inverse variance weights, the product of the inverse variance weight and ratio estimate for each variant, contribution to overall heterogeneity with corresponding p-value, and a factor indicator showing outlier status.}
 \item{\code{confint}}{A vector giving lower and upper confidence limits for the radial MR-Egger effect estimate.}
-
 }
 }
 \description{
