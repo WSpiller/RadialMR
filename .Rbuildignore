@@ -6,3 +6,4 @@
 ^pkgdown$
 ^\.github$
 ^\.lintr$
+^docs$
