@@ -1,8 +1,0 @@
-pandoc: 3.7.0.2
-pkgdown: 2.1.3
-pkgdown_sha: ~
-articles: {}
-last_built: 2025-07-13T15:53Z
-urls:
-  reference: https://wspiller.github.io/RadialMR/reference
-  article: https://wspiller.github.io/RadialMR/articles
