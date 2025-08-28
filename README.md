@@ -36,7 +36,7 @@ regression for inverse variance weighted and MR-Egger regression models. The pac
 
 2. The `ivw_radial()` function fits a radial inverse variance weighted (IVW) model using either first order, second order, or modified
 second order weights. It provides an effect estimate and allows for outliers to be identified using Cochran's Q-statistic. This function 
-now also includes iterative and exact IVW estimation, as described in: Bowden et al., Improving the accuracy of two-sample summary data Mendelian randomization: moving beyond the NOME assumption, IJE, 2019, 48, 3, 728--742, <https://doi.org/10.1093/ije/dyy258>.
+now also includes iterative and exact IVW estimation, as described in: Bowden et al., Improving the accuracy of two-sample summary data Mendelian randomization: moving beyond the NOME assumption, IJE, 2019, 48, 3, 728-742, <https://doi.org/10.1093/ije/dyy258>.
 
 3. The `egger_radial()` function fits a radial MR-Egger model using either first order, second order, or modified
 second order weights. It provides an effect estimate and allows for outliers to be identified using Rucker's Q-statistic.
