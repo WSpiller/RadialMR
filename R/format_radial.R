@@ -26,25 +26,29 @@
 #'                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 #' head(ldl.fdat)
 #' class(ldl.fdat)
-format_radial<-function(BXG,BYG,seBXG,seBYG,RSID){
-
+format_radial <- function(BXG, BYG, seBXG, seBYG, RSID) {
   #Generates placeholder SNP IDs if not provided.
 
-  if(missing(RSID)) {
-    RSID<-seq(from=1,to=length(BYG),by=1)
+  if (missing(RSID)) {
+    RSID <- seq(from = 1, to = length(BYG), by = 1)
 
     warning("Missing SNP IDs; Generating placeholder values")
   }
 
   #Rearrange variable order in formatted data frame
-  fdat<-data.frame(RSID,BXG,BYG,seBXG,seBYG)
+  fdat <- data.frame(RSID, BXG, BYG, seBXG, seBYG)
 
   #Rename variables based on MRBase convention
-  names(fdat)<-c("SNP","beta.exposure","beta.outcome","se.exposure","se.outcome")
+  names(fdat) <- c(
+    "SNP",
+    "beta.exposure",
+    "beta.outcome",
+    "se.exposure",
+    "se.outcome"
+  )
 
   #Append rmr_format class to output data frame
-  class(fdat) <- append(class(fdat),
-                          "rmr_format")
+  class(fdat) <- append(class(fdat), "rmr_format")
 
   return(fdat)
 }

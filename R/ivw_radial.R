@@ -59,20 +59,23 @@
 #' ivw_radial(r_input = mrdat, alpha = 0.05,
 #'            weights = 1, tol = 0.0001, summary = TRUE)
 #' }
-ivw_radial<-function(r_input,alpha,weights,tol,summary){
-
+ivw_radial <- function(r_input, alpha, weights, tol, summary) {
   # convert TwoSampleMR single exposure-outcome pair object to rmr_format
   if (length(class(r_input)) == 1 && is.data.frame(r_input)) {
-    cnamesneed <- c("beta.exposure",
-                    "beta.outcome",
-                    "se.exposure",
-                    "se.outcome",
-                    "SNP",
-                    "mr_keep")
+    cnamesneed <- c(
+      "beta.exposure",
+      "beta.outcome",
+      "se.exposure",
+      "se.outcome",
+      "SNP",
+      "mr_keep"
+    )
     for (i in seq_along(cnamesneed)) {
       if (!(cnamesneed[i] %in% colnames(r_input))) {
-        stop(paste('This data.frame does not have the required column',
-                   cnamesneed[i]))
+        stop(paste(
+          'This data.frame does not have the required column',
+          cnamesneed[i]
+        ))
       }
     }
     r_input <- tsmr_to_rmr_format(r_input)
@@ -83,21 +86,23 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
     r_input <- mrinput_to_rmr_format(r_input)
   }
 
-  if(missing(alpha)) {
-    alpha<-0.05
-    warning("Significance threshold for outlier detection not specified: Adopting a 95% threshold")
+  if (missing(alpha)) {
+    alpha <- 0.05
+    warning(
+      "Significance threshold for outlier detection not specified: Adopting a 95% threshold"
+    )
   }
 
-  if(missing(weights)) {
-    weights<-3
+  if (missing(weights)) {
+    weights <- 3
     warning("Weights not specified: Adopting modified second-order weights")
   }
 
-  if(missing(tol)) {
-    tol<-0.00001
+  if (missing(tol)) {
+    tol <- 0.00001
   }
 
-  if(missing(summary)) {
+  if (missing(summary)) {
     summary <- TRUE
   }
 
@@ -105,375 +110,439 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
   Outliers <- NULL
 
   # Define ratio estimates
-  Ratios<-r_input[,3]/r_input[,2]
+  Ratios <- r_input[, 3] / r_input[, 2]
 
   # Calculate approximate F-statistic for each variant
-  Fstat<- r_input[,2]^2/r_input[,4]^2
+  Fstat <- r_input[, 2]^2 / r_input[, 4]^2
 
   # Define mean F-statistic across all variants
-  mf<- mean(Fstat)
+  mf <- mean(Fstat)
 
   # Calculate first order weights
 
-  if(weights==1){
-    W<-((r_input[,2]^2)/(r_input[,5]^2))
-    }
+  if (weights == 1) {
+    W <- ((r_input[, 2]^2) / (r_input[, 5]^2))
+  }
 
   # Calculate second order weights
 
-  if(weights==2){
-    W<-((r_input[,5]^2/r_input[,2]^2)+((r_input[,3]^2*r_input[,4]^2)/r_input[,2]^4))^-1
-    }
+  if (weights == 2) {
+    W <- ((r_input[, 5]^2 / r_input[, 2]^2) +
+      ((r_input[, 3]^2 * r_input[, 4]^2) / r_input[, 2]^4))^-1
+  }
 
   # Initially calculate first order weights for downstream use of modified second order weights
 
-  if(weights==3){
-    W<-((r_input[,2]^2)/(r_input[,5]^2))
-    }
+  if (weights == 3) {
+    W <- ((r_input[, 2]^2) / (r_input[, 5]^2))
+  }
 
   # Create vector of squareroot weights
-  Wj<-sqrt(W)
+  Wj <- sqrt(W)
 
   # Create vector of ratio estimates multiplied by given squareroot weightings
-  BetaWj<-Ratios*Wj
+  BetaWj <- Ratios * Wj
 
   # Define IVW Model
-  IVW.Model<-stats::lm(BetaWj~-1+Wj)
+  IVW.Model <- stats::lm(BetaWj ~ -1 + Wj)
 
   # Save summary of IVW model
-  EstimatesIVW<-summary(stats::lm(IVW.Model))
+  EstimatesIVW <- summary(stats::lm(IVW.Model))
 
   # Define effect estimate using IVW model
-  IVW.Slope<-EstimatesIVW$coefficients[1]
+  IVW.Slope <- EstimatesIVW$coefficients[1]
 
   # Define standard error for effect estimate using IVW model
-  IVW.SE<-EstimatesIVW$coefficients[2]
+  IVW.SE <- EstimatesIVW$coefficients[2]
 
   # Define confidence interval for effect estimate using IVW model
-  IVW_CI<-stats::confint(IVW.Model)
+  IVW_CI <- stats::confint(IVW.Model)
 
   # Specify degrees of freedom as number of SNPs -1.
-  DF<-length(r_input[,1])-1
+  DF <- length(r_input[, 1]) - 1
 
   # Calculate Q statistic for each individual variant
-  Qj<-W*(Ratios-IVW.Slope)^2
+  Qj <- W * (Ratios - IVW.Slope)^2
 
   # Calculate total Q statistic as the sum of individual Q contributions Qj
-  Total_Q<-sum(Qj)
+  Total_Q <- sum(Qj)
 
   # Perform chi square test with respect to global Q statistic Total_Q
-  Total_Q_chi<-stats::pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
+  Total_Q_chi <- stats::pchisq(
+    Total_Q,
+    length(r_input[, 2]) - 1,
+    lower.tail = FALSE
+  )
 
   # Perform additional analyses to calculate modified second order weights
-  if(weights==3){
-  W<- ((r_input[,5]^2+(IVW.Slope^2*r_input[,4]^2))/r_input[,2]^2)^-1
+  if (weights == 3) {
+    W <- ((r_input[, 5]^2 + (IVW.Slope^2 * r_input[, 4]^2)) / r_input[, 2]^2)^-1
 
     # Create vector of squareroot weights
-    Wj<-sqrt(W)
+    Wj <- sqrt(W)
 
     # Create vector of ratio estimates multiplied by given squareroot weightings
-    BetaWj<-Ratios*Wj
+    BetaWj <- Ratios * Wj
 
     # Define IVW Model
-    IVW.Model<-stats::lm(BetaWj~-1+Wj)
+    IVW.Model <- stats::lm(BetaWj ~ -1 + Wj)
 
     # Save summary of IVW model
-    EstimatesIVW<-summary(stats::lm(BetaWj~-1+Wj))
+    EstimatesIVW <- summary(stats::lm(BetaWj ~ -1 + Wj))
 
     # Define effect estimate using IVW model
-    IVW.Slope<-EstimatesIVW$coefficients[1]
+    IVW.Slope <- EstimatesIVW$coefficients[1]
 
     # Define standard error for effect estimate using IVW model
-    IVW.SE<-EstimatesIVW$coefficients[2]
+    IVW.SE <- EstimatesIVW$coefficients[2]
 
     # Define confidence interval for effect estimate using IVW model
-    IVW_CI<-stats::confint(IVW.Model)
+    IVW_CI <- stats::confint(IVW.Model)
 
     # Calculate Q statistic for each individual variant
-    Qj<-W*(Ratios-IVW.Slope)^2
+    Qj <- W * (Ratios - IVW.Slope)^2
 
     # Calculate total Q statistic as the sum of individual Q contributions Qj
-    Total_Q<-sum(Qj)
+    Total_Q <- sum(Qj)
 
     # Perform chi square test with respect to global Q statistic Total_Q
-    Total_Q_chi<-stats::pchisq(Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
-
+    Total_Q_chi <- stats::pchisq(
+      Total_Q,
+      length(r_input[, 2]) - 1,
+      lower.tail = FALSE
+    )
   }
 
   # Perform interactive analysis with given tolerance tol
 
-  iterative_ivw<-function(int.tol){
-
+  iterative_ivw <- function(int.tol) {
     # Define difference variable indicating whether further iteration is required
-    Diff  <- 1
+    Diff <- 1
     # Set initial effect estimate value
     Bhat1.Iterative <- 0
     # Define count variable indicating number of iterations
     count <- 0
-    while(Diff >= tol){
-      W    <- 1/(r_input[,5]^2/r_input[,2]^2 + (Bhat1.Iterative^2)*r_input[,4]^2/r_input[,2]^2)
+    while (Diff >= tol) {
+      W <- 1 /
+        (r_input[, 5]^2 /
+          r_input[, 2]^2 +
+          (Bhat1.Iterative^2) * r_input[, 4]^2 / r_input[, 2]^2)
 
       # Perform IVW analysis as described above, with prefix new.
-      Wj<-sqrt(W)
-      BetaWj<-Ratios*Wj
-      new.IVW.Model<-stats::lm(BetaWj~-1+Wj)
-      new.EstimatesIVW<-summary(stats::lm(BetaWj~-1+Wj))
-      new.IVW.Slope<-new.EstimatesIVW$coefficients[1]
-      new.IVW.SE<-new.EstimatesIVW$coefficients[2]
-      new.IVW_CI<-stats::confint(new.IVW.Model)
-      new.Qj<-W*(Ratios-new.IVW.Slope)^2
-      new.Total_Q<-sum(new.Qj)
-      new.Total_Q_chi<-stats::pchisq(new.Total_Q,length(r_input[,2])-1,lower.tail = FALSE)
+      Wj <- sqrt(W)
+      BetaWj <- Ratios * Wj
+      new.IVW.Model <- stats::lm(BetaWj ~ -1 + Wj)
+      new.EstimatesIVW <- summary(stats::lm(BetaWj ~ -1 + Wj))
+      new.IVW.Slope <- new.EstimatesIVW$coefficients[1]
+      new.IVW.SE <- new.EstimatesIVW$coefficients[2]
+      new.IVW_CI <- stats::confint(new.IVW.Model)
+      new.Qj <- W * (Ratios - new.IVW.Slope)^2
+      new.Total_Q <- sum(new.Qj)
+      new.Total_Q_chi <- stats::pchisq(
+        new.Total_Q,
+        length(r_input[, 2]) - 1,
+        lower.tail = FALSE
+      )
 
       # Update absolute difference between estimates
-      Diff  <- abs(Bhat1.Iterative - new.IVW.Slope)
+      Diff <- abs(Bhat1.Iterative - new.IVW.Slope)
       # Update effect estimate
       Bhat1.Iterative <- new.IVW.Slope
       # Update standard error for effect estimate
-      Bhat1.SE<-new.IVW.SE
+      Bhat1.SE <- new.IVW.SE
       # Update confidence interval for effect estimate
-      Bhat1.CI<-new.IVW_CI
+      Bhat1.CI <- new.IVW_CI
       # Update t-value for effect estimate
-      Bhat1.t<-summary(new.IVW.Model)$coefficients[1,3]
+      Bhat1.t <- summary(new.IVW.Model)$coefficients[1, 3]
       # Update p-value for effect estimate
-      Bhat1.p<-summary(new.IVW.Model)$coefficients[1,4]
+      Bhat1.p <- summary(new.IVW.Model)$coefficients[1, 4]
       # Update count number for total iterations
-      count <- count+1
+      count <- count + 1
     }
 
     # Save estimates obtained through iterative approach within a data frame
-    It.Dat<-data.frame(Bhat1.Iterative,Bhat1.SE,Bhat1.t,Bhat1.p)
+    It.Dat <- data.frame(Bhat1.Iterative, Bhat1.SE, Bhat1.t, Bhat1.p)
 
     # Define objects to be returned by Iterative_ivw function
     multi_return2 <- function() {
-      Out_list2 <- list("It.Res" = It.Dat,"count"= count,"It.CI"=new.IVW_CI)
+      Out_list2 <- list(
+        "It.Res" = It.Dat,
+        "count" = count,
+        "It.CI" = new.IVW_CI
+      )
       return(Out_list2)
     }
-    OUT2<-multi_return2()
-    }
+    OUT2 <- multi_return2()
+  }
 
   #Perform iterative method using specified tolerance
-  Bhat1.Iterative<-iterative_ivw(tol)
+  Bhat1.Iterative <- iterative_ivw(tol)
 
   ## Effect estimation through Q-statistic minimisation
 
   #Calculate Q statistic using input 'a' as initial effect estimate
-  PL2 = function(a){
+  PL2 = function(a) {
     b = a[1]
-    w = 1/((phi)*r_input[,5]^2/r_input[,2]^2 + (b^2)*r_input[,4]^2/r_input[,2]^2)
-    q =  sum(w*(Ratios - b)^2)
+    w = 1 /
+      ((phi) *
+        r_input[, 5]^2 /
+        r_input[, 2]^2 +
+        (b^2) * r_input[, 4]^2 / r_input[, 2]^2)
+    q = sum(w * (Ratios - b)^2)
   }
 
   # Function introducing parameter phi for q-statistic minimisation
-  PLfunc = function(a){
-    phi    = a[1]
-    PL2    = function(a){
-      beta   = a[1]
-      w      = 1/(phi*r_input[,5]^2/r_input[,2]^2 + (beta^2)*r_input[,4]^2/r_input[,2]^2)
-      q      =  (sum(w*(Ratios - beta)^2))
+  PLfunc = function(a) {
+    phi = a[1]
+    PL2 = function(a) {
+      beta = a[1]
+      w = 1 /
+        (phi *
+          r_input[, 5]^2 /
+          r_input[, 2]^2 +
+          (beta^2) * r_input[, 4]^2 / r_input[, 2]^2)
+      q = (sum(w * (Ratios - beta)^2))
     }
-    b  = stats::optimize(PL2,interval=c(lb,ub))$minimum
-    w    = 1/(phi*r_input[,5]^2/r_input[,2]^2 + (b^2)*r_input[,4]^2/r_input[,2]^2)
-    q    =  (sum(w*(Ratios - b)^2) - DF)^2
+    b = stats::optimize(PL2, interval = c(lb, ub))$minimum
+    w = 1 /
+      (phi *
+        r_input[, 5]^2 /
+        r_input[, 2]^2 +
+        (b^2) * r_input[, 4]^2 / r_input[, 2]^2)
+    q = (sum(w * (Ratios - b)^2) - DF)^2
   }
 
   # Function for calculating standard errors using parametric bootstrap
-  BootVar = function(sims=1000){
+  BootVar = function(sims = 1000) {
     B = NULL
-    pp=NULL
-    for(hh in 1:sims){
-      L      = length(r_input[,2])
-      choice = sample(seq(1,L),L,replace=TRUE)
-      bxg    = r_input[,2][choice]
-      seX = r_input[,4][choice]
-      byg    = r_input[,3][choice]
-      seY = r_input[,5][choice]
-      Ratios    = byg/bxg
+    pp = NULL
+    for (hh in 1:sims) {
+      L = length(r_input[, 2])
+      choice = sample(seq(1, L), L, replace = TRUE)
+      bxg = r_input[, 2][choice]
+      seX = r_input[, 4][choice]
+      byg = r_input[, 3][choice]
+      seY = r_input[, 5][choice]
+      Ratios = byg / bxg
 
-      W1        = 1/(seY^2/bxg^2)
-      BIVw1     = Ratios*sqrt(W1)
-      sW1       = sqrt(W1)
-      IVWfitR1  = summary(stats::lm(BIVw1 ~ -1+sW1))
-      phi_IVW1  = IVWfitR1$sigma^2
-      W2        = 1/(seY^2/bxg^2 + (byg^2)*seX^2/bxg^4)
-      BIVw2     = Ratios*sqrt(W2)
-      sW2       = sqrt(W2)
-      IVWfitR2  = summary(stats::lm(BIVw2 ~ -1+sW2))
-      phi_IVW2  = IVWfitR2$sigma^2
+      W1 = 1 / (seY^2 / bxg^2)
+      BIVw1 = Ratios * sqrt(W1)
+      sW1 = sqrt(W1)
+      IVWfitR1 = summary(stats::lm(BIVw1 ~ -1 + sW1))
+      phi_IVW1 = IVWfitR1$sigma^2
+      W2 = 1 / (seY^2 / bxg^2 + (byg^2) * seX^2 / bxg^4)
+      BIVw2 = Ratios * sqrt(W2)
+      sW2 = sqrt(W2)
+      IVWfitR2 = summary(stats::lm(BIVw2 ~ -1 + sW2))
+      phi_IVW2 = IVWfitR2$sigma^2
 
-      phi_IVW2 = max(1,phi_IVW2)
-      phi_IVW1 = max(1,phi_IVW1)
-      lb       = IVWfitR1$coef[1] - 10*IVWfitR1$coef[2]
-      ub       = IVWfitR1$coef[1] + 10*IVWfitR1$coef[2]
+      phi_IVW2 = max(1, phi_IVW2)
+      phi_IVW1 = max(1, phi_IVW1)
+      lb = IVWfitR1$coef[1] - 10 * IVWfitR1$coef[2]
+      ub = IVWfitR1$coef[1] + 10 * IVWfitR1$coef[2]
 
       # Function calculating q-statistics using updated parameter phi
 
-      PL2 = function(a){
+      PL2 = function(a) {
         b = a[1]
-        w = 1/((phi)*seY^2/bxg^2 + (b^2)*seX^2/bxg^2)
-        q =  sum(w*(Ratios - b)^2)
+        w = 1 / ((phi) * seY^2 / bxg^2 + (b^2) * seX^2 / bxg^2)
+        q = sum(w * (Ratios - b)^2)
       }
 
       # Calculation of causal effect estimate minimising q-statistics from previous functions
-      PLfunc = function(a){
-        phi    = a[1]
-        PL2    = function(a){
-          beta   = a[1]
-          w      = 1/(phi*seY^2/bxg^2 + (beta^2)*seX^2/bxg^2)
-          q      =  (sum(w*(Ratios - beta)^2))
+      PLfunc = function(a) {
+        phi = a[1]
+        PL2 = function(a) {
+          beta = a[1]
+          w = 1 / (phi * seY^2 / bxg^2 + (beta^2) * seX^2 / bxg^2)
+          q = (sum(w * (Ratios - beta)^2))
         }
-        b  = stats::optimize(PL2,interval=c(-lb,ub))$minimum
-        w    = 1/(phi*seY^2/bxg^2 + (b^2)*seX^2/bxg^2)
-        q    =  (sum(w*(Ratios - b)^2) - DF)^2
+        b = stats::optimize(PL2, interval = c(-lb, ub))$minimum
+        w = 1 / (phi * seY^2 / bxg^2 + (b^2) * seX^2 / bxg^2)
+        q = (sum(w * (Ratios - b)^2) - DF)^2
       }
-      phi    = stats::optimize(PLfunc,interval=c(phi_IVW2,phi_IVW1+0.001))$minimum
-      B[hh]  = stats::optimize(PL2,interval=c(lb,ub))$minimum
+      phi = stats::optimize(
+        PLfunc,
+        interval = c(phi_IVW2, phi_IVW1 + 0.001)
+      )$minimum
+      B[hh] = stats::optimize(PL2, interval = c(lb, ub))$minimum
     }
-    se   = stats::sd(B)
-    mB   = mean(B)
-    return(list(mB=mB,se=se))
+    se = stats::sd(B)
+    mB = mean(B)
+    return(list(mB = mB, se = se))
   }
 
-  CIfunc = function(){
-    z = stats::qt(df=DF, 0.975)
-    z2 = 2*(1-stats::pnorm(z))
+  CIfunc = function() {
+    z = stats::qt(df = DF, 0.975)
+    z2 = 2 * (1 - stats::pnorm(z))
 
-    PL3 = function(a){
+    PL3 = function(a) {
       b = a[1]
-      w = 1/(r_input[,5]^2/r_input[,2]^2 + (b^2)*r_input[,4]^2/r_input[,2]^2)
-      q    =  (sum(w*(Ratios - b)^2) - stats::qchisq(1-z2,DF))^2
+      w = 1 /
+        (r_input[, 5]^2 /
+          r_input[, 2]^2 +
+          (b^2) * r_input[, 4]^2 / r_input[, 2]^2)
+      q = (sum(w * (Ratios - b)^2) - stats::qchisq(1 - z2, DF))^2
     }
 
-    lb = Bhat - 10*SE
-    ub = Bhat + 10*SE
+    lb = Bhat - 10 * SE
+    ub = Bhat + 10 * SE
 
-    low   = stats::optimize(PL3,interval=c(lb,Bhat))$minimum
-    high  = stats::optimize(PL3,interval=c(Bhat,ub))$minimum
-    CI    = c(low,high)
-    return(list(CI=CI))
+    low = stats::optimize(PL3, interval = c(lb, Bhat))$minimum
+    high = stats::optimize(PL3, interval = c(Bhat, ub))$minimum
+    CI = c(low, high)
+    return(list(CI = CI))
   }
 
   # Fit fixed effect model and and perform exact Q test
 
-  phi       = 1
-  Bhat      = stats::optimize(PL2,interval=c(-2,2))$minimum
-  W         = 1/(r_input[,5]^2/r_input[,2]^2 + (Bhat^2)*r_input[,4]^2/r_input[,2]^2)
-  SE        = sqrt(1/sum(W))
-  FCI        = CIfunc()
+  phi = 1
+  Bhat = stats::optimize(PL2, interval = c(-2, 2))$minimum
+  W = 1 /
+    (r_input[, 5]^2 /
+      r_input[, 2]^2 +
+      (Bhat^2) * r_input[, 4]^2 / r_input[, 2]^2)
+  SE = sqrt(1 / sum(W))
+  FCI = CIfunc()
 
-  QIVW      = sum(W*(Ratios - Bhat)^2)
-  Qp        = 1-stats::pchisq(QIVW,DF)
-  Qind      = W*(Ratios - Bhat)^2
-  ExactQ    = c(QIVW,Qp)
+  QIVW = sum(W * (Ratios - Bhat)^2)
+  Qp = 1 - stats::pchisq(QIVW, DF)
+  Qind = W * (Ratios - Bhat)^2
+  ExactQ = c(QIVW, Qp)
   ExactQind = Qind
   # Estimation (fixed effects) point estimate, se, t-stat, p-value)
 
-  FE_EXACT    = t(c(Bhat,SE,Bhat/SE,2*(1-stats::pt(abs(Bhat/SE),DF))))
+  FE_EXACT = t(c(Bhat, SE, Bhat / SE, 2 * (1 - stats::pt(abs(Bhat / SE), DF))))
 
-  FE_EXACT<-data.frame(FE_EXACT)
+  FE_EXACT <- data.frame(FE_EXACT)
 
-  names(FE_EXACT)<-c("Estimate","Std.Error","t value","Pr(>|t|)")
+  names(FE_EXACT) <- c("Estimate", "Std.Error", "t value", "Pr(>|t|)")
 
   # Fit random effect model and and perform exact Q test
 
-  BIVW1      = Ratios*sqrt(1/(r_input[,5]^2/r_input[,2]^2))
-  IVWfit1    = summary(stats::lm(BIVW1 ~ -1+sqrt(1/(r_input[,5]^2/r_input[,2]^2))))
-  phi_IVW1   = IVWfit1$sigma^2
-  BIVW2 <- Ratios*sqrt(1/(r_input[,5]^2/r_input[,2]^2 + (r_input[,3]^2)*r_input[,4]^2/r_input[,2]^4))
-  IVWfit2    = summary(stats::lm(BIVW2 ~ -1+sqrt(1/(r_input[,5]^2/r_input[,2]^2 + (r_input[,3]^2)*r_input[,4]^2/r_input[,2]^4))))
-  phi_IVW2   = IVWfit2$sigma^2
-  phi_IVW2 = max(1,phi_IVW2)
-  phi_IVW1 = max(1,phi_IVW1)+0.001
-  lb = Bhat - 10*SE
-  ub = Bhat + 10*SE
-  phi       = stats::optimize(PLfunc,interval=c(phi_IVW2,phi_IVW1))$minimum
-  Bhat      = stats::optimize(PL2,interval=c(lb,ub))$minimum
-  Boot      = BootVar()
-  SE        = Boot$se
+  BIVW1 = Ratios * sqrt(1 / (r_input[, 5]^2 / r_input[, 2]^2))
+  IVWfit1 = summary(stats::lm(
+    BIVW1 ~ -1 + sqrt(1 / (r_input[, 5]^2 / r_input[, 2]^2))
+  ))
+  phi_IVW1 = IVWfit1$sigma^2
+  BIVW2 <- Ratios *
+    sqrt(
+      1 /
+        (r_input[, 5]^2 /
+          r_input[, 2]^2 +
+          (r_input[, 3]^2) * r_input[, 4]^2 / r_input[, 2]^4)
+    )
+  IVWfit2 = summary(stats::lm(
+    BIVW2 ~
+      -1 +
+        sqrt(
+          1 /
+            (r_input[, 5]^2 /
+              r_input[, 2]^2 +
+              (r_input[, 3]^2) * r_input[, 4]^2 / r_input[, 2]^4)
+        )
+  ))
+  phi_IVW2 = IVWfit2$sigma^2
+  phi_IVW2 = max(1, phi_IVW2)
+  phi_IVW1 = max(1, phi_IVW1) + 0.001
+  lb = Bhat - 10 * SE
+  ub = Bhat + 10 * SE
+  phi = stats::optimize(PLfunc, interval = c(phi_IVW2, phi_IVW1))$minimum
+  Bhat = stats::optimize(PL2, interval = c(lb, ub))$minimum
+  Boot = BootVar()
+  SE = Boot$se
 
   # Estimation (fixed effects) point estimate, se, t-stat, p-value)
 
-  RCI    = Bhat + c(-1,1)*stats::qt(df=DF, 0.975)*SE
-  RE_EXACT  = t(c(Bhat,SE,Bhat/SE,2*(1-stats::pt(abs(Bhat/SE),DF))))
-  RE_EXACT<-data.frame(RE_EXACT)
-  names(RE_EXACT)<-c("Estimate","Std.Error","t value","Pr(>|t|)")
+  RCI = Bhat + c(-1, 1) * stats::qt(df = DF, 0.975) * SE
+  RE_EXACT = t(c(Bhat, SE, Bhat / SE, 2 * (1 - stats::pt(abs(Bhat / SE), DF))))
+  RE_EXACT <- data.frame(RE_EXACT)
+  names(RE_EXACT) <- c("Estimate", "Std.Error", "t value", "Pr(>|t|)")
 
   # Define a placeholder vector of 0 values for chi square tests
-  Qj_Chi<-0
+  Qj_Chi <- 0
 
   # Perform chi square tests for each Q contribution Qj
-  for(i in seq_along(Qj)){
-    Qj_Chi[i]<-stats::pchisq(Qj[i],1,lower.tail = FALSE)
+  for (i in seq_along(Qj)) {
+    Qj_Chi[i] <- stats::pchisq(Qj[i], 1, lower.tail = FALSE)
   }
 
   # Create data frame with SNP IDs and outlier information
-  r_input$Qj<-Qj
-  r_input$Qj_Chi<-Qj_Chi
+  r_input$Qj <- Qj
+  r_input$Qj_Chi <- Qj_Chi
 
   # Define a placeholder vector of 0 values for outlier status variable
-  Out_Indicator<-rep(0,length(r_input[,2]))
+  Out_Indicator <- rep(0, length(r_input[, 2]))
 
   # Include value of 1 indicating positive outlier status for given sig.threshold
-  for (i in seq_along(r_input[,2])) {
-    if (Qj_Chi[i]<alpha) {
-      Out_Indicator[i]<-1
+  for (i in seq_along(r_input[, 2])) {
+    if (Qj_Chi[i] < alpha) {
+      Out_Indicator[i] <- 1
     }
   }
 
   # Include the outlier status variable in the data frame as a factor
-  r_input$Outliers<-factor(Out_Indicator)
-  levels(r_input$Outliers)[levels(r_input$Outliers)=="0"] <- "Variant"
-  levels(r_input$Outliers)[levels(r_input$Outliers)=="1"] <- "Outlier"
+  r_input$Outliers <- factor(Out_Indicator)
+  levels(r_input$Outliers)[levels(r_input$Outliers) == "0"] <- "Variant"
+  levels(r_input$Outliers)[levels(r_input$Outliers) == "1"] <- "Outlier"
 
   # Provide indication if no outliers are present
-  if(sum(Out_Indicator==0)){
-    outlier_status<-"No significant outliers"
-    outtab<-"No significant outliers"
+  if (sum(Out_Indicator == 0)) {
+    outlier_status <- "No significant outliers"
+    outtab <- "No significant outliers"
   }
 
   # If outliers are present produce data frame with information on outliers
-  if(sum(Out_Indicator>0)){
-    outlier_status<-"Outliers detected"
+  if (sum(Out_Indicator > 0)) {
+    outlier_status <- "Outliers detected"
 
     # Generate a subset of data containing only outliers
-    Out_Dat<-subset(r_input, Outliers == "Outlier")
+    Out_Dat <- subset(r_input, Outliers == "Outlier")
 
     # Construct a data frame containing SNP IDs, Q statistics and chi-square values for each outlying variant
-    outtab<-data.frame(Out_Dat[,1],Out_Dat$Qj,Out_Dat$Qj_Chi)
+    outtab <- data.frame(Out_Dat[, 1], Out_Dat$Qj, Out_Dat$Qj_Chi)
 
     # Redefine column names
-    colnames(outtab) = c("SNP","Q_statistic","p.value")
+    colnames(outtab) = c("SNP", "Q_statistic", "p.value")
   }
 
   # Create data frame for displaying summary results
 
-  Sum.Dat<-data.frame(stats::coef(EstimatesIVW))
-  names(Sum.Dat)<-c("Estimate","Std.Error","t value","Pr(>|t|)")
-  names(Bhat1.Iterative$It.Res)<-names(Sum.Dat)
-  combined.dat<-(rbind(Sum.Dat,Bhat1.Iterative$It.Res))
-  combined.dat<-rbind(combined.dat,FE_EXACT)
-  combined.dat<-rbind(combined.dat,RE_EXACT)
+  Sum.Dat <- data.frame(stats::coef(EstimatesIVW))
+  names(Sum.Dat) <- c("Estimate", "Std.Error", "t value", "Pr(>|t|)")
+  names(Bhat1.Iterative$It.Res) <- names(Sum.Dat)
+  combined.dat <- (rbind(Sum.Dat, Bhat1.Iterative$It.Res))
+  combined.dat <- rbind(combined.dat, FE_EXACT)
+  combined.dat <- rbind(combined.dat, RE_EXACT)
 
-  for(i in 1:3){
-    combined.dat[i,4]<- 2 * stats::pnorm(abs(combined.dat[i,1]/combined.dat[i,2]), lower.tail = FALSE)
+  for (i in 1:3) {
+    combined.dat[i, 4] <- 2 *
+      stats::pnorm(
+        abs(combined.dat[i, 1] / combined.dat[i, 2]),
+        lower.tail = FALSE
+      )
   }
 
-  row.names(combined.dat)<-c("Effect","Iterative","Exact (FE)","Exact (RE)")
+  row.names(combined.dat) <- c(
+    "Effect",
+    "Iterative",
+    "Exact (FE)",
+    "Exact (RE)"
+  )
 
-  if(weights == 1){
+  if (weights == 1) {
     row.names(combined.dat)[1] <- "Effect (1st)"
   }
 
-  if(weights == 2){
+  if (weights == 2) {
     row.names(combined.dat)[1] <- "Effect (2nd)"
   }
 
-  if(weights == 3){
+  if (weights == 3) {
     row.names(combined.dat)[1] <- "Effect (Mod.2nd)"
   }
 
-  if(summary==TRUE){
-
+  if (summary == TRUE) {
     # Print summary elements that are common to both lm and plm model summary objects
     cat("\n")
 
@@ -485,40 +554,80 @@ ivw_radial<-function(r_input,alpha,weights,tol,summary){
 
     cat("\n")
 
-    cat("\nResidual standard error:", round(EstimatesIVW$sigma,3), "on", EstimatesIVW$df[2], "degrees of freedom")
+    cat(
+      "\nResidual standard error:",
+      round(EstimatesIVW$sigma, 3),
+      "on",
+      EstimatesIVW$df[2],
+      "degrees of freedom"
+    )
 
     cat("\n")
 
-    cat(paste(c("\nF-statistic:", " on"," and"), round(EstimatesIVW$fstatistic,2), collapse=""),
-        "DF, p-value:",
-        format.pval(stats::pf(EstimatesIVW$fstatistic[1L], EstimatesIVW$fstatistic[2L], EstimatesIVW$fstatistic[3L],
-                       lower.tail = FALSE), digits=3))
+    cat(
+      paste(
+        c("\nF-statistic:", " on", " and"),
+        round(EstimatesIVW$fstatistic, 2),
+        collapse = ""
+      ),
+      "DF, p-value:",
+      format.pval(
+        stats::pf(
+          EstimatesIVW$fstatistic[1L],
+          EstimatesIVW$fstatistic[2L],
+          EstimatesIVW$fstatistic[3L],
+          lower.tail = FALSE
+        ),
+        digits = 3
+      )
+    )
 
     cat("\n")
 
-    cat("Q-Statistic for heterogeneity:",Total_Q, "on", length(r_input[,2])-1, "DF",",", "p-value:" , Total_Q_chi)
+    cat(
+      "Q-Statistic for heterogeneity:",
+      Total_Q,
+      "on",
+      length(r_input[, 2]) - 1,
+      "DF",
+      ",",
+      "p-value:",
+      Total_Q_chi
+    )
 
     cat("\n")
 
-    cat("\n",outlier_status,"\n")
+    cat("\n", outlier_status, "\n")
     cat("Number of iterations =", Bhat1.Iterative$count)
     cat("\n")
-
   }
 
   # Create data frame containing information used to calculate radial estimates and determine outlier status
-  out_data<-data.frame(r_input[,1],r_input[,6],r_input[,7],r_input[,8])
-  out_data$Wj<-Wj
-  out_data$BetaWj<-BetaWj
-  out_data<-out_data[c(1,5,6,2,3,4)]
-  names(out_data)<-c("SNP","Wj","BetaWj","Qj","Qj_Chi","Outliers")
+  out_data <- data.frame(r_input[, 1], r_input[, 6], r_input[, 7], r_input[, 8])
+  out_data$Wj <- Wj
+  out_data$BetaWj <- BetaWj
+  out_data <- out_data[c(1, 5, 6, 2, 3, 4)]
+  names(out_data) <- c("SNP", "Wj", "BetaWj", "Qj", "Qj_Chi", "Outliers")
 
   multi_return <- function() {
-    Out_list <- list("coef" = combined.dat,"qstatistic"= Total_Q, "df" = length(r_input[,2])-1, "outliers" = outtab, "data" = out_data, "confint" = stats::confint(IVW.Model),
-                     "it.coef"=combined.dat[2,],"fe.coef"=combined.dat[3,],"re.coef" = combined.dat[4,1], "it.confint"= Bhat1.Iterative$It.CI,"fe.confint" = FCI$CI, "re.confint" = RCI, "meanF"= mf)
-    class(Out_list)<-"IVW"
+    Out_list <- list(
+      "coef" = combined.dat,
+      "qstatistic" = Total_Q,
+      "df" = length(r_input[, 2]) - 1,
+      "outliers" = outtab,
+      "data" = out_data,
+      "confint" = stats::confint(IVW.Model),
+      "it.coef" = combined.dat[2, ],
+      "fe.coef" = combined.dat[3, ],
+      "re.coef" = combined.dat[4, 1],
+      "it.confint" = Bhat1.Iterative$It.CI,
+      "fe.confint" = FCI$CI,
+      "re.confint" = RCI,
+      "meanF" = mf
+    )
+    class(Out_list) <- "IVW"
 
     return(Out_list)
   }
-  OUT<-multi_return()
+  OUT <- multi_return()
 }

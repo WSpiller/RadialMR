@@ -23,10 +23,12 @@ mrinput_to_rmr_format <- function(dat) {
     stop('The class of the input data object must be "MRInput"')
   }
 
-  out <- format_radial(BXG = dat@betaX,
-                       BYG = dat@betaY,
-                       seBXG = dat@betaXse,
-                       seBYG = dat@betaYse,
-                       RSID = dat@snps)
+  out <- format_radial(
+    BXG = dat@betaX,
+    BYG = dat@betaY,
+    seBXG = dat@betaXse,
+    seBYG = dat@betaYse,
+    RSID = dat@snps
+  )
   out
 }
