@@ -49,14 +49,7 @@ jobs:
 
       - if: runner.os == 'macOS'
         run: |
-          mkdir ~/.R
-          tee ~/.R/Makevars <<EOF 
-          CFLAGS=-I/opt/homebrew/include
-          CPPFLAGS=-I/opt/homebrew/include
-          CXXFLAGS=-I/opt/homebrew/include
-          CXX11FLAGS=-I/opt/homebrew/include
-          LDFLAGS=-L/opt/homebrew/lib
-          EOF
+          sudo Rscript -e "source('https://mac.R-project.org/bin/install.R'); install.libs('gettext')"
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
