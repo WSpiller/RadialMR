@@ -48,12 +48,12 @@ jobs:
           use-public-rspm: true
 
       - if: runner.os == 'macOS'
-        env:
-          CFLAGS: -I/opt/homebrew/include
-          CPPFLAGS: -I/opt/homebrew/include
-          CXXFLAGS: -I/opt/homebrew/include
-          CXX11FLAGS: -I/opt/homebrew/include
-          LDFLAGS: -L/opt/homebrew/lib
+        run: |
+          echo 'CFLAGS: -I/opt/homebrew/include
+            CPPFLAGS: -I/opt/homebrew/include
+            CXXFLAGS: -I/opt/homebrew/include
+            CXX11FLAGS: -I/opt/homebrew/include
+            LDFLAGS: -L/opt/homebrew/lib' > ~/.R/Makevars
 # LDFLAGS+="-L/opt/homebrew/opt/libomp/lib"
 # CPPFLAGS+="-I/opt/homebrew/opt/libomp/include"
 
