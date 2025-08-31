@@ -49,7 +49,7 @@ jobs:
 
       # Attempt to fix libintl.h not found error
       - if: runner.os == 'macOS'
-        run: brew install gettext
+        run: brew reinstall gettext && brew unlink gettext && brew link gettext --force
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
