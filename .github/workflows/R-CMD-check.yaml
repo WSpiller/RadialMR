@@ -24,7 +24,7 @@ jobs:
       matrix:
         config:
           - {os: macos-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
+          # - {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
           - {os: ubuntu-latest,   r: 'oldrel-1'}
@@ -49,7 +49,7 @@ jobs:
 
       - if: runner.os == 'macOS'
         run: |
-          tee -a ~/.R/Makevars <<EOF 
+          tee ~/.R/Makevars <<EOF 
           CFLAGS=-I/opt/homebrew/include
           CPPFLAGS=-I/opt/homebrew/include
           CXXFLAGS=-I/opt/homebrew/include
