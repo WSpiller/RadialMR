@@ -49,11 +49,13 @@ jobs:
 
       - if: runner.os == 'macOS'
         run: |
-          echo 'CFLAGS: -I/opt/homebrew/include
-            CPPFLAGS: -I/opt/homebrew/include
-            CXXFLAGS: -I/opt/homebrew/include
-            CXX11FLAGS: -I/opt/homebrew/include
-            LDFLAGS: -L/opt/homebrew/lib' > ~/.R/Makevars
+          tee -a ~/.R/Makevars <<EOF 
+          CFLAGS=-I/opt/homebrew/include
+          CPPFLAGS=-I/opt/homebrew/include
+          CXXFLAGS=-I/opt/homebrew/include
+          CXX11FLAGS=-I/opt/homebrew/include
+          LDFLAGS=-L/opt/homebrew/lib
+          EOF
 # LDFLAGS+="-L/opt/homebrew/opt/libomp/lib"
 # CPPFLAGS+="-I/opt/homebrew/opt/libomp/include"
 
