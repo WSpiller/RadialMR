@@ -57,9 +57,6 @@ jobs:
           CXX11FLAGS=-I/opt/homebrew/include
           LDFLAGS=-L/opt/homebrew/lib
           EOF
-# LDFLAGS+="-L/opt/homebrew/opt/libomp/lib"
-# CPPFLAGS+="-I/opt/homebrew/opt/libomp/include"
-
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
