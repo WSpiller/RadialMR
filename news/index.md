@@ -1,5 +1,9 @@
 # Changelog
 
+## RadialMR v1.2.2
+
+- Implement some optimizations in the codebase.
+
 ## RadialMR v1.2.1
 
 - Fix to remove a warning message in

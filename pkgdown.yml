@@ -2,7 +2,7 @@ pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles: {}
-last_built: 2025-11-28T14:45Z
+last_built: 2026-03-29T15:25Z
 urls:
   reference: https://wspiller.github.io/RadialMR/reference
   article: https://wspiller.github.io/RadialMR/articles
