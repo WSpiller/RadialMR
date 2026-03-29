@@ -12,7 +12,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/WSpiller/RadialMR/blob/master/inst/CITATION)
+[`inst/CITATION`](https://github.com/WSpiller/RadialMR/blob/v1.2.2/inst/CITATION)
 
 Bowden J, Spiller W, Del Greco F, Sheehan N, Thompson J, Minelli C,
 Davey Smith G (2018). “Improving the visualization, interpretation and
