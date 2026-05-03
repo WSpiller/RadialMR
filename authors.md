@@ -2,17 +2,17 @@
 
 ## Authors
 
-- **Wes Spiller**. Author, maintainer.
-  [](https://orcid.org/0000-0002-8169-5531)
+- **Wes Spiller**. Author. [](https://orcid.org/0000-0002-8169-5531)
 
 - **Jack Bowden**. Author. [](https://orcid.org/0000-0003-2628-3304)
 
-- **Tom Palmer**. Author. [](https://orcid.org/0000-0003-4655-4511)
+- **Tom Palmer**. Author, maintainer.
+  [](https://orcid.org/0000-0003-4655-4511)
 
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/WSpiller/RadialMR/blob/v1.2.2/inst/CITATION)
+[`inst/CITATION`](https://github.com/WSpiller/RadialMR/blob/master/inst/CITATION)
 
 Bowden J, Spiller W, Del Greco F, Sheehan N, Thompson J, Minelli C,
 Davey Smith G (2018). “Improving the visualization, interpretation and

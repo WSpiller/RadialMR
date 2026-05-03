@@ -6,6 +6,7 @@ RadialMR can be installed from the [MRCIEU
 R-Universe](https://mrcieu.r-universe.dev/) with
 
 ``` r
+
 install.packages("RadialMR", repos = c("https://mrcieu.r-universe.dev", "https://cloud.r-project.org"))
 ```
 
@@ -13,12 +14,14 @@ To install `RadialMR` directly from the GitHub repository, first make
 sure you have the `remotes` package installed:
 
 ``` r
+
 install.packages("remotes")
 ```
 
 Then the `RadialMR` package can be installed using:
 
 ``` r
+
 remotes::install_github("WSpiller/RadialMR")
 ```
 
