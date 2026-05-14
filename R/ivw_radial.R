@@ -13,7 +13,7 @@
 #' \item{\code{qstatistic}}{Cochran's Q statistic for overall heterogeneity.}
 #' \item{\code{df}}{Degrees of freedom. This is equal to the number of variants -1 when fitting the radial IVW model.}
 #' \item{\code{outliers}}{A data frame containing variants identified as outliers, with respective Q statistics, chi-squared tests and SNP identification.}
-#' \item{\code{data}}{A data frame containing containing SNP IDs, inverse variance weights, the product of the inverse variance weight and ratio estimate for each variant, contribution to overall heterogeneity with corresponding p-value, and a factor indicator showing outlier status.}
+#' \item{\code{data}}{A data frame containing SNP IDs, inverse variance weights, the product of the inverse variance weight and ratio estimate for each variant, contribution to overall heterogeneity with corresponding p-value, and a factor indicator showing outlier status.}
 #' \item{\code{confint}}{A vector giving lower and upper confidence limits for the radial IVW effect estimate.}
 #' \item{\code{it.coef}}{The estimated iterative coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
 #' \item{\code{it.confint}}{A vector giving lower and upper confidence limits for the iterative radial IVW effect estimate.}
