@@ -398,7 +398,7 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
     return(list(CI = CI))
   }
 
-  # Fit fixed effect model and and perform exact Q test
+  # Fit fixed effect model and perform exact Q test
 
   phi = 1
   Bhat = stats::optimize(PL2, interval = c(-2, 2))$minimum
@@ -422,7 +422,7 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
 
   names(FE_EXACT) <- c("Estimate", "Std.Error", "t value", "Pr(>|t|)")
 
-  # Fit random effect model and and perform exact Q test
+  # Fit random effect model and perform exact Q test
 
   BIVW1 = Ratios * sqrt(1 / (r_input[, 5]^2 / r_input[, 2]^2))
   IVWfit1 = summary(stats::lm(
