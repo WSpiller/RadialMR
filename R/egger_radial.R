@@ -213,7 +213,7 @@ egger_radial <- function(r_input, alpha, weights, summary) {
     # Define 95% confidence interval for intercept from Radial Egger model
     Eggerint_CI <- as.numeric(stats::confint(Egger.Model)[1, ])
 
-    # Define 95% confidence interval forcausal effect estimate from Radial Egger model
+    # Define 95% confidence interval for causal effect estimate from Radial Egger model
     Eggerslope_CI <- as.numeric(stats::confint(Egger.Model)[2, ])
 
     # Calculate Q statistic for each individual variant
