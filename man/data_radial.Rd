@@ -41,8 +41,8 @@ A data frame with 185 rows and 21 variables. Specifically this includes the foll
 data_radial
 }
 \description{
-A dataset containing summary data GWAS data for 185 independent SNPs with respect to lipid fractions and coronary heart disease (CHD), previously published in Do et al (2013).
-Lipid fractions include low-density lipoprotein (LDL-C),high-density lipoprotein (HDL-C), and triglycerides, with association estimates
+A dataset containing summary GWAS data for 185 independent SNPs with respect to lipid fractions and coronary heart disease (CHD), previously published in Do et al (2013).
+Lipid fractions include low-density lipoprotein (LDL-C), high-density lipoprotein (HDL-C), and triglycerides, with association estimates
 obtained from the Global Lipids Genetics Consortium (GLGC) (Willer et al, 2013). Summary data for CHD was obtained from the CARDIoGRAM study (Schunkert et al, 2011).
 Association estimates were obtained by regressing each phenotype upon the genetic variant and additional adjusted covariates, with links to further information
 related to each study presented below.

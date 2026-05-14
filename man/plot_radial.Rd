@@ -11,9 +11,9 @@ plot_radial(r_object, radial_scale, show_outliers, scale_match)
 
 \item{radial_scale}{Indicates whether to produce a plot including a full radial scale (\code{TRUE}), or a scatterplot showing only the effect estimates (\code{FALSE}).}
 
-\item{show_outliers}{Indicates whether display only the set of variants identified as outliers (\code{TRUE}) or the complete set of variants (\code{FALSE}). Note that when (\code{show_outliers=TRUE}), non-outlying variants further from the origin than the furthest outlier will cause an error message that one or more points have been omitted. These are non-outlying variants beyond the scale. If no outliers are present, a plot will be produced using the full set of variants, with an accompanying message indicating the absence of outliers.}
+\item{show_outliers}{Indicates whether to display only the set of variants identified as outliers (\code{TRUE}) or the complete set of variants (\code{FALSE}). Note that when (\code{show_outliers=TRUE}), non-outlying variants further from the origin than the furthest outlier will cause an error message that one or more points have been omitted. These are non-outlying variants beyond the scale. If no outliers are present, a plot will be produced using the full set of variants, with an accompanying message indicating the absence of outliers.}
 
-\item{scale_match}{Indicates whether x and y axes should have the same range(\code{TRUE}), or different ranges (\code{FALSE}) This improves the interpretation of the radial scale, and is set to \code{FALSE} when the radial scale is omitted from the plot.}
+\item{scale_match}{Indicates whether x and y axes should have the same range (\code{TRUE}), or different ranges (\code{FALSE}) This improves the interpretation of the radial scale, and is set to \code{FALSE} when the radial scale is omitted from the plot.}
 }
 \value{
 A ggplot object containing a radial plot of either the IVW, MR-Egger, or both estimates simultaneously.

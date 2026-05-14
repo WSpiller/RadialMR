@@ -15,7 +15,7 @@ plotly_radial(r_object, TEST)
 A plotly object containing a radial plot of either the IVW or MR-Egger estimates. Hovering the mouse over individual datapoints will highlight the corresponding SNP identification number for that observation.
 }
 \description{
-A function for producing interactive radial IVW and MR-Egger plots individually.The function utilises the output from the \code{IVW_radial} and \code{egger_radial} functions.
+A function for producing interactive radial IVW and MR-Egger plots individually. The function utilises the output from the \code{IVW_radial} and \code{egger_radial} functions.
 }
 \examples{
 ldl.dat <- data_radial[data_radial[,10]<5e-8,]
