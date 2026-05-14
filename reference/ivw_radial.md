@@ -76,10 +76,10 @@ An object of class `"IVW"` containing the following components:
 
 - `data`:
 
-  A data frame containing containing SNP IDs, inverse variance weights,
-  the product of the inverse variance weight and ratio estimate for each
-  variant, contribution to overall heterogeneity with corresponding
-  p-value, and a factor indicator showing outlier status.
+  A data frame containing SNP IDs, inverse variance weights, the product
+  of the inverse variance weight and ratio estimate for each variant,
+  contribution to overall heterogeneity with corresponding p-value, and
+  a factor indicator showing outlier status.
 
 - `confint`:
 

@@ -28,7 +28,7 @@ plot_radial(r_object, radial_scale, show_outliers, scale_match)
 
 - show_outliers:
 
-  Indicates whether display only the set of variants identified as
+  Indicates whether to display only the set of variants identified as
   outliers (`TRUE`) or the complete set of variants (`FALSE`). Note that
   when (`show_outliers=TRUE`), non-outlying variants further from the
   origin than the furthest outlier will cause an error message that one
@@ -39,7 +39,7 @@ plot_radial(r_object, radial_scale, show_outliers, scale_match)
 
 - scale_match:
 
-  Indicates whether x and y axes should have the same range(`TRUE`), or
+  Indicates whether x and y axes should have the same range (`TRUE`), or
   different ranges (`FALSE`) This improves the interpretation of the
   radial scale, and is set to `FALSE` when the radial scale is omitted
   from the plot.
