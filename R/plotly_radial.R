@@ -1,6 +1,6 @@
 #' plotly_radial
 #'
-#' A function for producing interactive radial IVW and MR-Egger plots individually.The function utilises the output from the \code{IVW_radial} and \code{egger_radial} functions.
+#' A function for producing interactive radial IVW and MR-Egger plots individually. The function utilises the output from the \code{IVW_radial} and \code{egger_radial} functions.
 #'
 #' @param r_object An object of class \code{"IVW"} or \code{"egger"}.
 #' @param TEST Logical; indicating whether testing the function
