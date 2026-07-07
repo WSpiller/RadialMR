@@ -486,13 +486,13 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
   levels(r_input$Outliers)[levels(r_input$Outliers) == "1"] <- "Outlier"
 
   # Provide indication if no outliers are present
-  if (sum(Out_Indicator == 0)) {
+  if (sum(Out_Indicator) == 0) {
     outlier_status <- "No significant outliers"
     outtab <- "No significant outliers"
   }
 
   # If outliers are present produce data frame with information on outliers
-  if (sum(Out_Indicator > 0)) {
+  if (sum(Out_Indicator) > 0) {
     outlier_status <- "Outliers detected"
 
     # Generate a subset of data containing only outliers
