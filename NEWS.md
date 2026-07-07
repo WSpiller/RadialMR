@@ -1,3 +1,17 @@
+# RadialMR v1.2.4
+
+* Fixed the degrees of freedom returned by `egger_radial()`, which is now `n - 2` as documented (previously `n - 1`).
+
+* Fixed the heterogeneity p-value for the default modified second-order weights in `egger_radial()`, which now uses `n - 2` degrees of freedom to match the rest of the function and the printed summary.
+
+* Fixed the search interval used in the random-effects bootstrap standard error in `ivw_radial()`, which had a negated lower bound.
+
+* Added an `rmr_format` class check to `ivw_radial()`, so unformatted inputs now fail with a clear message (as in `egger_radial()`).
+
+* `plotly_radial()` now selects the IVW or MR-Egger plot by object class rather than by the number of list elements.
+
+* Documentation and internal tidy-ups: corrected the `meanF` name in the `ivw_radial()` return documentation, and removed some dead and redundant code.
+
 # RadialMR v1.2.3
 
 * Bump roxygen2 to 8.0.0 and add package level helpfile.
