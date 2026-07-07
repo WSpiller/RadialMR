@@ -334,7 +334,7 @@ egger_radial <- function(r_input, alpha, weights, summary) {
     Out_list <- list(
       "coef" = EstimatesEGGER$coef,
       "qstatistic" = Total_Q,
-      "df" = length(r_input[, 2]) - 1,
+      "df" = length(r_input[, 2]) - 2,
       "outliers" = outtab,
       "data" = out_data,
       "confint" = Eggerslope_CI
