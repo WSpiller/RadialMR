@@ -34,6 +34,9 @@ plotly_radial <- function(r_object, TEST) {
     r_object$coef <- c(r_object$coef[2, ])
     r_object$coef <- as.numeric(r_object$coef)
 
+    variant_dat <- r_object$data[r_object$data$Outliers == "Variant", ]
+    outlier_dat <- r_object$data[r_object$data$Outliers == "Outlier", ]
+
     maxWj <- max(r_object$data$Wj)
     Wjcor <- r_object$data[r_object$data$Wj == maxWj, ]
     R.IVW <- Wjcor$Wj^2 + Wjcor$BetaWj^2
@@ -77,19 +80,19 @@ plotly_radial <- function(r_object, TEST) {
       title = "sqrt(Wj)"
     )
 
-    if (nrow(r_object$data[r_object$data$Outliers == "Outlier", ]) == 0) {
+    if (nrow(outlier_dat) == 0) {
       T_PLOT <- plotly::plot_ly(
         r_object$data,
         mode = "marker",
         type = 'scatter'
       ) %>%
         plotly::add_trace(
-          x = r_object$data[r_object$data$Outliers == "Variant", ]$Wj,
-          y = r_object$data[r_object$data$Outliers == "Variant", ]$BetaWj,
+          x = variant_dat$Wj,
+          y = variant_dat$BetaWj,
           name = 'Variant',
           mode = 'markers',
           marker = list(color = "black"),
-          text = r_object$data[r_object$data$Outliers == "Variant", ]$SNP,
+          text = variant_dat$SNP,
           hoverinfo = 'text'
         ) %>%
         plotly::add_trace(
@@ -127,28 +130,28 @@ plotly_radial <- function(r_object, TEST) {
         )
     }
 
-    if (nrow(r_object$data[r_object$data$Outliers == "Outlier", ]) > 0) {
+    if (nrow(outlier_dat) > 0) {
       T_PLOT <- plotly::plot_ly(
         r_object$data,
         mode = "marker",
         type = 'scatter'
       ) %>%
         plotly::add_trace(
-          x = r_object$data[r_object$data$Outliers == "Variant", ]$Wj,
-          y = r_object$data[r_object$data$Outliers == "Variant", ]$BetaWj,
+          x = variant_dat$Wj,
+          y = variant_dat$BetaWj,
           name = 'Variant',
           mode = 'markers',
           marker = list(color = "black"),
-          text = r_object$data[r_object$data$Outliers == "Variant", ]$SNP,
+          text = variant_dat$SNP,
           hoverinfo = 'text'
         ) %>%
         plotly::add_trace(
-          x = r_object$data[r_object$data$Outliers == "Outlier", ]$Wj,
-          y = r_object$data[r_object$data$Outliers == "Outlier", ]$BetaWj,
+          x = outlier_dat$Wj,
+          y = outlier_dat$BetaWj,
           name = 'Outlier',
           mode = 'markers',
           marker = list(color = "#E69F00"),
-          text = r_object$data[r_object$data$Outliers == "Outlier", ]$SNP,
+          text = outlier_dat$SNP,
           hoverinfo = 'text'
         ) %>%
         plotly::add_trace(
@@ -189,6 +192,9 @@ plotly_radial <- function(r_object, TEST) {
 
   if (inherits(r_object, "egger")) {
     if (TEST == TRUE) {
+      variant_dat <- r_object$data[r_object$data$Outliers == "Variant", ]
+      outlier_dat <- r_object$data[r_object$data$Outliers == "Outlier", ]
+
       maxWj <- max(r_object$data$Wj)
       Wjcor <- r_object$data[r_object$data$Wj == maxWj, ]
       R.Egger <- Wjcor$Wj^2 + Wjcor$BetaWj^2
@@ -232,19 +238,19 @@ plotly_radial <- function(r_object, TEST) {
         title = "sqrt(Wj)"
       )
 
-      if (nrow(r_object$data[r_object$data$Outliers == "Outlier", ]) == 0) {
+      if (nrow(outlier_dat) == 0) {
         T_PLOT <- plotly::plot_ly(
           r_object$data,
           mode = "marker",
           type = 'scatter'
         ) %>%
           plotly::add_trace(
-            x = r_object$data[r_object$data$Outliers == "Variant", ]$Wj,
-            y = r_object$data[r_object$data$Outliers == "Variant", ]$BetaWj,
+            x = variant_dat$Wj,
+            y = variant_dat$BetaWj,
             name = 'Variant',
             mode = 'markers',
             marker = list(color = "black"),
-            text = r_object$data[r_object$data$Outliers == "Variant", ]$SNP,
+            text = variant_dat$SNP,
             hoverinfo = 'text'
           ) %>%
           plotly::add_trace(
@@ -291,28 +297,28 @@ plotly_radial <- function(r_object, TEST) {
           )
       }
 
-      if (nrow(r_object$data[r_object$data$Outliers == "Outlier", ]) > 0) {
+      if (nrow(outlier_dat) > 0) {
         T_PLOT <- plotly::plot_ly(
           r_object$data,
           mode = "marker",
           type = 'scatter'
         ) %>%
           plotly::add_trace(
-            x = r_object$data[r_object$data$Outliers == "Variant", ]$Wj,
-            y = r_object$data[r_object$data$Outliers == "Variant", ]$BetaWj,
+            x = variant_dat$Wj,
+            y = variant_dat$BetaWj,
             name = 'Variant',
             mode = 'markers',
             marker = list(color = "black"),
-            text = r_object$data[r_object$data$Outliers == "Variant", ]$SNP,
+            text = variant_dat$SNP,
             hoverinfo = 'text'
           ) %>%
           plotly::add_trace(
-            x = r_object$data[r_object$data$Outliers == "Outlier", ]$Wj,
-            y = r_object$data[r_object$data$Outliers == "Outlier", ]$BetaWj,
+            x = outlier_dat$Wj,
+            y = outlier_dat$BetaWj,
             name = 'Outlier',
             mode = 'markers',
             marker = list(color = "#E69F00"),
-            text = r_object$data[r_object$data$Outliers == "Outlier", ]$SNP,
+            text = outlier_dat$SNP,
             hoverinfo = 'text'
           ) %>%
           plotly::add_trace(
