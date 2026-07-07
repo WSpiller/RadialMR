@@ -361,7 +361,7 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
           w = 1 / (phi * seY^2 / bxg^2 + (beta^2) * seX^2 / bxg^2)
           q = (sum(w * (Ratios - beta)^2))
         }
-        b = stats::optimize(PL2, interval = c(-lb, ub))$minimum
+        b = stats::optimize(PL2, interval = c(lb, ub))$minimum
         w = 1 / (phi * seY^2 / bxg^2 + (b^2) * seX^2 / bxg^2)
         q = (sum(w * (Ratios - b)^2) - DF)^2
       }
