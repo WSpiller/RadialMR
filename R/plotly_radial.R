@@ -30,7 +30,7 @@ plotly_radial <- function(r_object, TEST) {
     return(data.frame(x = xx, y = yy))
   }
 
-  if (length(r_object) == 13) {
+  if (inherits(r_object, "IVW")) {
     r_object$coef <- c(r_object$coef[2, ])
     r_object$coef <- as.numeric(r_object$coef)
 
@@ -187,7 +187,7 @@ plotly_radial <- function(r_object, TEST) {
     }
   }
 
-  if (length(r_object) == 6) {
+  if (inherits(r_object, "egger")) {
     if (TEST == TRUE) {
       maxWj <- max(r_object$data$Wj)
       Wjcor <- r_object$data[r_object$data$Wj == maxWj, ]
