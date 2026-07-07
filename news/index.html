@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">RadialMR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,15 @@
       <small>Source: <a href="https://github.com/WSpiller/RadialMR/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.2.4" id="radialmr-v124">RadialMR v1.2.4<a class="anchor" aria-label="anchor" href="#radialmr-v124"></a></h2>
+<ul><li><p>Fixed the degrees of freedom returned by <code><a href="../reference/egger_radial.html">egger_radial()</a></code>, which is now <code>n - 2</code> as documented (previously <code>n - 1</code>).</p></li>
+<li><p>Fixed the heterogeneity p-value for the default modified second-order weights in <code><a href="../reference/egger_radial.html">egger_radial()</a></code>, which now uses <code>n - 2</code> degrees of freedom to match the rest of the function and the printed summary.</p></li>
+<li><p>Fixed the search interval used in the random-effects bootstrap standard error in <code><a href="../reference/ivw_radial.html">ivw_radial()</a></code>, which had a negated lower bound.</p></li>
+<li><p>Added an <code>rmr_format</code> class check to <code><a href="../reference/ivw_radial.html">ivw_radial()</a></code>, so unformatted inputs now fail with a clear message (as in <code><a href="../reference/egger_radial.html">egger_radial()</a></code>).</p></li>
+<li><p><code><a href="../reference/plotly_radial.html">plotly_radial()</a></code> now selects the IVW or MR-Egger plot by object class rather than by the number of list elements.</p></li>
+<li><p>Documentation and internal tidy-ups: corrected the <code>meanF</code> name in the <code><a href="../reference/ivw_radial.html">ivw_radial()</a></code> return documentation, and removed some dead and redundant code.</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.3" id="radialmr-v123">RadialMR v1.2.3<a class="anchor" aria-label="anchor" href="#radialmr-v123"></a></h2>
 <ul><li>Bump roxygen2 to 8.0.0 and add package level helpfile.</li>
