@@ -225,7 +225,7 @@ egger_radial <- function(r_input, alpha, weights, summary) {
     # Perform chi square test with respect to global Q statistic Total_Q
     Total_Q_chi <- stats::pchisq(
       Total_Q,
-      length(r_input[, 2]) - 1,
+      length(r_input[, 2]) - 2,
       lower.tail = FALSE
     )
   }
