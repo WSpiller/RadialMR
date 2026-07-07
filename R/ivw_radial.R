@@ -229,7 +229,7 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
     Bhat1.Iterative <- 0
     # Define count variable indicating number of iterations
     count <- 0
-    while (Diff >= tol) {
+    while (Diff >= int.tol) {
       W <- 1 /
         (r_input[, 5]^2 /
           r_input[, 2]^2 +
