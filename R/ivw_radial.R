@@ -329,28 +329,48 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
     seY_all = r_input[, 5]
     L = length(bxg_all)
     for (hh in 1:sims) {
-      choice = sample(seq(1, L), L, replace = TRUE)
-      bxg = bxg_all[choice]
-      seX = seX_all[choice]
-      byg = byg_all[choice]
-      seY = seY_all[choice]
-      Ratios = byg / bxg
+      # With few instruments a resample can, by chance, contain too few
+      # distinct variants to fit, giving a near-perfect fit, a zero standard
+      # error and an empty search interval (lb == ub), which makes
+      # stats::optimize() error with "'xmin' not less than 'xmax'". Redraw the
+      # sample until the interval is usable, up to a bounded number of tries.
+      valid = FALSE
+      for (attempt in 1:1000) {
+        choice = sample(seq(1, L), L, replace = TRUE)
+        bxg = bxg_all[choice]
+        seX = seX_all[choice]
+        byg = byg_all[choice]
+        seY = seY_all[choice]
+        Ratios = byg / bxg
 
-      W1 = 1 / (seY^2 / bxg^2)
-      BIVw1 = Ratios * sqrt(W1)
-      sW1 = sqrt(W1)
-      IVWfitR1 = summary(stats::lm(BIVw1 ~ -1 + sW1))
-      phi_IVW1 = IVWfitR1$sigma^2
-      W2 = 1 / (seY^2 / bxg^2 + (byg^2) * seX^2 / bxg^4)
-      BIVw2 = Ratios * sqrt(W2)
-      sW2 = sqrt(W2)
-      IVWfitR2 = summary(stats::lm(BIVw2 ~ -1 + sW2))
-      phi_IVW2 = IVWfitR2$sigma^2
+        W1 = 1 / (seY^2 / bxg^2)
+        BIVw1 = Ratios * sqrt(W1)
+        sW1 = sqrt(W1)
+        IVWfitR1 = summary(stats::lm(BIVw1 ~ -1 + sW1))
+        phi_IVW1 = IVWfitR1$sigma^2
+        W2 = 1 / (seY^2 / bxg^2 + (byg^2) * seX^2 / bxg^4)
+        BIVw2 = Ratios * sqrt(W2)
+        sW2 = sqrt(W2)
+        IVWfitR2 = summary(stats::lm(BIVw2 ~ -1 + sW2))
+        phi_IVW2 = IVWfitR2$sigma^2
 
-      phi_IVW2 = max(1, phi_IVW2)
-      phi_IVW1 = max(1, phi_IVW1)
-      lb = IVWfitR1$coef[1] - 10 * IVWfitR1$coef[2]
-      ub = IVWfitR1$coef[1] + 10 * IVWfitR1$coef[2]
+        phi_IVW2 = max(1, phi_IVW2)
+        phi_IVW1 = max(1, phi_IVW1)
+        lb = IVWfitR1$coef[1] - 10 * IVWfitR1$coef[2]
+        ub = IVWfitR1$coef[1] + 10 * IVWfitR1$coef[2]
+
+        if (is.finite(lb) && is.finite(ub) && lb < ub) {
+          valid = TRUE
+          break
+        }
+      }
+
+      # If no usable resample was found (e.g. too few instruments), fall back to
+      # the first-order IVW point estimate for this replicate rather than error.
+      if (!valid) {
+        B[hh] = IVWfitR1$coef[1]
+        next
+      }
 
       # Function calculating q-statistics using updated parameter phi
 
