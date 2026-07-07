@@ -32,7 +32,7 @@ An object of class \code{"IVW"} containing the following components:
 \item{\code{fe.confint}}{A vector giving lower and upper confidence limits for the fixed effect exact radial IVW effect estimate.}
 \item{\code{re.coef}}{The estimated random effect exact coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
 \item{\code{re.confint}}{A vector giving lower and upper confidence limits for the random effect exact radial IVW effect estimate.}
-\item{\code{mf}}{The mean F statistic for the set of genetic variants, indicative of instrument strength.}
+\item{\code{meanF}}{The mean F statistic for the set of genetic variants, indicative of instrument strength.}
 }
 }
 \description{

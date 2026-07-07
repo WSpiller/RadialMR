@@ -21,7 +21,7 @@
 #' \item{\code{fe.confint}}{A vector giving lower and upper confidence limits for the fixed effect exact radial IVW effect estimate.}
 #' \item{\code{re.coef}}{The estimated random effect exact coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
 #' \item{\code{re.confint}}{A vector giving lower and upper confidence limits for the random effect exact radial IVW effect estimate.}
-#' \item{\code{mf}}{The mean F statistic for the set of genetic variants, indicative of instrument strength.}
+#' \item{\code{meanF}}{The mean F statistic for the set of genetic variants, indicative of instrument strength.}
 #' }
 #' @author Wes Spiller; Jack Bowden; Tom Palmer.
 #' @references Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.

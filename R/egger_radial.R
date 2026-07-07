@@ -116,12 +116,6 @@ egger_radial <- function(r_input, alpha, weights, summary) {
   # Calculate ratio estimates
   Ratios <- r_input[, 3] / r_input[, 2]
 
-  # Calculate approximate F-statistic for each variant
-  Fstat <- r_input[, 2]^2 / r_input[, 4]^2
-
-  # Define mean F-statistic across all variants
-  mf <- mean(Fstat)
-
   # Calculate first order weights
   if (weights == 1) {
     W <- ((r_input[, 2]^2) / (r_input[, 5]^2))
