@@ -558,14 +558,6 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
   combined.dat <- rbind(combined.dat, FE_EXACT)
   combined.dat <- rbind(combined.dat, RE_EXACT)
 
-  for (i in 1:3) {
-    combined.dat[i, 4] <- 2 *
-      stats::pnorm(
-        abs(combined.dat[i, 1] / combined.dat[i, 2]),
-        lower.tail = FALSE
-      )
-  }
-
   row.names(combined.dat) <- c(
     "Effect",
     "Iterative",

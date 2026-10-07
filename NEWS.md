@@ -6,6 +6,8 @@
 
 * The exact estimates and confidence interval in `ivw_radial()` are now found using a tolerance relative to the width of the search interval, rather than the default absolute tolerance of `optimize()` (about 1e-4), which was coarse relative to small causal effects.
 
+* The p-values for the IVW, iterative and fixed-effect exact estimates in `ivw_radial()` now use a t-distribution on L - 1 degrees of freedom, consistent with their confidence intervals and with the random-effects exact estimate. They were previously overwritten with p-values from a normal distribution, which were too small when there were few variants (#10).
+
 # RadialMR v1.2.4
 
 * Fixed the degrees of freedom returned by `egger_radial()`, which is now `n - 2` as documented (previously `n - 1`).
