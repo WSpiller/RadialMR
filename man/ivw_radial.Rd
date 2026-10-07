@@ -29,7 +29,7 @@ An object of class \code{"IVW"} containing the following components:
 \item{\code{it.coef}}{The estimated iterative coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
 \item{\code{it.confint}}{A vector giving lower and upper confidence limits for the iterative radial IVW effect estimate.}
 \item{\code{fe.coef}}{The estimated fixed effect exact coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
-\item{\code{fe.confint}}{A vector giving lower and upper confidence limits for the fixed effect exact radial IVW effect estimate.}
+\item{\code{fe.confint}}{A vector giving lower and upper confidence limits for the fixed effect exact radial IVW effect estimate. These are \code{NA} when the exact Q-statistic exceeds its critical value, as the confidence interval is then empty.}
 \item{\code{re.coef}}{The estimated random effect exact coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
 \item{\code{re.confint}}{A vector giving lower and upper confidence limits for the random effect exact radial IVW effect estimate.}
 \item{\code{meanF}}{The mean F statistic for the set of genetic variants, indicative of instrument strength.}

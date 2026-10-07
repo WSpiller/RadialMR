@@ -18,7 +18,7 @@
 #' \item{\code{it.coef}}{The estimated iterative coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
 #' \item{\code{it.confint}}{A vector giving lower and upper confidence limits for the iterative radial IVW effect estimate.}
 #' \item{\code{fe.coef}}{The estimated fixed effect exact coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
-#' \item{\code{fe.confint}}{A vector giving lower and upper confidence limits for the fixed effect exact radial IVW effect estimate.}
+#' \item{\code{fe.confint}}{A vector giving lower and upper confidence limits for the fixed effect exact radial IVW effect estimate. These are \code{NA} when the exact Q-statistic exceeds its critical value, as the confidence interval is then empty.}
 #' \item{\code{re.coef}}{The estimated random effect exact coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
 #' \item{\code{re.confint}}{A vector giving lower and upper confidence limits for the random effect exact radial IVW effect estimate.}
 #' \item{\code{meanF}}{The mean F statistic for the set of genetic variants, indicative of instrument strength.}
@@ -414,6 +414,20 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
           r_input[, 2]^2 +
           (b^2) * r_input[, 4]^2 / r_input[, 2]^2)
       q = (sum(w * (Ratios - b)^2) - stats::qchisq(1 - z2, DF))^2
+    }
+
+    # The confidence interval is the set of effects whose Q-statistic does not
+    # exceed the critical value. If the minimised Q-statistic already exceeds it
+    # the set is empty, as the exact Q test rejects the fixed effect model.
+    w = 1 /
+      (r_input[, 5]^2 /
+        r_input[, 2]^2 +
+        (Bhat^2) * r_input[, 4]^2 / r_input[, 2]^2)
+    if (sum(w * (Ratios - Bhat)^2) > stats::qchisq(1 - z2, DF)) {
+      warning(
+        "The exact Q-statistic exceeds its critical value, so the fixed effect exact confidence interval is empty and is returned as NA. Consider the random effects exact estimate."
+      )
+      return(list(CI = c(NA_real_, NA_real_)))
     }
 
     lb = Bhat - 10 * SE

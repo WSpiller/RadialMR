@@ -2,6 +2,8 @@
 
 * Fixed the fixed-effect exact estimate in `ivw_radial()`, which was found by searching only over -2 to 2. Causal effects outside that range were returned as a value at the edge of the interval, which also affected the exact Q-statistic, the fixed-effect confidence interval and the random-effects fit. The search is now centred on the IVW estimate, plus or minus 10 standard errors.
 
+* `ivw_radial()` now returns the fixed-effect exact confidence interval (`fe.confint`) as `NA`, with a warning, when the exact Q-statistic exceeds its critical value. The interval is the set of effects whose Q-statistic does not exceed the critical value, which is then empty; previously a spuriously narrow interval around the estimate was returned.
+
 # RadialMR v1.2.4
 
 * Fixed the degrees of freedom returned by `egger_radial()`, which is now `n - 2` as documented (previously `n - 1`).
