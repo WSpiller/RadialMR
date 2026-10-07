@@ -4,6 +4,8 @@
 
 * `ivw_radial()` now returns the fixed-effect exact confidence interval (`fe.confint`) as `NA`, with a warning, when the exact Q-statistic exceeds its critical value. The interval is the set of effects whose Q-statistic does not exceed the critical value, which is then empty; previously a spuriously narrow interval around the estimate was returned.
 
+* The exact estimates and confidence interval in `ivw_radial()` are now found using a tolerance relative to the width of the search interval, rather than the default absolute tolerance of `optimize()` (about 1e-4), which was coarse relative to small causal effects.
+
 # RadialMR v1.2.4
 
 * Fixed the degrees of freedom returned by `egger_radial()`, which is now `n - 2` as documented (previously `n - 1`).
