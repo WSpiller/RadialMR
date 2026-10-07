@@ -67,14 +67,15 @@ ldl.dat <- data_radial[data_radial[,10]<5e-8,]
 ldl.fdat <- format_radial(ldl.dat[,6], ldl.dat[,9],
                           ldl.dat[,15], ldl.dat[,21], ldl.dat[,1])
 ivw.object <- ivw_radial(ldl.fdat, 0.05, 1, 0.0001, TRUE)
+#> Warning: The exact Q-statistic exceeds its critical value, so the fixed effect exact confidence interval is empty and is returned as NA. Consider the random effects exact estimate.
 #> 
 #> Radial IVW
 #> 
 #>               Estimate  Std.Error   t value     Pr(>|t|)
-#> Effect (1st) 0.4874900 0.05830409  8.361163 6.210273e-17
-#> Iterative    0.4873205 0.05827885  8.361874 6.172955e-17
-#> Exact (FE)   0.4958973 0.03804168 13.035630 7.673061e-39
-#> Exact (RE)   0.4910400 0.05326164  9.219394 2.930989e-14
+#> Effect (1st) 0.4874900 0.05830409  8.361163 1.456306e-12
+#> Iterative    0.4873205 0.05827885  8.361874 1.451604e-12
+#> Exact (FE)   0.4958915 0.03804168 13.035479 0.000000e+00
+#> Exact (RE)   0.4910399 0.05326187  9.219351 2.930989e-14
 #> 
 #> 
 #> Residual standard error: 1.544 on 81 degrees of freedom

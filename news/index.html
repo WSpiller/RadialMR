@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">RadialMR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,14 @@
       <small>Source: <a href="https://github.com/WSpiller/RadialMR/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.2.5" id="radialmr-v125">RadialMR v1.2.5<a class="anchor" aria-label="anchor" href="#radialmr-v125"></a></h2>
+<ul><li><p>Fixed the fixed-effect exact estimate in <code><a href="../reference/ivw_radial.html">ivw_radial()</a></code>, which was found by searching only over -2 to 2. Causal effects outside that range were returned as a value at the edge of the interval, which also affected the exact Q-statistic, the fixed-effect confidence interval and the random-effects fit. The search is now centred on the IVW estimate, plus or minus 10 standard errors.</p></li>
+<li><p><code><a href="../reference/ivw_radial.html">ivw_radial()</a></code> now returns the fixed-effect exact confidence interval (<code>fe.confint</code>) as <code>NA</code>, with a warning, when the exact Q-statistic exceeds its critical value. The interval is the set of effects whose Q-statistic does not exceed the critical value, which is then empty; previously a spuriously narrow interval around the estimate was returned.</p></li>
+<li><p>The exact estimates and confidence interval in <code><a href="../reference/ivw_radial.html">ivw_radial()</a></code> are now found using a tolerance relative to the width of the search interval, rather than the default absolute tolerance of <code><a href="https://rdrr.io/r/stats/optimize.html" class="external-link">optimize()</a></code> (about 1e-4), which was coarse relative to small causal effects.</p></li>
+<li><p>The p-values for the IVW, iterative and fixed-effect exact estimates in <code><a href="../reference/ivw_radial.html">ivw_radial()</a></code> now use a t-distribution on L - 1 degrees of freedom, consistent with their confidence intervals and with the random-effects exact estimate. They were previously overwritten with p-values from a normal distribution, which were too small when there were few variants (<a href="https://github.com/WSpiller/RadialMR/issues/10" class="external-link">#10</a>).</p></li>
+<li><p>The <code><a href="../reference/egger_radial.html">egger_radial()</a></code> documentation now notes that the radial MR-Egger slope is imprecise, and can differ substantially from the conventional MR-Egger estimate, when the square root weights vary little across variants (<a href="https://github.com/WSpiller/RadialMR/issues/3" class="external-link">#3</a>).</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.4" id="radialmr-v124">RadialMR v1.2.4<a class="anchor" aria-label="anchor" href="#radialmr-v124"></a></h2>
 <ul><li><p>Fixed the degrees of freedom returned by <code><a href="../reference/egger_radial.html">egger_radial()</a></code>, which is now <code>n - 2</code> as documented (previously <code>n - 1</code>).</p></li>

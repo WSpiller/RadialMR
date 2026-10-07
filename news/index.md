@@ -1,5 +1,45 @@
 # Changelog
 
+## RadialMR v1.2.5
+
+- Fixed the fixed-effect exact estimate in
+  [`ivw_radial()`](https://wspiller.github.io/RadialMR/reference/ivw_radial.md),
+  which was found by searching only over -2 to 2. Causal effects outside
+  that range were returned as a value at the edge of the interval, which
+  also affected the exact Q-statistic, the fixed-effect confidence
+  interval and the random-effects fit. The search is now centred on the
+  IVW estimate, plus or minus 10 standard errors.
+
+- [`ivw_radial()`](https://wspiller.github.io/RadialMR/reference/ivw_radial.md)
+  now returns the fixed-effect exact confidence interval (`fe.confint`)
+  as `NA`, with a warning, when the exact Q-statistic exceeds its
+  critical value. The interval is the set of effects whose Q-statistic
+  does not exceed the critical value, which is then empty; previously a
+  spuriously narrow interval around the estimate was returned.
+
+- The exact estimates and confidence interval in
+  [`ivw_radial()`](https://wspiller.github.io/RadialMR/reference/ivw_radial.md)
+  are now found using a tolerance relative to the width of the search
+  interval, rather than the default absolute tolerance of
+  [`optimize()`](https://rdrr.io/r/stats/optimize.html) (about 1e-4),
+  which was coarse relative to small causal effects.
+
+- The p-values for the IVW, iterative and fixed-effect exact estimates
+  in
+  [`ivw_radial()`](https://wspiller.github.io/RadialMR/reference/ivw_radial.md)
+  now use a t-distribution on L - 1 degrees of freedom, consistent with
+  their confidence intervals and with the random-effects exact estimate.
+  They were previously overwritten with p-values from a normal
+  distribution, which were too small when there were few variants
+  ([\#10](https://github.com/WSpiller/RadialMR/issues/10)).
+
+- The
+  [`egger_radial()`](https://wspiller.github.io/RadialMR/reference/egger_radial.md)
+  documentation now notes that the radial MR-Egger slope is imprecise,
+  and can differ substantially from the conventional MR-Egger estimate,
+  when the square root weights vary little across variants
+  ([\#3](https://github.com/WSpiller/RadialMR/issues/3)).
+
 ## RadialMR v1.2.4
 
 - Fixed the degrees of freedom returned by

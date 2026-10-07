@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">RadialMR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,14 +87,15 @@
 <span class="r-in"><span><span class="va">ldl.fdat</span> <span class="op">&lt;-</span> <span class="fu"><a href="format_radial.html">format_radial</a></span><span class="op">(</span><span class="va">ldl.dat</span><span class="op">[</span>,<span class="fl">6</span><span class="op">]</span>, <span class="va">ldl.dat</span><span class="op">[</span>,<span class="fl">9</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>                          <span class="va">ldl.dat</span><span class="op">[</span>,<span class="fl">15</span><span class="op">]</span>, <span class="va">ldl.dat</span><span class="op">[</span>,<span class="fl">21</span><span class="op">]</span>, <span class="va">ldl.dat</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ivw.object</span> <span class="op">&lt;-</span> <span class="fu"><a href="ivw_radial.html">ivw_radial</a></span><span class="op">(</span><span class="va">ldl.fdat</span>, <span class="fl">0.05</span>, <span class="fl">1</span>, <span class="fl">0.0001</span>, <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The exact Q-statistic exceeds its critical value, so the fixed effect exact confidence interval is empty and is returned as NA. Consider the random effects exact estimate.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Radial IVW</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               Estimate  Std.Error   t value     Pr(&gt;|t|)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Effect (1st) 0.4874900 0.05830409  8.361163 6.210273e-17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iterative    0.4873205 0.05827885  8.361874 6.172955e-17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Exact (FE)   0.4958973 0.03804168 13.035630 7.673061e-39</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Exact (RE)   0.4910400 0.05326164  9.219394 2.930989e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Effect (1st) 0.4874900 0.05830409  8.361163 1.456306e-12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Iterative    0.4873205 0.05827885  8.361874 1.451604e-12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Exact (FE)   0.4958915 0.03804168 13.035479 0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Exact (RE)   0.4910399 0.05326187  9.219351 2.930989e-14</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Residual standard error: 1.544 on 81 degrees of freedom</span>

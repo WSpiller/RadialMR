@@ -77,6 +77,17 @@ An object of class `"egger"` containing the following components:
   A vector giving lower and upper confidence limits for the radial
   MR-Egger effect estimate.
 
+## Details
+
+The radial MR-Egger slope is estimated by extrapolating the regression
+of \\\hat{\beta}\_j \sqrt{W_j}\\ on \\\sqrt{W_j}\\ back to \\\sqrt{W_j}
+= 0\\, where \\\hat{\beta}\_j\\ is the ratio estimate and \\W_j\\ the
+weight for variant \\j\\. When \\\sqrt{W_j}\\ varies little across
+variants, for example when larger exposure associations come with larger
+outcome standard errors, the slope is poorly identified: it is then
+imprecise and can differ substantially from the conventional MR-Egger
+estimate, as the two models scale the intercept differently.
+
 ## References
 
 Bowden, J., et al., Improving the visualization, interpretation and

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">RadialMR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,6 +90,13 @@
 
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The radial MR-Egger slope is estimated by extrapolating the regression of \(\hat{\beta}_j \sqrt{W_j}\) on \(\sqrt{W_j}\)
+back to \(\sqrt{W_j} = 0\), where \(\hat{\beta}_j\) is the ratio estimate and \(W_j\) the weight for variant \(j\). When \(\sqrt{W_j}\) varies little across
+variants, for example when larger exposure associations come with larger outcome standard errors, the slope is poorly identified: it is then
+imprecise and can differ substantially from the conventional MR-Egger estimate, as the two models scale the intercept differently.</p>
+    </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Bowden, J., et al., Improving the visualization, interpretation and analysis of two-sample summary data Mendelian randomization via the Radial plot and Radial regression. International Journal of Epidemiology, 2018. 47(4): p. 1264-1278.</p>
