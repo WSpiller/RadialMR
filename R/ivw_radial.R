@@ -18,7 +18,7 @@
 #' \item{\code{it.coef}}{The estimated iterative coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
 #' \item{\code{it.confint}}{A vector giving lower and upper confidence limits for the iterative radial IVW effect estimate.}
 #' \item{\code{fe.coef}}{The estimated fixed effect exact coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
-#' \item{\code{fe.confint}}{A vector giving lower and upper confidence limits for the fixed effect exact radial IVW effect estimate.}
+#' \item{\code{fe.confint}}{A vector giving lower and upper confidence limits for the fixed effect exact radial IVW effect estimate. These are \code{NA} when the exact Q-statistic exceeds its critical value, as the confidence interval is then empty.}
 #' \item{\code{re.coef}}{The estimated random effect exact coefficient, its standard error, t-statistic and corresponding (two-sided) p-value.}
 #' \item{\code{re.confint}}{A vector giving lower and upper confidence limits for the random effect exact radial IVW effect estimate.}
 #' \item{\code{meanF}}{The mean F statistic for the set of genetic variants, indicative of instrument strength.}
@@ -287,6 +287,10 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
 
   ## Effect estimation through Q-statistic minimisation
 
+  # Searches over the causal effect use a tolerance relative to the width of
+  # the search interval, as the default absolute tolerance of optimize() is
+  # coarse relative to small effects.
+
   #Calculate Q statistic using input 'a' as initial effect estimate
   PL2 = function(a) {
     b = a[1]
@@ -310,7 +314,7 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
           (beta^2) * r_input[, 4]^2 / r_input[, 2]^2)
       q = (sum(w * (Ratios - beta)^2))
     }
-    b = stats::optimize(PL2, interval = c(lb, ub))$minimum
+    b = stats::optimize(PL2, interval = c(lb, ub), tol = 1e-8 * (ub - lb))$minimum
     w = 1 /
       (phi *
         r_input[, 5]^2 /
@@ -388,7 +392,7 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
           w = 1 / (phi * seY^2 / bxg^2 + (beta^2) * seX^2 / bxg^2)
           q = (sum(w * (Ratios - beta)^2))
         }
-        b = stats::optimize(PL2, interval = c(lb, ub))$minimum
+        b = stats::optimize(PL2, interval = c(lb, ub), tol = 1e-8 * (ub - lb))$minimum
         w = 1 / (phi * seY^2 / bxg^2 + (b^2) * seX^2 / bxg^2)
         q = (sum(w * (Ratios - b)^2) - DF)^2
       }
@@ -396,7 +400,7 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
         PLfunc,
         interval = c(phi_IVW2, phi_IVW1 + 0.001)
       )$minimum
-      B[hh] = stats::optimize(PL2, interval = c(lb, ub))$minimum
+      B[hh] = stats::optimize(PL2, interval = c(lb, ub), tol = 1e-8 * (ub - lb))$minimum
     }
     se = stats::sd(B)
     mB = mean(B)
@@ -416,11 +420,25 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
       q = (sum(w * (Ratios - b)^2) - stats::qchisq(1 - z2, DF))^2
     }
 
+    # The confidence interval is the set of effects whose Q-statistic does not
+    # exceed the critical value. If the minimised Q-statistic already exceeds it
+    # the set is empty, as the exact Q test rejects the fixed effect model.
+    w = 1 /
+      (r_input[, 5]^2 /
+        r_input[, 2]^2 +
+        (Bhat^2) * r_input[, 4]^2 / r_input[, 2]^2)
+    if (sum(w * (Ratios - Bhat)^2) > stats::qchisq(1 - z2, DF)) {
+      warning(
+        "The exact Q-statistic exceeds its critical value, so the fixed effect exact confidence interval is empty and is returned as NA. Consider the random effects exact estimate."
+      )
+      return(list(CI = c(NA_real_, NA_real_)))
+    }
+
     lb = Bhat - 10 * SE
     ub = Bhat + 10 * SE
 
-    low = stats::optimize(PL3, interval = c(lb, Bhat))$minimum
-    high = stats::optimize(PL3, interval = c(Bhat, ub))$minimum
+    low = stats::optimize(PL3, interval = c(lb, Bhat), tol = 1e-8 * (ub - lb))$minimum
+    high = stats::optimize(PL3, interval = c(Bhat, ub), tol = 1e-8 * (ub - lb))$minimum
     CI = c(low, high)
     return(list(CI = CI))
   }
@@ -428,7 +446,13 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
   # Fit fixed effect model and perform exact Q test
 
   phi = 1
-  Bhat = stats::optimize(PL2, interval = c(-2, 2))$minimum
+  # Search around the IVW estimate, as for the random effects fit below,
+  # rather than over a fixed interval which may not contain the estimate
+  Bhat = stats::optimize(
+    PL2,
+    interval = c(IVW.Slope - 10 * IVW.SE, IVW.Slope + 10 * IVW.SE),
+    tol = 1e-8 * 20 * IVW.SE
+  )$minimum
   W = 1 /
     (r_input[, 5]^2 /
       r_input[, 2]^2 +
@@ -479,7 +503,7 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
   lb = Bhat - 10 * SE
   ub = Bhat + 10 * SE
   phi = stats::optimize(PLfunc, interval = c(phi_IVW2, phi_IVW1))$minimum
-  Bhat = stats::optimize(PL2, interval = c(lb, ub))$minimum
+  Bhat = stats::optimize(PL2, interval = c(lb, ub), tol = 1e-8 * (ub - lb))$minimum
   Boot = BootVar()
   SE = Boot$se
 
@@ -533,14 +557,6 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
   combined.dat <- (rbind(Sum.Dat, Bhat1.Iterative$It.Res))
   combined.dat <- rbind(combined.dat, FE_EXACT)
   combined.dat <- rbind(combined.dat, RE_EXACT)
-
-  for (i in 1:3) {
-    combined.dat[i, 4] <- 2 *
-      stats::pnorm(
-        abs(combined.dat[i, 1] / combined.dat[i, 2]),
-        lower.tail = FALSE
-      )
-  }
 
   row.names(combined.dat) <- c(
     "Effect",

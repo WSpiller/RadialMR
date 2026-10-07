@@ -29,6 +29,12 @@ An object of class \code{"egger"} containing the following components:
 \description{
 Fits a radial MR-Egger model using first order, second order, or modified second order weights. Outliers are identified using a significance threshold specified by the user. The function returns an object of class \code{"egger"}, containing regression estimates, a measure of total heterogeneity using Rucker's Q statistic, the individual contribution to overall heterogeneity of each variant, and a data frame for use in constructing the radial plot.
 }
+\details{
+The radial MR-Egger slope is estimated by extrapolating the regression of \eqn{\hat{\beta}_j \sqrt{W_j}}{beta_j * sqrt(W_j)} on \eqn{\sqrt{W_j}}{sqrt(W_j)}
+back to \eqn{\sqrt{W_j} = 0}{sqrt(W_j) = 0}, where \eqn{\hat{\beta}_j}{beta_j} is the ratio estimate and \eqn{W_j}{W_j} the weight for variant \eqn{j}{j}. When \eqn{\sqrt{W_j}}{sqrt(W_j)} varies little across
+variants, for example when larger exposure associations come with larger outcome standard errors, the slope is poorly identified: it is then
+imprecise and can differ substantially from the conventional MR-Egger estimate, as the two models scale the intercept differently.
+}
 \examples{
 # Example using format_radial data
 ldl.dat <- data_radial[data_radial[,10]<5e-8,]
