@@ -428,7 +428,12 @@ ivw_radial <- function(r_input, alpha, weights, tol, summary) {
   # Fit fixed effect model and perform exact Q test
 
   phi = 1
-  Bhat = stats::optimize(PL2, interval = c(-2, 2))$minimum
+  # Search around the IVW estimate, as for the random effects fit below,
+  # rather than over a fixed interval which may not contain the estimate
+  Bhat = stats::optimize(
+    PL2,
+    interval = c(IVW.Slope - 10 * IVW.SE, IVW.Slope + 10 * IVW.SE)
+  )$minimum
   W = 1 /
     (r_input[, 5]^2 /
       r_input[, 2]^2 +
